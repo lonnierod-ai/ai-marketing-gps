@@ -1,16 +1,18 @@
+import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getGoalById } from "@/lib/data/goals";
 
 /**
- * GET /api/goals/[slug]
+ * GET /api/Goals/[slug]
  * Get a single goal by slug/ID
  */
 export async function GET(
-  request: Request,
-  context: { params: { slug: string } }
+  _req: NextRequest,
+  ctx: RouteContext<"/api/Goals/[slug]">
 ) {
   try {
-    const slug = context.params.slug;
+    // In Next.js 16, ctx.params is a Promise – we await it
+    const { slug } = await ctx.params;
 
     const goal = await getGoalById(slug);
 
