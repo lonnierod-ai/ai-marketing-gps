@@ -76,3 +76,4 @@ ai-marketing-gps/
 ├── public/               # Static assets
 └── package.json          # Project dependencies
 ```
+# ai-marketing-gps
