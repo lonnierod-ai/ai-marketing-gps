@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { getGoalById } from "@/lib/data/goals";
 
 /**
- * GET /api/Goals/[slug]
+ * GET /api/goals/[slug]
  * Get a single goal by slug/ID
  */
 export async function GET(
