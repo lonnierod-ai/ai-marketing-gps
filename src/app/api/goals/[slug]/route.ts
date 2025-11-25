@@ -7,13 +7,18 @@ import { getGoalById } from "@/lib/data/goals";
  */
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } }
+  context: { params: { slug: string } }
 ) {
   try {
-    const goal = getGoalById(params.slug);
+    const slug = context.params.slug;
+
+    const goal = await getGoalById(slug);
 
     if (!goal) {
-      return NextResponse.json({ error: "Goal not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Goal not found" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({ goal });
