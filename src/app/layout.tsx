@@ -10,8 +10,10 @@ export const metadata: Metadata = {
     icon: "/ai-gps-icon.png",
     apple: "/ai-gps-icon.png",
   },
+verification: {
+    google: "wwJ6j5ZzuPXMPAAWDv6wmzc2f2Re2qU1YXvX8AnxJQeU",
+ },
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
