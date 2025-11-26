@@ -25,7 +25,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // ----- Goals -----
   // getGoalsByCategory returns categories; flatten them into a list of goals
-  const goalCategories = getGoalsByCategory();
+  const goalCategories = (getGoalsByCategory as any)();
+
   const allGoals =
     goalCategories?.flatMap((category: any) => category.goals || []) || [];
 
