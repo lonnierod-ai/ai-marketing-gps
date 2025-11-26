@@ -41,7 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   // ----- Tools -----
-  const toolCategories = getToolsByCategory();
+  const toolCategories = (getToolsByCategory as any)();
   const allTools =
     toolCategories?.flatMap((category: any) => category.tools || []) || [];
 
