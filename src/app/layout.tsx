@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     apple: "/ai-gps-icon.png",
   },
 verification: {
-    google: "wwJ6j5ZzuPXMPAAWDv6wmzc2f2Re2qU1YXvX8AnxJQeU",
+    google: "wWjGj5ZzuPXMPAAWDv6wmzCf2Re2qUlYXvX8AnxJQeU",
  },
 };
 export default function RootLayout({
