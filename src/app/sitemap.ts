@@ -3,57 +3,76 @@ import type { MetadataRoute } from "next";
 import { getGoalsByCategory } from "@/lib/data/goals";
 import { getToolsByCategory } from "@/lib/data/tools";
 
-const baseUrl = "https://www.aimarketinggps.com";
+const BASE_URL = "https://www.aimarketinggps.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  // Static core pages
+  // ----- Static routes -----
   const staticRoutes: MetadataRoute.Sitemap = [
-    "",
+    "", // home
     "/search",
     "/goals",
     "/tools",
     "/chat",
     "/about",
   ].map((path) => ({
-    url: `${baseUrl}${path}`,
+    url: `${BASE_URL}${path}`,
     lastModified: now,
     changeFrequency: "weekly",
-    priority: path === "" ? 1.0 : 0.7,
+    priority: path === "" ? 1 : 0.7,
   }));
 
   // ----- Goals -----
-  // getGoalsByCategory returns categories; flatten them into a list of goals
-  const goalCategories = (getGoalsByCategory as any)();
-
+  const goalCategories = await (getGoalsByCategory as any)();
   const allGoals =
-    goalCategories?.flatMap((category: any) => category.goals || []) || [];
+    goalCategories?.flatMap((category: any) => category.goals || []) ?? [];
 
-  const goalRoutes: MetadataRoute.Sitemap = allGoals.map((goal: any) => ({
-    url: `${baseUrl}/goals/${goal.slug}`,
-    lastModified:
-      (goal.updatedAt && new Date(goal.updatedAt)) ||
-      (goal.createdAt && new Date(goal.createdAt)) ||
-      now,
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
+  const goalRoutes: MetadataRoute.Sitemap = allGoals
+    .map((goal: any) => {
+      const slug =
+        goal?.slug ||
+        goal?.id ||
+        goal?.key ||
+        (goal?.name &&
+          String(goal.name).toLowerCase().replace(/\s+/g, "-"));
+
+      if (!slug) return null;
+
+      return {
+        url: `${BASE_URL}/goals/${slug}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.6,
+      };
+    })
+    .filter(Boolean) as MetadataRoute.Sitemap;
 
   // ----- Tools -----
-  const toolCategories = (getToolsByCategory as any)();
+  const toolCategories = await (getToolsByCategory as any)();
   const allTools =
-    toolCategories?.flatMap((category: any) => category.tools || []) || [];
+    toolCategories?.flatMap((category: any) => category.tools || []) ?? [];
 
-  const toolRoutes: MetadataRoute.Sitemap = allTools.map((tool: any) => ({
-    url: `${baseUrl}/tools/${tool.slug}`,
-    lastModified:
-      (tool.updatedAt && new Date(tool.updatedAt)) ||
-      (tool.createdAt && new Date(tool.createdAt)) ||
-      now,
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
+  const toolRoutes: MetadataRoute.Sitemap = allTools
+    .map((tool: any) => {
+      const slug =
+        tool?.slug ||
+        tool?.id ||
+        tool?.key ||
+        (tool?.name &&
+          String(tool.name).toLowerCase().replace(/\s+/g, "-"));
 
+      if (!slug) return null;
+
+      return {
+        url: `${BASE_URL}/tools/${slug}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.6,
+      };
+    })
+    .filter(Boolean) as MetadataRoute.Sitemap;
+
+  // Return full sitemap
   return [...staticRoutes, ...goalRoutes, ...toolRoutes];
 }
