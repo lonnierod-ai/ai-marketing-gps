@@ -2,14 +2,14 @@
 export const dynamic = "force-dynamic";
 
 
-import { useEffect, useState } from "react";
+import { Suspense,useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import SearchBar from "@/components/search/SearchBar";
 import SearchResults from "@/components/search/SearchResults";
 import { SearchResponse } from "@/types";
 import Link from "next/link";
 
-export default function SearchPage() {
+function SearchPageInner() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [results, setResults] = useState<SearchResponse | null>(null);
@@ -108,3 +108,11 @@ export default function SearchPage() {
     </div>
   );
 }
+export default function SearchPage() {
+  return (
+    <Suspense fallback={null}>
+      <SearchPageInner />
+    </Suspense>
+  );
+}
+
