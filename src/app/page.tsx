@@ -31,17 +31,19 @@ export default function HomePage() {
 
       {/* HERO + SEARCH */}
       <section className="relative overflow-hidden border-b border-slate-200 bg-white">
-                {/* faint icon background */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-25"
-          style={{
-            backgroundImage: 'url("/ai-gps-icon.png")',
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-          }}
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/30 via-white/80 to-white" />
+             {/* hero background icon */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div
+            className="h-[420px] w-[420px] sm:h-[520px] sm:w-[520px] md:h-[600px] md:w-[600px] opacity-40"
+            style={{
+              backgroundImage: 'url("/ai-gps-icon.png")',
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+            }}
+          />
+        </div>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-white/70 to-white" />
 
         <div className="relative mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
           <div className="mx-auto max-w-2xl text-center">
@@ -78,55 +80,37 @@ export default function HomePage() {
       </section>
 
       {/* QUICK LINKS & FEATURED TOOLS (minimal sections) */}
-      <section className="border-b border-slate-200 bg-white">
+         <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 py-10 sm:px-6 sm:py-14 md:flex-row">
           {/* Quick links by goal */}
           <div className="flex-1">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
               Popular goals
             </h2>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-slate-600 min-h-[40px]">
               Jump straight into common content marketing outcomes.
             </p>
-            <div className="mt-4 grid gap-3">
-              {quickLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm transition hover:border-[#f37021] hover:text-[#f37021]"
-                >
-                  <span>{link.title}</span>
-                  <span className="text-xs">&rarr;</span>
-                </Link>
-              ))}
+            <div className="mt-6 grid gap-3">
+              ...
             </div>
           </div>
 
           {/* Featured tools */}
-                <div className="flex-1">
+          <div className="flex-1">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-              EXAMPLE TOOLS
+              Example tools
             </h2>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-slate-600 min-h-[40px]">
               A small snapshot of tools you might explore. Listings are neutral
               and organized by fit.
             </p>
-
-            <div className="mt-4 grid gap-3">
-              {featuredTools.map((tool) => (
-                <Link
-                  key={tool.href}
-                  href={tool.href}
-                  className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm transition hover:border-[#3b658a] hover:text-[#3b658a]"
-                >
-                  <span>{tool.name}</span>
-                  <span className="text-xs">&rarr;</span>
-                </Link>
-              ))}
+            <div className="mt-6 grid gap-3">
+              ...
             </div>
           </div>
         </div>
       </section>
+
 
       {/* SHORT EXPLAINER */}
       <section className="bg-slate-50 pb-12 pt-8">
