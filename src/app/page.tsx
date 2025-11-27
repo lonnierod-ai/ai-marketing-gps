@@ -1,350 +1,149 @@
-// src/app/page.tsx
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import SearchBar from "@/components/search/SearchBar";
 import Link from "next/link";
 
-const homeJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  url: "https://www.aimarketinggps.com/",
-  name: "AI Marketing GPS – Neutral Hub for AI Content Tools",
-  description:
-    "AI Marketing GPS is an independent, goal-first hub that tracks and organizes AI tools for content creation and marketing.",
-  about: {
-    "@type": "Thing",
-    name: "AI tools for content creation",
-  },
-};
-
-const CONTENT_GOALS = [
-  {
-    title: "Publish more content consistently",
-    description:
-      "Find AI tools that help you draft, edit, and ship content on a regular schedule.",
-    href: "/goals",
-  },
-  {
-    title: "Repurpose content into new formats",
-    description:
-      "Turn blogs into social posts, emails, carousels, videos, and more.",
-    href: "/goals",
-  },
-  {
-    title: "Create short-form video & reels",
-    description:
-      "Explore AI tools for scripting, editing, and resizing video content.",
-    href: "/goals",
-  },
-  {
-    title: "Turn raw ideas into polished posts",
-    description:
-      "Use AI tools to transform notes, transcripts, and outlines into ready-to-publish content.",
-    href: "/goals",
-  },
-];
-
-const TOOL_CATEGORIES = [
-  {
-    title: "Writing & long-form",
-    description: "Draft, edit, and optimize articles, blogs, and emails.",
-    href: "/tools",
-  },
-  {
-    title: "Social & repurposing",
-    description: "Create posts, threads, and carousels from existing content.",
-    href: "/tools",
-  },
-  {
-    title: "Video & audio",
-    description: "Script, record, edit, and clip video or podcast content.",
-    href: "/tools",
-  },
-  {
-    title: "SEO & research",
-    description:
-      "Keyword research, outlines, briefs, and optimization for search.",
-    href: "/tools",
-  },
-];
-
-const RECENT_UPDATES = [
-  {
-    label: "New launch",
-    text: "Added several emerging AI tools focused on turning long-form videos into short clips for social platforms.",
-  },
-  {
-    label: "Update tracked",
-    text: "Updated listings for several writing tools with new pricing tiers and long-form editing features.",
-  },
-  {
-    label: "On the radar",
-    text: "Monitoring a wave of new AI assistants that combine research, drafting, and repurposing workflows.",
-  },
-];
-
 export default function HomePage() {
+  const router = useRouter();
+
+  const handleSearch = (query: string, searchType: "goal" | "tool") => {
+    // Encode the query and navigate to search results page
+    const encodedQuery = encodeURIComponent(query);
+    router.push(`/search?q=${encodedQuery}&type=${searchType}`);
+  };
+
+  const quickLinks = [
+    { title: "Create Blog Content", href: "/goal/create-blog-content" },
+    { title: "Launch Video Marketing", href: "/goal/create-video-content" },
+    { title: "Start a Podcast", href: "/goal/launch-podcast" },
+    { title: "Improve SEO", href: "/goal/seo-optimization" },
+  ];
+
+  const featuredTools = [
+    { name: "ChatGPT", href: "/tool/chatgpt" },
+    { name: "Claude", href: "/tool/claude" },
+    { name: "HeyGen", href: "/tool/heygen" },
+    { name: "NotebookLM", href: "/tool/notebooklm" },
+  ];
+
   return (
-    <>
-      {/* Page-specific JSON-LD for LLMs and search engines */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeJsonLd) }}
-      />
+    <div className="min-h-screen bg-gradient-to-b from-brand-sand/10 to-white">
 
-      <main className="min-h-screen bg-slate-950 text-slate-50">
-        {/* HERO */}
-        <section className="relative overflow-hidden border-b border-slate-800">
-          {/* Gradient background */}
-          <div
-            className="absolute inset-0 opacity-80"
-            style={{
-              background:
-                "radial-gradient(circle at top left, #f37021 0, transparent 50%), radial-gradient(circle at top right, #3b658a 0, transparent 55%), radial-gradient(circle at bottom, #52575b 0, transparent 55%)",
-            }}
-          />
-          {/* Subtle overlay */}
-          <div className="absolute inset-0 bg-slate-950/70" />
+      {/* Hero Section */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center pt-8 pb-8 sm:pt-12 sm:pb-10 lg:pt-16 lg:pb-12">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-dark mb-4">
+            Find the Right AI Tools for Your Marketing Goals
+          </h2>
+          <p className="text-base sm:text-lg lg:text-xl text-brand-dark/70 mb-8 sm:mb-10 lg:mb-12 max-w-3xl mx-auto">
+            Tell us what you want to achieve, and we'll guide you to the AI
+            tools that help you get there—based on our curated AI Marketing
+            Toolkit.
+          </p>
 
-          <div className="relative mx-auto flex max-w-6xl flex-col gap-10 px-4 pb-20 pt-16 sm:px-6 lg:flex-row lg:items-center lg:pb-24 lg:pt-24">
-            {/* Left: copy */}
-            <div className="max-w-xl space-y-6">
-              <div className="inline-flex items-center gap-2 rounded-full bg-slate-900/70 px-3 py-1 text-xs font-medium text-slate-200 ring-1 ring-slate-600/60">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#f37021]" />
-                Neutral hub for AI content tools
+          {/* Search Bar */}
+          <SearchBar onSearch={handleSearch} />
+        </div>
+
+        {/* How It Works */}
+        <section className="py-8 sm:py-12 lg:py-16 border-t border-brand-sand/30">
+          <h3 className="text-2xl sm:text-3xl font-bold text-center text-brand-dark mb-8 sm:mb-10 lg:mb-12">
+            How It Works
+          </h3>
+          <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
+            <div className="text-center">
+              <div className="bg-brand-blue rounded-full w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <span className="text-xl sm:text-2xl font-bold text-white">1</span>
               </div>
+              <h4 className="text-lg sm:text-xl font-semibold text-brand-dark mb-2">
+                Describe Your Goal
+              </h4>
+              <p className="text-sm sm:text-base text-brand-dark/70">
+                Tell us what you want to achieve in natural language. No
+                technical jargon needed.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="bg-brand-blue rounded-full w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <span className="text-xl sm:text-2xl font-bold text-white">2</span>
+              </div>
+              <h4 className="text-lg sm:text-xl font-semibold text-brand-dark mb-2">
+                Get Matched to Tools
+              </h4>
+              <p className="text-sm sm:text-base text-brand-dark/70">
+                Our AI analyzes your goal and recommends the best tools from our
+                curated toolkit.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="bg-brand-blue rounded-full w-14 h-14 sm:w-16 sm:h-16 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <span className="text-xl sm:text-2xl font-bold text-white">3</span>
+              </div>
+              <h4 className="text-lg sm:text-xl font-semibold text-brand-dark mb-2">
+                Follow the Workflow
+              </h4>
+              <p className="text-sm sm:text-base text-brand-dark/70">
+                Get step-by-step guidance, example prompts, and pro tips to
+                achieve your goal.
+              </p>
+            </div>
+          </div>
+        </section>
 
-              <h1 className="text-4xl font-bold tracking-tight text-slate-50 sm:text-5xl lg:text-6xl">
-                Your GPS for Today&apos;s{" "}
-                <span
-                  className="bg-gradient-to-r from-[#f37021] via-[#cdb39b] to-[#3b658a] bg-clip-text text-transparent"
-                >
-                  AI Content Tools
+        {/* Quick Links */}
+        <section className="py-8 sm:py-12 lg:py-16 border-t border-brand-sand/30">
+          <h3 className="text-2xl sm:text-3xl font-bold text-center text-brand-dark mb-6 sm:mb-8">
+            Popular Goals
+          </h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto">
+            {quickLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="block p-4 sm:p-6 bg-white border border-brand-sand/40 rounded-lg hover:shadow-md hover:border-brand-orange/30 transition-all text-center min-h-[60px] flex items-center justify-center"
+              >
+                <span className="text-base sm:text-lg font-semibold text-brand-dark">
+                  {link.title}
                 </span>
-              </h1>
-
-              <p className="text-base leading-relaxed text-slate-200 sm:text-lg">
-                AI Marketing GPS is a neutral, up-to-date resource hub that
-                tracks the fast-moving world of AI tools for content creation.
-                Discover what&apos;s new, what&apos;s practical, and what fits
-                your content goals — without sponsored rankings or paid
-                placements.
-              </p>
-
-              <div className="flex flex-wrap items-center gap-3">
-                <Link
-                  href="/goals"
-                  className="rounded-full bg-[#f37021] px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#f37021]/40 transition hover:bg-[#d65f19]"
-                >
-                  Find tools by content goal
-                </Link>
-                <Link
-                  href="/tools"
-                  className="rounded-full border border-slate-500 bg-slate-900/40 px-6 py-2.5 text-sm font-semibold text-slate-50 transition hover:border-slate-300 hover:bg-slate-900/80"
-                >
-                  Browse all AI tools
-                </Link>
-              </div>
-
-              <p className="text-xs text-slate-300">
-                Independent research. No paid placements. Updated as AI evolves.
-              </p>
-            </div>
-
-            {/* Right: logo / visual */}
-            <div className="flex flex-1 justify-center lg:justify-end">
-              <div className="relative h-56 w-56 sm:h-72 sm:w-72 md:h-80 md:w-80">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#f37021]/40 via-transparent to-[#3b658a]/60 blur-2xl" />
-                <div className="relative flex h-full w-full items-center justify-center rounded-3xl bg-slate-900/70 p-6 ring-1 ring-slate-700/60 backdrop-blur">
-                  <Image
-                    src="/ai-gps-logo.png"
-                    alt="AI Marketing GPS logo"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* WHY SECTION */}
-        <section className="border-b border-slate-800 bg-slate-950">
-          <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
-            <h2 className="text-2xl font-semibold text-slate-50 sm:text-3xl">
-              AI tools evolve weekly. Most content teams can&apos;t track
-              everything alone.
-            </h2>
-            <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-300 sm:text-base">
-              New AI tools and major feature updates ship constantly. Pricing
-              changes, interfaces shift, and “top lists” quickly go out of
-              date. AI Marketing GPS exists to keep a clear, goal-first view of
-              what&apos;s available — so content marketers can focus on
-              strategy and execution instead of chasing every launch.
-            </p>
-
-            <div className="mt-8 grid gap-4 text-sm text-slate-200 sm:grid-cols-2">
-              <div className="rounded-2xl bg-slate-900/70 p-4 ring-1 ring-slate-700/70">
-                <p className="font-semibold text-slate-50">
-                  Not a marketplace. Not pay-to-play.
-                </p>
-                <p className="mt-2 text-slate-300">
-                  AI Marketing GPS is an independent resource. Listings and
-                  groupings are based on workflows and goals — not ad spend or
-                  sponsorships.
-                </p>
-              </div>
-              <div className="rounded-2xl bg-slate-900/70 p-4 ring-1 ring-slate-700/70">
-                <p className="font-semibold text-slate-50">
-                  Built for content-focused teams.
-                </p>
-                <p className="mt-2 text-slate-300">
-                  Everything is organized around outcomes that matter to content
-                  marketers: publishing more, repurposing smarter, and reaching
-                  more channels with less manual effort.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* GOALS SECTION */}
-        <section className="border-b border-slate-800 bg-slate-950">
-          <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <h2 className="text-2xl font-semibold text-slate-50 sm:text-3xl">
-                  Start with your content goal.
-                </h2>
-                <p className="mt-2 max-w-3xl text-sm text-slate-300 sm:text-base">
-                  Begin with what you&apos;re trying to achieve, not a random
-                  list of tools. Explore goals and see which AI tools are most
-                  relevant to each outcome.
-                </p>
-              </div>
-              <Link
-                href="/goals"
-                className="mt-2 inline-flex items-center text-sm font-semibold text-[#f37021] hover:text-[#d65f19]"
-              >
-                View all goals<span className="ml-1">&rarr;</span>
               </Link>
-            </div>
-
-            <div className="mt-8 grid gap-6 sm:grid-cols-2">
-              {CONTENT_GOALS.map((goal) => (
-                <Link
-                  key={goal.title}
-                  href={goal.href}
-                  className="group rounded-2xl bg-slate-900/70 p-5 text-left ring-1 ring-slate-700/70 transition hover:-translate-y-1 hover:ring-[#f37021]"
-                >
-                  <h3 className="text-base font-semibold text-slate-50 sm:text-lg">
-                    {goal.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-slate-300">
-                    {goal.description}
-                  </p>
-                  <span className="mt-3 inline-flex items-center text-xs font-semibold text-[#f37021] group-hover:text-[#d65f19]">
-                    View tools for this goal
-                    <span className="ml-1">&rarr;</span>
-                  </span>
-                </Link>
-              ))}
-            </div>
+            ))}
           </div>
         </section>
 
-        {/* TOOL CATEGORIES */}
-        <section className="border-b border-slate-800 bg-slate-950">
-          <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <h2 className="text-2xl font-semibold text-slate-50 sm:text-3xl">
-                  Or explore tools by workflow or channel.
-                </h2>
-                <p className="mt-2 max-w-3xl text-sm text-slate-300 sm:text-base">
-                  See AI tools grouped by how you actually work — writing,
-                  video, social, SEO, repurposing, research, and more.
-                </p>
-              </div>
+        {/* Featured Tools */}
+        <section className="py-8 sm:py-12 lg:py-16 border-t border-brand-sand/30">
+          <h3 className="text-2xl sm:text-3xl font-bold text-center text-brand-dark mb-6 sm:mb-8">
+            Featured Tools
+          </h3>
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 max-w-2xl mx-auto">
+            {featuredTools.map((tool) => (
               <Link
-                href="/tools"
-                className="mt-2 inline-flex items-center text-sm font-semibold text-[#f37021] hover:text-[#d65f19]"
+                key={tool.href}
+                href={tool.href}
+                className="px-5 py-2.5 sm:px-6 sm:py-3 bg-brand-blue/10 text-brand-blue rounded-full hover:bg-brand-orange hover:text-white transition-colors font-medium text-sm sm:text-base"
               >
-                Browse all tools<span className="ml-1">&rarr;</span>
+                {tool.name}
               </Link>
-            </div>
-
-            <div className="mt-8 grid gap-6 sm:grid-cols-2">
-              {TOOL_CATEGORIES.map((cat) => (
-                <Link
-                  key={cat.title}
-                  href={cat.href}
-                  className="group rounded-2xl bg-slate-900/70 p-5 text-left ring-1 ring-slate-700/70 transition hover:-translate-y-1 hover:ring-[#3b658a]"
-                >
-                  <h3 className="text-base font-semibold text-slate-50 sm:text-lg">
-                    {cat.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-slate-300">
-                    {cat.description}
-                  </p>
-                  <span className="mt-3 inline-flex items-center text-xs font-semibold text-[#3b658a] group-hover:text-[#264666]">
-                    View tools in this area
-                    <span className="ml-1">&rarr;</span>
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* RECENT UPDATES / WHAT'S NEW */}
-        <section className="border-b border-slate-800 bg-slate-950">
-          <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-            <h2 className="text-2xl font-semibold text-slate-50 sm:text-3xl">
-              What&apos;s changing in AI content tools.
-            </h2>
-            <p className="mt-2 max-w-3xl text-sm text-slate-300 sm:text-base">
-              A snapshot of what we&apos;re tracking — new launches, notable
-              updates, and early-stage tools that may impact how marketers plan,
-              produce, and repurpose content.
-            </p>
-
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
-              {RECENT_UPDATES.map((item) => (
-                <div
-                  key={item.text}
-                  className="rounded-2xl bg-slate-900/70 p-4 ring-1 ring-slate-700/70"
-                >
-                  <p className="text-xs font-semibold uppercase tracking-wide text-[#f37021]">
-                    {item.label}
-                  </p>
-                  <p className="mt-2 text-sm text-slate-200">{item.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* LLM-FRIENDLY ABOUT BLOCK */}
-        <section className="bg-slate-950 pb-16 pt-10">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6">
-            <h2 className="text-xl font-semibold text-slate-50 sm:text-2xl">
-              What is AI Marketing GPS?
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-slate-300 sm:text-base">
-              AI Marketing GPS is an independent, research-driven hub that
-              tracks and organizes AI tools used for content creation and
-              marketing. Instead of starting from a random list of products,
-              content marketers begin with their goals — such as publishing more
-              consistently, repurposing existing assets, or expanding into video
-              and audio. The platform then surfaces tools and categories mapped
-              to those outcomes, along with neutral summaries designed to be
-              easy for both humans and large language models to understand. AI
-              Marketing GPS does not sell tools or run paid placements; its focus
-              is clarity, usability, and staying current as the AI landscape
-              evolves.
-            </p>
+            ))}
           </div>
         </section>
       </main>
-    </>
+
+      {/* Footer */}
+      <footer className="border-t border-brand-sand/30 mt-8 sm:mt-12 lg:mt-16 py-6 sm:py-8 bg-brand-sand/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-brand-dark/60">
+          <p className="mb-2 text-sm sm:text-base">
+            Data curated from Q'dUp Content Marketing Agency's AI Toolkit
+            (November 2025)
+          </p>
+          <p className="text-xs sm:text-sm">
+            AI tools and features are subject to change. Always verify current
+            information with vendors.
+          </p>
+        </div>
+      </footer>
+    </div>
   );
 }
