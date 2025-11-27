@@ -19,8 +19,29 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+    const siteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    url: "https://www.aimarketinggps.com/",
+    name: "AI Marketing GPS",
+    description:
+      "AI Marketing GPS helps marketers find the right AI tools by goal, category, and workflow.",
+    potentialAction: {
+      "@type": "SearchAction",
+      target:
+        "https://www.aimarketinggps.com/search?query={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <html lang="en">
+          <head>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+      />
+    </head>
       <body className="antialiased">
         <header className="bg-white border-b border-brand-sand shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
