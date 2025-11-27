@@ -2,6 +2,25 @@ import Link from "next/link";
 import { getAllGoals } from "@/lib/data/goals";
 import { GOAL_CATEGORIES } from "@/lib/data/categories";
 import GoalCard from "@/components/goals/GoalCard";
+const goalsJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  url: "https://www.aimarketinggps.com/goals",
+  name: "Marketing Goals Directory",
+  description:
+    "Explore marketing goals and see recommended AI tools for each outcome.",
+  isPartOf: {
+    "@type": "WebSite",
+    url: "https://www.aimarketinggps.com/",
+    name: "AI Marketing GPS",
+  },
+  mainEntity: {
+    "@type": "ItemList",
+    name: "Marketing Goals",
+    itemListElement: [],
+  },
+};
+
 
 export default function GoalsPage() {
   const goals = getAllGoals();
@@ -12,7 +31,13 @@ export default function GoalsPage() {
     goals: goals.filter((goal) => goal.category === category.id),
   })).filter((group) => group.goals.length > 0);
 
-  return (
+    return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(goalsJsonLd) }}
+      />
+
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="border-b bg-white shadow-sm">
@@ -53,6 +78,8 @@ export default function GoalsPage() {
           ))}
         </div>
       </main>
-    </div>
+      </div>
+    </>
   );
 }
+
