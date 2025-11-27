@@ -28,34 +28,6 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      {/* Top nav */}
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-[#f37021] to-[#3b658a] opacity-90" />
-            <span className="text-sm font-semibold tracking-tight sm:text-base">
-              AI Marketing GPS
-            </span>
-          </Link>
-          <nav className="hidden items-center gap-6 text-sm text-slate-700 sm:flex">
-            <Link href="/goals" className="hover:text-slate-900">
-              Goals
-            </Link>
-            <Link href="/tools" className="hover:text-slate-900">
-              Tools
-            </Link>
-            <Link href="/about" className="hover:text-slate-900">
-              About
-            </Link>
-            <Link
-              href="/search"
-              className="rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-800 hover:border-[#f37021] hover:text-[#f37021]"
-            >
-              Open search
-            </Link>
-          </nav>
-        </div>
-      </header>
 
       {/* HERO + SEARCH */}
       <section className="relative overflow-hidden border-b border-slate-200 bg-white">
