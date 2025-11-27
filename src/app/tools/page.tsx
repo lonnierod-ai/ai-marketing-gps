@@ -21,25 +21,6 @@ const toolsJsonLd = {
   },
 };
 
-const toolsJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  url: "https://www.aimarketinggps.com/tools",
-  name: "AI Marketing Tools Directory",
-  description:
-    "Browse curated AI marketing tools organized by marketing goal and workflow.",
-  isPartOf: {
-    "@type": "WebSite",
-    url: "https://www.aimarketinggps.com/",
-    name: "AI Marketing GPS",
-  },
-  mainEntity: {
-    "@type": "ItemList",
-    name: "AI Marketing Tools",
-    itemListElement: [],
-  },
-};
-
 export default function ToolsPage() {
   const tools = getAllTools();
 
