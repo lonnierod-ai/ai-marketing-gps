@@ -2,6 +2,43 @@ import Link from "next/link";
 import { getAllTools } from "@/lib/data/tools";
 import { TOOL_CATEGORIES } from "@/lib/data/categories";
 import ToolCard from "@/components/tools/ToolCard";
+const toolsJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  url: "https://www.aimarketinggps.com/tools",
+  name: "AI Marketing Tools Directory",
+  description:
+    "Browse curated AI marketing tools organized by marketing goal and workflow.",
+  isPartOf: {
+    "@type": "WebSite",
+    url: "https://www.aimarketinggps.com/",
+    name: "AI Marketing GPS",
+  },
+  mainEntity: {
+    "@type": "ItemList",
+    name: "AI Marketing Tools",
+    itemListElement: [], // we can fill with individual tools later if we want
+  },
+};
+
+const toolsJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  url: "https://www.aimarketinggps.com/tools",
+  name: "AI Marketing Tools Directory",
+  description:
+    "Browse curated AI marketing tools organized by marketing goal and workflow.",
+  isPartOf: {
+    "@type": "WebSite",
+    url: "https://www.aimarketinggps.com/",
+    name: "AI Marketing GPS",
+  },
+  mainEntity: {
+    "@type": "ItemList",
+    name: "AI Marketing Tools",
+    itemListElement: [],
+  },
+};
 
 export default function ToolsPage() {
   const tools = getAllTools();
@@ -13,6 +50,12 @@ export default function ToolsPage() {
   })).filter((group) => group.tools.length > 0);
 
   return (
+  <>
+        <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(toolsJsonLd) }}
+    />
+
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="border-b bg-white shadow-sm">
@@ -52,6 +95,8 @@ export default function ToolsPage() {
           ))}
         </div>
       </main>
-    </div>
+       </div>
+  </>
   );
 }
+
