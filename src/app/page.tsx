@@ -31,9 +31,9 @@ export default function HomePage() {
 
       {/* HERO + SEARCH */}
       <section className="relative overflow-hidden border-b border-slate-200 bg-white">
-        {/* faint icon background */}
+                {/* faint icon background */}
         <div
-          className="pointer-events-none absolute inset-0 opacity-10"
+          className="pointer-events-none absolute inset-0 opacity-25"
           style={{
             backgroundImage: 'url("/ai-gps-icon.png")',
             backgroundSize: "contain",
@@ -41,7 +41,7 @@ export default function HomePage() {
             backgroundPosition: "center",
           }}
         />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/60 via-white/90 to-white" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/30 via-white/80 to-white" />
 
         <div className="relative mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
           <div className="mx-auto max-w-2xl text-center">
@@ -103,14 +103,15 @@ export default function HomePage() {
           </div>
 
           {/* Featured tools */}
-          <div className="flex-1">
+                <div className="flex-1">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-              Example tools
+              EXAMPLE TOOLS
             </h2>
             <p className="mt-1 text-sm text-slate-600">
               A small snapshot of tools you might explore. Listings are neutral
-              and organized by fit, not sponsorship.
+              and organized by fit.
             </p>
+
             <div className="mt-4 grid gap-3">
               {featuredTools.map((tool) => (
                 <Link
