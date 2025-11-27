@@ -29,55 +29,60 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
 
-      {/* HERO + SEARCH */}
-      <section className="relative overflow-hidden border-b border-slate-200 bg-white">
-             {/* hero background icon */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div
-            className="h-[420px] w-[420px] sm:h-[520px] sm:w-[520px] md:h-[600px] md:w-[600px] opacity-40"
-            style={{
-              backgroundImage: 'url("/ai-gps-icon.png")',
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-            }}
-          />
-        </div>
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-white/70 to-white" />
+     {/* HERO + SEARCH */}
+<section className="relative overflow-hidden border-b border-slate-200 bg-white">
+  
+  {/* HERO BACKGROUND ICON */}
+  <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+    <div
+      className="opacity-25"
+      style={{
+        backgroundImage: 'url("/ai-gps-hero.png")',
+        backgroundSize: "800px",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        width: "800px",
+        height: "800px",
+      }}
+    ></div>
+  </div>
 
-        <div className="relative mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs font-medium text-slate-600 shadow-sm">
-              Neutral hub for AI content tools
-            </p>
+  {/* Soft overlay for readability */}
+  <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-white/70 to-white"></div>
 
-            <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
-              Your GPS for{" "}
-              <span className="bg-gradient-to-r from-[#f37021] to-[#3b658a] bg-clip-text text-transparent">
-                AI content tools
-              </span>
-            </h1>
+  <div className="relative mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
+    
+    <div className="mx-auto max-w-2xl text-center">
+      <p className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs font-medium text-slate-600 shadow-sm">
+        Neutral hub for AI content tools
+      </p>
 
-            <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
-              Discover AI tools for content creation, repurposing, and
-              distribution — organized by marketing goal and tool type. No paid
-              placements. No hype. Just a clear starting point for your next
-              experiment.
-            </p>
-          </div>
+      <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
+        Your GPS for{" "}
+        <span className="bg-gradient-to-r from-[#f37021] to-[#3b658a] bg-clip-text text-transparent">
+          AI content tools
+        </span>
+      </h1>
 
-          <div className="mt-8">
-            {/* Your existing tabbed search component */}
-            <SearchBar onSearch={handleSearch} />
-          </div>
+      <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+        Discover AI tools for content creation, repurposing, and distribution —
+        organized by marketing goal and tool type. No paid placements. No hype.
+        Just a clear starting point for your next experiment.
+      </p>
+    </div>
 
-          <p className="mt-3 text-center text-xs text-slate-500">
-            Use the tabs above to switch between searching by{" "}
-            <span className="font-semibold">content marketing goal</span> or by{" "}
-            <span className="font-semibold">specific AI tool</span>.
-          </p>
-        </div>
-      </section>
+    <div className="mt-8">
+      <SearchBar onSearch={handleSearch} />
+    </div>
+
+    <p className="mt-3 text-center text-xs text-slate-500">
+      Use the tabs above to switch between searching by{" "}
+      <span className="font-semibold">content marketing goal</span> or by{" "}
+      <span className="font-semibold">specific AI tool</span>.
+    </p>
+  </div>
+</section>
+
 
       {/* QUICK LINKS & FEATURED TOOLS (minimal sections) */}
          <section className="border-b border-slate-200 bg-white">
