@@ -499,7 +499,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     ],
   },
 
-  // ========================================
+    // ========================================
   // SPECIALIZED GOALS
   // ========================================
   {
@@ -532,46 +532,83 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       ],
     },
   },
-{
-  id: "draft-video-scripts",
-  title: "Draft Video Scripts",
-  description:
-    "Write clear, engaging video scripts for explainers, ads, tutorials, and social content. Use AI to structure, refine, and adapt scripts for different channels.",
-  category: "video-marketing",
-  tags: [
-    "writing",
-    "scripts",
-    "video",
-    "storytelling",
-    "explainer",
-    "ads",
-  ],
-  difficulty: "beginner",
-  estimatedTimeframe: "30–90 minutes per script",
-  recommendedTools: ["chatgpt", "claude", "jasper-ai"],
-  workflow: {
+  {
+    id: "content-repurposing",
+    title: "Repurpose Content Across Formats",
     description:
-      "AI-assisted workflow for drafting and refining video scripts",
-    steps: [
-      "Describe your target audience, goal, and video length to ChatGPT or Claude.",
-      "Ask AI to propose 2–3 different hooks and outlines.",
-      "Select the best outline and have AI draft a full script with scene-by-scene narration.",
-      "Iterate on tone, length, and CTAs with Jasper AI or Claude.",
-      "Adapt the script for different platforms (YouTube, Reels, TikTok).",
+      "Maximize content ROI by transforming one piece into many. Turn blogs into videos, podcasts into articles, webinars into social clips.",
+    category: "content-marketing",
+    tags: [
+      "repurposing",
+      "content",
+      "efficiency",
+      "roi",
+      "multi-format",
+      "productivity",
+      "writing",
+    ],
+    difficulty: "beginner",
+    estimatedTimeframe: "One asset → 10+ formats",
+    recommendedTools: [
+      "castmagic",
+      "opusclip",
+      "claude",
+      "heygen",
+      "descript",
+    ],
+    workflow: {
+      description:
+        "Transform one content piece into multiple formats",
+      steps: [
+        "Start with long-form content (podcast episode, webinar, blog post)",
+        "For podcast/video: Extract clips with OpusClip, generate blog post with Castmagic",
+        "For blog: Create video version with HeyGen (avatar reads adapted script)",
+        "Generate social posts with Claude (different angles for different platforms)",
+        "Create carousel posts, quote graphics with Canva AI",
+        "Distribute everywhere",
+      ],
+    },
+    examplePrompts: [
+      "Turn this blog post into a 5-post LinkedIn carousel. Extract the key points and create engaging slide titles.",
+      "Convert this podcast transcript into a 1000-word blog post. Maintain conversational tone but make it readable.",
     ],
   },
+  {
+    id: "draft-video-scripts",
+    title: "Draft Video Scripts",
+    description:
+      "Write clear, engaging video scripts for explainers, ads, tutorials, and social content. Use AI to structure, refine, and adapt scripts for different channels.",
+    category: "video-marketing",
+    tags: [
+      "writing",
+      "scripts",
+      "video",
+      "storytelling",
+      "explainer",
+      "ads",
+    ],
+    difficulty: "beginner",
+    estimatedTimeframe: "30–90 minutes per script",
+    recommendedTools: ["chatgpt", "claude", "jasper-ai"],
+    workflow: {
+      description:
+        "AI-assisted workflow for drafting and refining video scripts",
+      steps: [
+        "Describe your target audience, goal, and video length to ChatGPT or Claude.",
+        "Ask AI to propose 2–3 different hooks and outlines.",
+        "Select the best outline and have AI draft a full script with scene-by-scene narration.",
+        "Iterate on tone, length, and CTAs with Jasper AI or Claude.",
+        "Adapt the script for different platforms (YouTube, Reels, TikTok).",
+      ],
+    },
     examplePrompts: [
-    "Write a 60-second explainer video script about [topic] for [audience]. Include hook, problem, solution, and CTA.",
-    "Turn this blog post into a 90-second video script for YouTube. Make it conversational and engaging.",
-  ],
-},
+      "Write a 60-second explainer video script about [topic] for [audience]. Include hook, problem, solution, and CTA.",
+      "Turn this blog post into a 90-second video script for YouTube. Make it conversational and engaging.",
+    ],
+  },
 ];
 
 
-/**
- * Get goal by ID
- */
-export function getGoalById(id: string): MarketingGoal | undefined {
 
 /**
  * Get goal by ID
@@ -597,6 +634,7 @@ export function getAllGoals(): MarketingGoal[] {
 /**
  * Search goals by keyword
  */
+
 // Normalize common user phrases to core intent keywords
 const KEYWORD_ALIASES: Record<string, string> = {
   "writing assistant": "writing",
@@ -629,4 +667,3 @@ export function searchGoals(keyword: string): MarketingGoal[] {
     );
   });
 }
-
