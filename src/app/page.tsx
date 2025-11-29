@@ -83,92 +83,96 @@ export default function HomePage() {
   </div>
 </section>
 
+<section className="max-w-6xl mx-auto pt-20 pb-12 px-4 grid grid-cols-1 md:grid-cols-2 gap-12">
+  {/* Popular Goals */}
+  <div>
+    <h2 className="text-lg font-bold mb-2" style={{ color: "#3b658a" }}>
+      POPULAR GOALS
+    </h2>
+    <p className="text-slate-600 mb-6">
+      Jump straight into common content marketing outcomes.
+    </p>
 
-      {/* QUICK LINKS & FEATURED TOOLS (minimal sections) */}
-              {/* Popular Goals + Example Tools */}
-      <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 grid gap-10 md:grid-cols-2">
-          {/* Popular goals */}
-          <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-              Popular goals
-            </h2>
-            <p className="mt-1 text-sm text-slate-600 min-h-[40px]">
-              Jump straight into common content marketing outcomes.
-            </p>
-            <div className="mt-4 space-y-3">
-              <Link
-                href="/goal/create-blog-content"
-                className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm transition hover:border-[#f37021] hover:text-[#f37021]"
-              >
-                <span>Create Blog Content</span>
-                <span className="text-xs">&rarr;</span>
-              </Link>
-              <Link
-                href="/goal/create-video-content"
-                className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm transition hover:border-[#f37021] hover:text-[#f37021]"
-              >
-                <span>Launch Video Marketing</span>
-                <span className="text-xs">&rarr;</span>
-              </Link>
-              <Link
-                href="/goal/launch-podcast"
-                className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm transition hover:border-[#f37021] hover:text-[#f37021]"
-              >
-                <span>Start a Podcast</span>
-                <span className="text-xs">&rarr;</span>
-              </Link>
-              <Link
-                href="/goal/seo-optimization"
-                className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm transition hover:border-[#f37021] hover:text-[#f37021]"
-              >
-                <span>Improve SEO</span>
-                <span className="text-xs">&rarr;</span>
-              </Link>
-            </div>
-          </div>
+    <div className="space-y-4">
+      <Link
+        href="/goal/create-blog-content"
+        className="flex justify-between items-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition"
+      >
+        <span>Create Blog Content</span>
+        <span>→</span>
+      </Link>
 
-          {/* Example tools */}
-          <div>
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-              Example tools
-            </h2>
-            <p className="mt-1 text-sm text-slate-600 min-h-[40px]">
-              A small snapshot of useful AI tools.
-            </p>
-            <div className="mt-4 space-y-3">
-              <Link
-                href="/tool/chatgpt"
-                className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm transition hover:border-[#3b658a] hover:text-[#3b658a]"
-              >
-                <span>ChatGPT</span>
-                <span className="text-xs">&rarr;</span>
-              </Link>
-              <Link
-                href="/tool/claude"
-                className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm transition hover:border-[#3b658a] hover:text-[#3b658a]"
-              >
-                <span>Claude</span>
-                <span className="text-xs">&rarr;</span>
-              </Link>
-              <Link
-                href="/tool/heygen"
-                className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm transition hover:border-[#3b658a] hover:text-[#3b658a]"
-              >
-                <span>HeyGen</span>
-                <span className="text-xs">&rarr;</span>
-              </Link>
-              <Link
-                href="/tool/notion-ai"
-                className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 shadow-sm transition hover:border-[#3b658a] hover:text-[#3b658a]"
-              >
-                <span>Notion AI</span>
-                <span className="text-xs">&rarr;</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Link
+        href="/goal/launch-video-marketing"
+        className="flex justify-between items-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition"
+      >
+        <span>Launch Video Marketing</span>
+        <span>→</span>
+      </Link>
+
+      <Link
+        href="/goal/launch-podcast"
+        className="flex justify-between items-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition"
+      >
+        <span>Start a Podcast</span>
+        <span>→</span>
+      </Link>
+
+      <Link
+        href="/goal/seo-optimization"
+        className="flex justify-between items-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition"
+      >
+        <span>Improve SEO</span>
+        <span>→</span>
+      </Link>
+    </div>
+  </div>
+
+  {/* Example Tools */}
+  <div>
+    <h2 className="text-lg font-bold mb-2" style={{ color: "#3b658a" }}>
+      EXAMPLE TOOLS
+    </h2>
+    <p className="text-slate-600 mb-6">
+      A small snapshot of useful AI tools.
+    </p>
+
+    <div className="space-y-4">
+      <Link
+        href="/tool/chatgpt"
+        className="flex justify-between items-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition"
+      >
+        <span>ChatGPT</span>
+        <span>→</span>
+      </Link>
+
+      <Link
+        href="/tool/claude"
+        className="flex justify-between items-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition"
+      >
+        <span>Claude</span>
+        <span>→</span>
+      </Link>
+
+      <Link
+        href="/tool/heygen"
+        className="flex justify-between items-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition"
+      >
+        <span>HeyGen</span>
+        <span>→</span>
+      </Link>
+
+      <Link
+        href="/tool/notion"
+        className="flex justify-between items-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition"
+      >
+        <span>Notion AI</span>
+        <span>→</span>
+      </Link>
+    </div>
+  </div>
+</section>
+
 
 
 
