@@ -560,12 +560,18 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "Adapt the script for different platforms (YouTube, Reels, TikTok).",
     ],
   },
-  examplePrompts: [
+    examplePrompts: [
     "Write a 60-second explainer video script about [topic] for [audience]. Include hook, problem, solution, and CTA.",
     "Turn this blog post into a 90-second video script for YouTube. Make it conversational and engaging.",
   ],
 },
+];
 
+
+/**
+ * Get goal by ID
+ */
+export function getGoalById(id: string): MarketingGoal | undefined {
 
 /**
  * Get goal by ID
