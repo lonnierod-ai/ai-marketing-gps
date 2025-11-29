@@ -601,10 +601,11 @@ export const MARKETING_GOALS: MarketingGoal[] = [
         "Adapt the script for different platforms (YouTube, Reels, TikTok).",
       ],
     },
-    examplePrompts: [
-      "Write a 60-second explainer video script about [topic] for [audience]. Include hook, problem, solution, and CTA.",
-      "Turn this blog post into a 90-second video script for YouTube. Make it conversational and engaging.",
-    ],
+      examplePrompts: [
+    "Write a 60-second video script for [platform] about [topic] for [audience]. Include a strong hook, 3 key points, and a clear call to action.",
+    "Write a 2-minute product demo video script for [product] aimed at [audience]. Use a problem → solution → benefits → CTA structure.",
+    "Give me 3 alternate hooks and openings for a 60-second vertical video about [topic] to use on [platform].",
+  ],
   },
 ];
 
