@@ -351,16 +351,18 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     description:
       "Generate high volumes of social media posts, captions, and graphics quickly. Maintain consistent brand voice across platforms.",
     category: "social-media",
-    tags: [
-      "social media",
-      "content",
-      "posts",
-      "captions",
-      "instagram",
-      "linkedin",
-      "twitter",
-      "facebook",
-    ],
+      tags: [
+    "social media",
+    "content",
+    "posts",
+    "captions",
+    "instagram",
+    "linkedin",
+    "twitter",
+    "facebook",
+    "writing",
+  ],
+
     difficulty: "beginner",
     estimatedTimeframe: "Weekly batch creation",
     recommendedTools: [
@@ -427,14 +429,16 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     description:
       "Create, send, and optimize email campaigns. Use AI to test subject lines, segment audiences, and automate workflows.",
     category: "automation",
-    tags: [
-      "email",
-      "marketing",
-      "campaigns",
-      "newsletters",
-      "automation",
-      "segmentation",
-    ],
+      tags: [
+    "email",
+    "marketing",
+    "campaigns",
+    "newsletters",
+    "automation",
+    "segmentation",
+    "writing",
+  ],
+
     difficulty: "intermediate",
     estimatedTimeframe: "Ongoing",
     recommendedTools: [
@@ -534,14 +538,16 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     description:
       "Maximize content ROI by transforming one piece into many. Turn blogs into videos, podcasts into articles, webinars into social clips.",
     category: "content-marketing",
-    tags: [
-      "repurposing",
-      "content",
-      "efficiency",
-      "roi",
-      "multi-format",
-      "productivity",
-    ],
+      tags: [
+    "repurposing",
+    "content",
+    "efficiency",
+    "roi",
+    "multi-format",
+    "productivity",
+    "writing",
+  ],
+
     difficulty: "beginner",
     estimatedTimeframe: "One asset → 10+ formats",
     recommendedTools: [
@@ -594,12 +600,36 @@ export function getAllGoals(): MarketingGoal[] {
 /**
  * Search goals by keyword
  */
+// Normalize common user phrases to core intent keywords
+const KEYWORD_ALIASES: Record<string, string> = {
+  "writing assistant": "writing",
+  "copywriting": "writing",
+  "content writing": "writing",
+  "writer": "writing",
+  "write": "writing",
+};
+
 export function searchGoals(keyword: string): MarketingGoal[] {
-  const lowerKeyword = keyword.toLowerCase();
-  return MARKETING_GOALS.filter(
-    (goal) =>
-      goal.title.toLowerCase().includes(lowerKeyword) ||
-      goal.description.toLowerCase().includes(lowerKeyword) ||
-      goal.tags.some((tag) => tag.toLowerCase().includes(lowerKeyword))
-  );
+  let lowerKeyword = keyword.toLowerCase().trim();
+
+  // Normalize phrases like "writing assistant" → "writing"
+  if (KEYWORD_ALIASES[lowerKeyword]) {
+    lowerKeyword = KEYWORD_ALIASES[lowerKeyword];
+  }
+
+  // Split into individual words (e.g., "writing assistant" → ["writing", "assistant"])
+  const words = lowerKeyword.split(/\s+/).filter(Boolean);
+
+  return MARKETING_GOALS.filter((goal) => {
+    const text =
+      (goal.title + " " + goal.description + " " + goal.tags.join(" "))
+        .toLowerCase();
+
+    // Match whole phrase OR any individual word
+    return (
+      text.includes(lowerKeyword) ||
+      words.some((word) => text.includes(word))
+    );
+  });
 }
+
