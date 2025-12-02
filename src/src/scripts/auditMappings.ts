@@ -1,5 +1,5 @@
-import { getAllGoals } from "@/lib/data/goals";
-import { getAllTools } from "@/lib/data/tools";
+import { getAllGoals } from "../../lib/data/goals";
+import { getAllTools } from "../../lib/data/tools";
 
 function runAudit() {
   const goals = getAllGoals();
