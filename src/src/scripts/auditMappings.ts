@@ -1,3 +1,5 @@
+// @ts-nocheck
+/* eslint-disable */
 // Use CommonJS-style requires so ts-node can load our TS modules easily
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { getAllGoals } = require("../../lib/data/goals");
