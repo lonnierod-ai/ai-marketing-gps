@@ -13,7 +13,10 @@ function runAudit() {
   const info: string[] = [];
 
   // Index tools by ID
-  const toolMap = Object.fromEntries(tools.map((t) => [t.id, t]));
+    // Index tools by ID
+  const toolMap: Record<string, any> = Object.fromEntries(
+    tools.map((t: any) => [t.id, t])
+  );
 
   // =====================================================
   // 1. AUDIT GOAL → TOOL MAPPINGS
