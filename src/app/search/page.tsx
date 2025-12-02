@@ -62,15 +62,6 @@ function SearchPageInner() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="border-b bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
-          <Link href="/" className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
-            AI Marketing GPS
-          </Link>
-        </div>
-      </header>
-
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Search Bar */}
         <div className="mb-4 sm:mb-6 lg:mb-8">
