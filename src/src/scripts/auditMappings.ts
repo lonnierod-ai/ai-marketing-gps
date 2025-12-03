@@ -1,5 +1,10 @@
-import { getAllGoals } from "../../lib/data/goals";
-import { getAllTools } from "../../lib/data/tools";
+// @ts-nocheck
+/* eslint-disable */
+// Use CommonJS-style requires so ts-node can load our TS modules easily
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { getAllGoals } = require("../../lib/data/goals");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { getAllTools } = require("../../lib/data/tools");
 
 function runAudit() {
   const goals = getAllGoals();
@@ -10,7 +15,10 @@ function runAudit() {
   const info: string[] = [];
 
   // Index tools by ID
-  const toolMap = Object.fromEntries(tools.map((t) => [t.id, t]));
+    // Index tools by ID
+  const toolMap: Record<string, any> = Object.fromEntries(
+    tools.map((t: any) => [t.id, t])
+  );
 
   // =====================================================
   // 1. AUDIT GOAL → TOOL MAPPINGS
