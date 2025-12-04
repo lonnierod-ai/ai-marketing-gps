@@ -669,21 +669,22 @@ export function getAllGoals(): MarketingGoal[] {
 // SEMANTIC SEARCH - Topic-based with comprehensive matching
 
 const TOPIC_KEYWORDS: Record<string, string[]> = {
-  // Blog/Writing/Article-related searches - comprehensive blog content creation
-  "blog": ["blog", "writing", "article", "posts"],
-  "create blog": ["blog", "writing", "article", "posts"],
-  "create blog content": ["blog", "writing", "article", "posts"],
-  "blog content": ["blog", "writing", "article", "posts"],
-  "blog writing": ["blog", "writing", "article", "posts"],
-  "blog post": ["blog", "writing", "article", "posts"],
-  "blog posts": ["blog", "writing", "article", "posts"],
-  "write blog": ["blog", "writing", "article", "posts"],
-  "article": ["article", "blog", "writing", "posts"],
-  "articles": ["article", "blog", "writing", "posts"],
-  "write article": ["article", "blog", "writing", "posts"],
-  "writing": ["writing", "blog", "article", "posts"],
-  "writing assistant": ["writing", "blog", "article", "posts"],
-  "content writing": ["writing", "blog", "article", "posts"],
+  // Blog/Writing/Article-related searches - ONLY blog/article/writing-specific
+  // Note: Removed broad terms that match too many goals
+  "blog": ["blog", "article", "posts", "seo"],
+  "create blog": ["blog", "article", "posts"],
+  "create blog content": ["blog", "article", "posts"],
+  "blog content": ["blog", "article", "posts"],
+  "blog writing": ["blog", "article", "posts"],
+  "blog post": ["blog", "article", "posts"],
+  "blog posts": ["blog", "article", "posts"],
+  "write blog": ["blog", "article", "posts"],
+  "article": ["article", "blog", "posts"],
+  "articles": ["article", "blog", "posts"],
+  "write article": ["article", "blog", "posts"],
+  "writing": ["blog", "article", "posts", "email", "copywriting"],
+  "writing assistant": ["blog", "article", "posts", "email", "copywriting"],
+  "content writing": ["blog", "article", "posts", "email"],
   
   // Podcast-related searches - comprehensive podcast/audio content
   "podcast": ["podcast", "audio"],
