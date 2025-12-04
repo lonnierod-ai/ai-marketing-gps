@@ -8,8 +8,8 @@ import {
   rankResults,
   extractKeywords,
 } from "@/lib/utils/search";
-import { getAllTools, getToolById } from "@/lib/data/tools";
-import { getAllGoals, getGoalById } from "@/lib/data/goals";
+import { getAllTools, getToolById, searchTools } from "@/lib/data/tools";
+import { getAllGoals, getGoalById, searchGoals } from "@/lib/data/goals";
 import { SearchResponse, SearchResult } from "@/types";
 
 /**
@@ -28,84 +28,38 @@ export async function POST(request: Request) {
       );
     }
 
-    // Parse query intent with Claude
-    const parsedIntent = await parseQueryIntent(query);
-
     const results: SearchResult[] = [];
 
     if (searchType === "goal") {
-      // Search for marketing goals
-      const goals = getAllGoals();
-
-      // First, try to use Claude's matched goal IDs
-      if (parsedIntent.goalIds && parsedIntent.goalIds.length > 0) {
-        parsedIntent.goalIds.forEach((goalId) => {
-          const goal = getGoalById(goalId);
-          if (goal) {
-            const score = calculateGoalRelevance(goal, parsedIntent.keywords);
-            results.push({
-              type: "goal",
-              item: goal,
-              relevanceScore: score,
-              matchedKeywords: getMatchedGoalKeywords(
-                goal,
-                parsedIntent.keywords
-              ),
-            });
-          }
+      // Use the searchGoals function with TOPIC_KEYWORDS mapping
+      const matchedGoals = searchGoals(query);
+      
+      // Convert to SearchResult format with relevance scores
+      const keywords = extractKeywords(query);
+      matchedGoals.forEach((goal) => {
+        const score = calculateGoalRelevance(goal, keywords);
+        results.push({
+          type: "goal",
+          item: goal,
+          relevanceScore: score,
+          matchedKeywords: getMatchedGoalKeywords(goal, keywords),
         });
-      }
-
-      // If no results from Claude, fall back to keyword matching
-      if (results.length === 0) {
-        const keywords = extractKeywords(query);
-        goals.forEach((goal) => {
-          const score = calculateGoalRelevance(goal, keywords);
-          if (score > 0) {
-            results.push({
-              type: "goal",
-              item: goal,
-              relevanceScore: score,
-              matchedKeywords: getMatchedGoalKeywords(goal, keywords),
-            });
-          }
-        });
-      }
+      });
     } else {
-      // Search for tools
-      const tools = getAllTools();
-
-      // First, try to use Claude's matched tool IDs
-      if (parsedIntent.toolIds && parsedIntent.toolIds.length > 0) {
-        parsedIntent.toolIds.forEach((toolId) => {
-          const tool = getToolById(toolId);
-          if (tool) {
-            const score = calculateToolRelevance(tool, parsedIntent.keywords);
-            results.push({
-              type: "tool",
-              item: tool,
-              relevanceScore: score,
-              matchedKeywords: getMatchedKeywords(tool, parsedIntent.keywords),
-            });
-          }
+      // Use the searchTools function for tool searches
+      const matchedTools = searchTools(query);
+      
+      // Convert to SearchResult format with relevance scores
+      const keywords = extractKeywords(query);
+      matchedTools.forEach((tool) => {
+        const score = calculateToolRelevance(tool, keywords);
+        results.push({
+          type: "tool",
+          item: tool,
+          relevanceScore: score,
+          matchedKeywords: getMatchedKeywords(tool, keywords),
         });
-      }
-
-      // If no results from Claude, fall back to keyword matching
-      if (results.length === 0) {
-        const keywords = extractKeywords(query);
-        tools.forEach((tool) => {
-          const score = calculateToolRelevance(tool, keywords);
-          if (score > 0) {
-            results.push({
-              type: "tool",
-              item: tool,
-              relevanceScore: score,
-              matchedKeywords: getMatchedKeywords(tool, keywords),
-            });
-          }
-        });
-      }
+      });
     }
 
     // Rank and filter results
