@@ -34,6 +34,8 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "notebooklm",
       "surfer-seo",
       "grammarly",
+      "copy-ai",
+      "gemini-3",
     ],
     workflow: {
       description:
@@ -76,6 +78,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "marketmuse",
       "perplexity-ai",
       "notebooklm",
+      "google-analytics-4",
     ],
     workflow: {
       description:
@@ -159,6 +162,9 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "sora-2",
       "runway-gen-4",
       "descript",
+      "google-veo-3",
+      "luma-ray-3",
+      "clipchamp",
     ],
     workflow: {
       description:
@@ -193,7 +199,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     ],
     difficulty: "beginner",
     estimatedTimeframe: "Minutes per video",
-    recommendedTools: ["heygen", "synthesia", "elevenlabs"],
+    recommendedTools: ["heygen", "synthesia", "elevenlabs", "d-id", "tavus"],
     workflow: {
       description:
         "Create unlimited avatar videos without ever filming",
@@ -223,64 +229,113 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "shorts",
       "tiktok",
       "reels",
-      "efficiency",
+      "video",
     ],
     difficulty: "beginner",
-    estimatedTimeframe: "One long video → 10+ clips in minutes",
-    recommendedTools: ["opusclip", "descript", "castmagic"],
+    estimatedTimeframe: "1 hour â†’ 20+ clips",
+    recommendedTools: ["opusclip", "descript", "castmagic", "submagic", "captions"],
     workflow: {
       description:
-        "Maximize video ROI by automatically creating social clips",
+        "Automated workflow to extract viral-worthy clips from long videos",
       steps: [
         "Upload long-form video to OpusClip",
-        "AI identifies best moments and creates clips optimized for virality",
-        "Review and select clips (OpusClip scores each for viral potential)",
-        "Fine-tune clips in Descript if needed (edit by editing transcript)",
-        "Export with captions (critical for social media)",
-        "Distribute across TikTok, Instagram Reels, YouTube Shorts",
+        "AI analyzes and identifies the most engaging moments automatically",
+        "Review AI-selected clips (typically finds 10-30 clips per hour of content)",
+        "Customize captions, hooks, and CTAs with AI suggestions",
+        "Export in vertical format optimized for each platform",
+        "Schedule and distribute",
       ],
     },
+    examplePrompts: [
+      "Identify the 10 most shareable moments from this 60-minute podcast interview and create clips optimized for Instagram Reels.",
+      "Turn this webinar into 15 educational clips with captions. Each clip should teach one specific concept.",
+    ],
   },
   {
-    id: "video-editing-fast",
-    title: "Edit Videos Faster",
+    id: "create-voiceover-content",
+    title: "Create Professional Voiceovers",
     description:
-      "Speed up video editing dramatically by editing transcripts instead of timelines. Remove filler words automatically, add captions, and create clips efficiently.",
+      "Generate natural-sounding voiceovers in multiple voices and languages. Perfect for videos, podcasts, audiobooks, and narration without hiring voice actors.",
     category: "video-marketing",
-    tags: ["editing", "video", "efficiency", "podcast", "captions", "fast"],
+    tags: [
+      "voice",
+      "audio",
+      "voiceover",
+      "narration",
+      "text-to-speech",
+      "multilingual",
+    ],
     difficulty: "beginner",
-    estimatedTimeframe: "80% faster than traditional editing",
-    recommendedTools: ["descript", "opusclip"],
+    estimatedTimeframe: "Minutes per voiceover",
+    recommendedTools: ["elevenlabs", "descript", "speechify"],
     workflow: {
       description:
-        "Revolutionary video editing by editing text, not timelines",
+        "AI-powered voiceover creation for any content type",
       steps: [
-        "Upload video to Descript (auto-transcribes)",
-        "Edit transcript like a document (deletions = video cuts)",
-        "Remove filler words with one click (um, uh, like)",
-        "Add captions automatically",
-        "Create clips by selecting text",
-        "Export finished video",
+        "Write or upload your script",
+        "Choose voice (ElevenLabs: 100+ voices or clone your own)",
+        "Adjust tone, pace, and emotion settings",
+        "Generate voiceover (ultra-realistic, includes natural pauses)",
+        "Edit timing with Descript if needed",
+        "Download and add to your video or podcast",
       ],
     },
+    examplePrompts: [
+      "Create a warm, friendly voiceover for this 2-minute explainer video script. Female voice, medium pace.",
+      "Generate a professional narration for this training video in English, then create versions in Spanish and French.",
+    ],
+  },
+  {
+    id: "draft-video-scripts",
+    title: "Draft Video Scripts",
+    description:
+      "Write clear, engaging video scripts for explainers, ads, tutorials, and social content. Use AI to structure, refine, and adapt scripts for different channels.",
+    category: "video-marketing",
+    tags: [
+      "writing",
+      "scripts",
+      "video",
+      "storytelling",
+      "explainer",
+      "ads",
+    ],
+    difficulty: "beginner",
+    estimatedTimeframe: "30â€“90 minutes per script",
+    recommendedTools: ["chatgpt", "claude", "jasper-ai"],
+    workflow: {
+      description:
+        "AI-assisted workflow for drafting and refining video scripts",
+      steps: [
+        "Describe your target audience, goal, and video length to ChatGPT or Claude.",
+        "Ask AI to propose 2â€“3 different hooks and outlines.",
+        "Select the best outline and have AI draft a full script with scene-by-scene narration.",
+        "Iterate on tone, length, and CTAs with Jasper AI or Claude.",
+        "Adapt the script for different platforms (YouTube, Reels, TikTok).",
+      ],
+    },
+    examplePrompts: [
+      "Write a 60-second video script for [platform] about [topic] for [audience]. Include a strong hook, 3 key points, and a clear call to action.",
+      "Write a 2-minute product demo video script for [product] aimed at [audience]. Use a problem â†’ solution â†’ benefits â†’ CTA structure.",
+      "Give me 3 alternate hooks and openings for a 60-second vertical video about [topic] to use on [platform].",
+    ],
   },
 
   // ========================================
-  // AUDIO MARKETING GOALS
+  // AUDIO & PODCAST GOALS
   // ========================================
   {
-    id: "launch-podcast",
-    title: "Launch a Podcast",
+    id: "create-podcast-series",
+    title: "Launch a Podcast Series",
     description:
-      "Start a podcast from scratch or improve your existing show. Record, edit, transcribe, and repurpose episodes into multiple content formats.",
+      "Start a podcast from scratch with AI-powered planning, scripting, recording, editing, and distribution. Build an engaged audio audience.",
     category: "audio-marketing",
     tags: [
       "podcast",
       "audio",
-      "launch",
-      "recording",
-      "interviews",
+      "series",
       "content",
+      "voice",
+      "distribution",
     ],
     difficulty: "intermediate",
     estimatedTimeframe: "2-4 weeks to launch",
@@ -288,57 +343,64 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "riverside-fm",
       "descript",
       "castmagic",
-      "opusclip",
       "elevenlabs",
+      "podcastle",
     ],
     workflow: {
       description:
-        "Complete podcast workflow from recording to multi-channel distribution",
+        "Complete podcast launch workflow from concept to distribution",
       steps: [
-        "Record episodes with Riverside.fm (studio-quality, even remote)",
-        "Edit with Descript (edit transcript, remove filler words)",
-        "Generate show notes, blog posts, and social content with Castmagic",
-        "Create video clips with OpusClip (for YouTube, social media)",
-        "Create intro/outro with ElevenLabs (consistent voice)",
-        "Distribute to podcast platforms",
+        "Plan series with ChatGPT (topics, episode outlines, guest ideas)",
+        "Record with Riverside.fm (studio-quality remote recording)",
+        "Edit with Descript (edit audio by editing transcript)",
+        "Generate show notes and promotional content with Castmagic",
+        "Create intro/outro music with AI music tools",
+        "Distribute to Apple Podcasts, Spotify, YouTube",
       ],
     },
     examplePrompts: [
-      "Create a podcast episode outline for an interview with [guest] about [topic]. Include intro, 5 main questions, and outro.",
-      "Write engaging show notes for a podcast episode about [topic] that includes timestamps, key takeaways, and resources mentioned.",
+      "Help me plan a 10-episode podcast series about [topic] for [audience]. Suggest episode titles, key talking points, and potential guests.",
+      "Write an engaging intro script for my podcast '[podcast name]' that explains what listeners will learn and why they should subscribe.",
     ],
   },
   {
-    id: "voice-content",
-    title: "Create Voice Content & Voiceovers",
+    id: "grow-podcast-audience",
+    title: "Grow Podcast Audience",
     description:
-      "Generate professional voiceovers and audio content without recording. Clone your voice for consistent narration or use AI voices for multilingual content.",
+      "Increase podcast downloads and build a loyal listener base using AI-powered promotion, repurposing, and audience engagement strategies.",
     category: "audio-marketing",
     tags: [
-      "voice",
-      "audio",
-      "voiceover",
-      "narration",
-      "voice-cloning",
-      "multilingual",
+      "podcast",
+      "growth",
+      "audience",
+      "promotion",
+      "marketing",
+      "distribution",
     ],
-    difficulty: "beginner",
-    estimatedTimeframe: "Minutes per voiceover",
-    recommendedTools: ["elevenlabs", "descript", "adobe-audio"],
+    difficulty: "intermediate",
+    estimatedTimeframe: "Ongoing",
+    recommendedTools: [
+      "castmagic",
+      "opusclip",
+      "buffer",
+      "claude",
+      "chatgpt",
+    ],
     workflow: {
       description:
-        "Professional voiceovers without recording sessions",
+        "Multi-channel podcast promotion and growth strategy",
       steps: [
-        "Clone your voice with ElevenLabs (one-time, 10 minutes of audio)",
-        "Write script for voiceover",
-        "Generate voiceover with your cloned voice",
-        "For multilingual: Generate in 29+ languages with ElevenLabs",
-        "Add to videos, podcasts, or standalone audio content",
+        "Repurpose episodes with Castmagic (blog posts, social content, email newsletters)",
+        "Create video clips with OpusClip (promote on TikTok, Instagram, YouTube Shorts)",
+        "Write episode threads for Twitter/LinkedIn with Claude",
+        "Schedule promotional content across platforms with Buffer",
+        "Build email list with episode highlights and exclusive content",
+        "Collaborate with other podcasters for cross-promotion",
       ],
     },
     examplePrompts: [
-      "Write a 30-second voiceover script for a product demo video about [product].",
-      "Create a podcast intro script (15 seconds) that's energetic and welcoming.",
+      "Analyze my podcast analytics and suggest 5 specific strategies to increase downloads by 50% in 3 months.",
+      "Create a 30-day social media promotion plan for my podcast, including post ideas for LinkedIn, Twitter, and Instagram.",
     ],
   },
 
@@ -347,100 +409,59 @@ export const MARKETING_GOALS: MarketingGoal[] = [
   // ========================================
   {
     id: "social-media-content",
-    title: "Create Social Media Content at Scale",
+    title: "Create Engaging Social Media Content",
     description:
-      "Generate high volumes of social media posts, captions, and graphics quickly. Maintain consistent brand voice across platforms.",
+      "Generate platform-optimized posts, captions, and visuals for Instagram, LinkedIn, Twitter, and TikTok. Maintain consistent posting without burnout.",
     category: "social-media",
-      tags: [
-    "social media",
-    "content",
-    "posts",
-    "captions",
-    "instagram",
-    "linkedin",
-    "twitter",
-    "facebook",
-    "writing",
-  ],
-
-    difficulty: "beginner",
-    estimatedTimeframe: "Weekly batch creation",
-    recommendedTools: [
-      "copy-ai",
-      "chatgpt",
-      "canva-ai",
-      "buffer-ai",
-      "jasper-ai",
+    tags: [
+      "social media",
+      "content",
+      "posts",
+      "captions",
+      "engagement",
+      "instagram",
+      "linkedin",
     ],
+    difficulty: "beginner",
+    estimatedTimeframe: "30 minutes for a week's content",
+    recommendedTools: ["chatgpt", "claude", "buffer", "canva-ai", "metricool"],
     workflow: {
       description:
-        "Efficient social media content creation and scheduling workflow",
+        "Batch create and schedule social media content efficiently",
       steps: [
-        "Generate post ideas with ChatGPT (based on blog content, trends, etc.)",
-        "Create multiple caption variations with Copy.ai (short-form specialist)",
-        "Design graphics with Canva AI (on-brand templates)",
-        "Schedule posts with Buffer AI (optimal timing recommendations)",
-        "Monitor performance and adjust",
+        "Brainstorm content themes with ChatGPT (one week at a time)",
+        "Generate platform-specific posts (LinkedIn: professional insights, Instagram: visual + story, Twitter: quick takes)",
+        "Create graphics with Canva AI",
+        "Write captions with Claude (maintains brand voice)",
+        "Schedule with Buffer (optimal posting times)",
+        "Track performance and iterate",
       ],
     },
     examplePrompts: [
-      "Create 10 LinkedIn post ideas about [topic] for [audience]. Include hook and key points for each.",
-      "Write 5 caption variations for an Instagram post promoting [product/service]. Include relevant hashtags.",
-      "Generate a week's worth of Twitter/X posts about [industry topic]. Keep each under 280 characters.",
+      "Create 5 LinkedIn posts about [topic] for [audience]. Make them thought-provoking and encourage engagement.",
+      "Write 10 Instagram captions for posts about [product/service]. Include relevant hashtags and CTAs.",
     ],
-  },
-  {
-    id: "social-media-management",
-    title: "Manage Social Media Efficiently",
-    description:
-      "Schedule posts, monitor brand mentions, analyze performance, and maintain consistent presence across platforms without overwhelm.",
-    category: "social-media",
-    tags: [
-      "management",
-      "scheduling",
-      "monitoring",
-      "analytics",
-      "efficiency",
-      "social media",
-    ],
-    difficulty: "intermediate",
-    estimatedTimeframe: "Ongoing",
-    recommendedTools: ["buffer-ai", "hootsuite", "notion-ai"],
-    workflow: {
-      description:
-        "Centralized social media management and monitoring",
-      steps: [
-        "Plan content calendar with Notion AI",
-        "Batch create content (see 'Create Social Media Content' goal)",
-        "Schedule across platforms with Buffer AI (optimal timing)",
-        "Monitor brand mentions with Hootsuite Insights",
-        "Analyze sentiment and trends with Hootsuite",
-        "Adjust strategy based on AI-powered insights",
-      ],
-    },
   },
 
   // ========================================
-  // MARKETING AUTOMATION GOALS
+  // EMAIL & AUTOMATION GOALS
   // ========================================
   {
-    id: "email-marketing",
-    title: "Launch Email Marketing Campaigns",
+    id: "email-marketing-campaigns",
+    title: "Create AI-Powered Email Campaigns",
     description:
-      "Create, send, and optimize email campaigns. Use AI to test subject lines, segment audiences, and automate workflows.",
+      "Design, write, and optimize email campaigns that convert. Use AI for copywriting, subject lines, personalization, and A/B testing.",
     category: "automation",
-      tags: [
-    "email",
-    "marketing",
-    "campaigns",
-    "newsletters",
-    "automation",
-    "segmentation",
-    "writing",
-  ],
-
-    difficulty: "intermediate",
-    estimatedTimeframe: "Ongoing",
+    tags: [
+      "email",
+      "marketing",
+      "campaigns",
+      "copywriting",
+      "automation",
+      "newsletters",
+    ],
+    difficulty: "beginner",
+    estimatedTimeframe: "1-2 hours per campaign",
     recommendedTools: [
       "mailchimp",
       "klaviyo",
@@ -495,11 +516,11 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       ],
     },
     examplePrompts: [
-      "Example workflow: 'When new blog post is published on WordPress → Create social media posts with ChatGPT → Schedule in Buffer → Add to content calendar in Google Sheets → Notify team in Slack'",
+      "Example workflow: 'When new blog post is published on WordPress â†’ Create social media posts with ChatGPT â†’ Schedule in Buffer â†’ Add to content calendar in Google Sheets â†’ Notify team in Slack'",
     ],
   },
 
-    // ========================================
+  // ========================================
   // SPECIALIZED GOALS
   // ========================================
   {
@@ -531,6 +552,10 @@ export const MARKETING_GOALS: MarketingGoal[] = [
         "Distribute to local markets",
       ],
     },
+    examplePrompts: [
+      "Translate this blog post into Spanish, French, and German while maintaining the conversational tone and cultural nuances.",
+      "Create a 60-second product video in English, then generate lip-synced versions in Mandarin, Hindi, and Portuguese.",
+    ],
   },
   {
     id: "content-repurposing",
@@ -548,7 +573,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "writing",
     ],
     difficulty: "beginner",
-    estimatedTimeframe: "One asset → 10+ formats",
+    estimatedTimeframe: "One asset â†’ 10+ formats",
     recommendedTools: [
       "castmagic",
       "opusclip",
@@ -574,42 +599,47 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     ],
   },
   {
-    id: "draft-video-scripts",
-    title: "Draft Video Scripts",
+    id: "create-ai-images",
+    title: "Create AI-Generated Images",
     description:
-      "Write clear, engaging video scripts for explainers, ads, tutorials, and social content. Use AI to structure, refine, and adapt scripts for different channels.",
-    category: "video-marketing",
+      "Generate custom images, graphics, and visual content using AI. Perfect for blog headers, social media posts, ads, and marketing materials.",
+    category: "content-marketing",
     tags: [
-      "writing",
-      "scripts",
-      "video",
-      "storytelling",
-      "explainer",
-      "ads",
+      "images",
+      "graphics",
+      "visual",
+      "design",
+      "ai-generation",
+      "social-media",
+      "marketing",
     ],
     difficulty: "beginner",
-    estimatedTimeframe: "30–90 minutes per script",
-    recommendedTools: ["chatgpt", "claude", "jasper-ai"],
+    estimatedTimeframe: "Minutes per image",
+    recommendedTools: [
+      "midjourney",
+      "dall-e-3",
+      "ideogram",
+      "leonardo-ai",
+      "canva-ai",
+    ],
     workflow: {
-      description:
-        "AI-assisted workflow for drafting and refining video scripts",
+      description: "AI-powered image creation workflow",
       steps: [
-        "Describe your target audience, goal, and video length to ChatGPT or Claude.",
-        "Ask AI to propose 2–3 different hooks and outlines.",
-        "Select the best outline and have AI draft a full script with scene-by-scene narration.",
-        "Iterate on tone, length, and CTAs with Jasper AI or Claude.",
-        "Adapt the script for different platforms (YouTube, Reels, TikTok).",
+        "Define your image concept and style",
+        "Write a detailed prompt describing the image",
+        "Generate with Midjourney (best quality), DALL-E 3 (fast), or Leonardo AI (customizable)",
+        "Refine with variations if needed",
+        "Edit and add text with Canva AI",
+        "Download and use in your marketing",
       ],
     },
-      examplePrompts: [
-    "Write a 60-second video script for [platform] about [topic] for [audience]. Include a strong hook, 3 key points, and a clear call to action.",
-    "Write a 2-minute product demo video script for [product] aimed at [audience]. Use a problem → solution → benefits → CTA structure.",
-    "Give me 3 alternate hooks and openings for a 60-second vertical video about [topic] to use on [platform].",
-  ],
+    examplePrompts: [
+      "Create a professional header image for a blog post about [topic]. Style: modern, clean, tech-focused. Size: 1200x630px.",
+      "Generate a social media graphic showing [concept]. Make it eye-catching and Instagram-friendly.",
+      "Design a product mockup showing [product] in a [setting]. Photorealistic style.",
+    ],
   },
 ];
-
-
 
 /**
  * Get goal by ID
@@ -636,35 +666,131 @@ export function getAllGoals(): MarketingGoal[] {
  * Search goals by keyword
  */
 
-// Normalize common user phrases to core intent keywords
-const KEYWORD_ALIASES: Record<string, string> = {
-  "writing assistant": "writing",
-  "copywriting": "writing",
-  "content writing": "writing",
-  "writer": "writing",
-  "write": "writing",
+// SEMANTIC SEARCH - Topic-based with comprehensive matching
+
+const TOPIC_KEYWORDS: Record<string, string[]> = {
+  // Blog/Writing/Article-related searches - comprehensive blog content creation
+  "blog": ["blog", "writing", "article", "posts"],
+  "create blog": ["blog", "writing", "article", "posts"],
+  "create blog content": ["blog", "writing", "article", "posts"],
+  "blog content": ["blog", "writing", "article", "posts"],
+  "blog writing": ["blog", "writing", "article", "posts"],
+  "blog post": ["blog", "writing", "article", "posts"],
+  "blog posts": ["blog", "writing", "article", "posts"],
+  "write blog": ["blog", "writing", "article", "posts"],
+  "article": ["article", "blog", "writing", "posts"],
+  "articles": ["article", "blog", "writing", "posts"],
+  "write article": ["article", "blog", "writing", "posts"],
+  "writing": ["writing", "blog", "article", "posts"],
+  "writing assistant": ["writing", "blog", "article", "posts"],
+  "content writing": ["writing", "blog", "article", "posts"],
+  
+  // Podcast-related searches - comprehensive podcast/audio content
+  "podcast": ["podcast", "audio"],
+  "create podcast": ["podcast", "audio"],
+  "launch podcast": ["podcast", "audio"],
+  "start podcast": ["podcast", "audio"],
+  "grow podcast": ["podcast", "audio"],
+  "podcast production": ["podcast", "audio"],
+  
+  // Video-related searches - comprehensive video content
+  "video": ["video"],
+  "create video": ["video"],
+  "video content": ["video"],
+  "video editing": ["video", "editing"],
+  "edit video": ["video", "editing"],
+  "video production": ["video", "production"],
+  "video marketing": ["video"],
+  
+  // Avatar-related searches - avatar/digital human content
+  "avatar": ["avatar"],
+  "create avatar": ["avatar"],
+  "personal avatar": ["avatar"],
+  "ai avatar": ["avatar"],
+  "digital human": ["avatar"],
+  
+  // Voice/Audio-related searches - voiceover and audio content
+  "voiceover": ["voice", "audio", "narration"],
+  "voice over": ["voice", "audio", "narration"],
+  "voice cloning": ["voice", "audio"],
+  "create voiceover": ["voice", "audio", "narration"],
+  "voice": ["voice", "audio", "narration"],
+  "audio": ["audio", "voice", "podcast"],
+  
+  // Image-related searches - visual content creation
+  "images": ["images", "graphics", "visual"],
+  "create images": ["images", "graphics", "visual"],
+  "ai images": ["images", "graphics", "visual"],
+  "generate images": ["images", "graphics", "visual"],
+  
+  // Social media-related searches - social content
+  "social media": ["social"],
+  "social content": ["social"],
+  "social": ["social", "instagram", "linkedin", "twitter"],
+  "social media content": ["social"],
+  
+  // SEO-related searches - search optimization
+  "seo": ["seo", "search", "optimization"],
+  "search optimization": ["seo", "search"],
+  "improve seo": ["seo", "optimization"],
+  "seo optimization": ["seo", "optimization"],
+  
+  // Email-related searches - email marketing
+  "email": ["email", "campaigns", "newsletters"],
+  "email marketing": ["email", "campaigns", "marketing"],
+  "email campaigns": ["email", "campaigns"],
+  
+  // Research-related searches - content research
+  "research": ["research", "analysis"],
+  "content research": ["research", "analysis"],
+  
+  // Automation-related searches
+  "automation": ["automation", "workflows"],
+  "workflow automation": ["automation", "workflows"],
+  "automate": ["automation", "workflows"],
+  
+  // Multilingual-related searches
+  "multilingual": ["multilingual", "translation", "languages"],
+  "translation": ["multilingual", "translation"],
+  
+  // Content repurposing
+  "repurpose": ["repurposing", "repurpose"],
+  "repurpose content": ["repurposing", "repurpose"],
+  "content repurpose": ["repurposing", "repurpose"],
 };
 
 export function searchGoals(keyword: string): MarketingGoal[] {
-  let lowerKeyword = keyword.toLowerCase().trim();
-
-  // Normalize phrases like "writing assistant" → "writing"
-  if (KEYWORD_ALIASES[lowerKeyword]) {
-    lowerKeyword = KEYWORD_ALIASES[lowerKeyword];
+  const lowerKeyword = keyword.toLowerCase().trim();
+  
+  if (!lowerKeyword) {
+    return MARKETING_GOALS;
   }
 
-  // Split into individual words (e.g., "writing assistant" → ["writing", "assistant"])
-  const words = lowerKeyword.split(/\s+/).filter(Boolean);
-
-  return MARKETING_GOALS.filter((goal) => {
-    const text =
-      (goal.title + " " + goal.description + " " + goal.tags.join(" "))
-        .toLowerCase();
-
-    // Match whole phrase OR any individual word
-    return (
-      text.includes(lowerKeyword) ||
-      words.some((word) => text.includes(word))
-    );
-  });
+  // Check if we have a specific topic mapping
+  const topicTerms = TOPIC_KEYWORDS[lowerKeyword];
+  
+  if (topicTerms) {
+    // Use ONLY the mapped topic terms - return ALL goals matching ANY of these terms
+    return MARKETING_GOALS.filter((goal) => {
+      const goalText = `${goal.title} ${goal.description} ${goal.tags.join(" ")}`.toLowerCase();
+      // Match if ANY topic term is found (comprehensive results for the topic)
+      return topicTerms.some(term => goalText.includes(term));
+    });
+  }
+  
+  // Check if the keyword is part of a longer mapped phrase
+  // E.g., "blog" should match "create blog content" mapping
+  for (const [mappedPhrase, terms] of Object.entries(TOPIC_KEYWORDS)) {
+    if (mappedPhrase.includes(lowerKeyword) || lowerKeyword.includes(mappedPhrase.split(' ')[0])) {
+      return MARKETING_GOALS.filter((goal) => {
+        const goalText = `${goal.title} ${goal.description} ${goal.tags.join(" ")}`.toLowerCase();
+        return terms.some(term => goalText.includes(term));
+      });
+    }
+  }
+  
+  // REMOVED BROAD FALLBACK - Only return goals if we have a specific topic mapping
+  // If no mapping exists, return empty results (user needs to be more specific)
+  // This prevents matching random individual words like "create" or "content"
+  return [];
 }
