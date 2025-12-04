@@ -771,11 +771,12 @@ export function searchGoals(keyword: string): MarketingGoal[] {
   const topicTerms = TOPIC_KEYWORDS[lowerKeyword];
   
   if (topicTerms) {
-    // Use ONLY the mapped topic terms - return ALL goals matching ANY of these terms
+    // Match in TITLE and TAGS only (not description - too many false positives)
+    // E.g., "blog" in "Perfect for blog headers" should NOT match
     return MARKETING_GOALS.filter((goal) => {
-      const goalText = `${goal.title} ${goal.description} ${goal.tags.join(" ")}`.toLowerCase();
-      // Match if ANY topic term is found (comprehensive results for the topic)
-      return topicTerms.some(term => goalText.includes(term));
+      const titleAndTags = `${goal.title} ${goal.tags.join(" ")}`.toLowerCase();
+      // Match if ANY topic term is found in title or tags
+      return topicTerms.some(term => titleAndTags.includes(term));
     });
   }
   
@@ -784,8 +785,8 @@ export function searchGoals(keyword: string): MarketingGoal[] {
   for (const [mappedPhrase, terms] of Object.entries(TOPIC_KEYWORDS)) {
     if (mappedPhrase.includes(lowerKeyword) || lowerKeyword.includes(mappedPhrase.split(' ')[0])) {
       return MARKETING_GOALS.filter((goal) => {
-        const goalText = `${goal.title} ${goal.description} ${goal.tags.join(" ")}`.toLowerCase();
-        return terms.some(term => goalText.includes(term));
+        const titleAndTags = `${goal.title} ${goal.tags.join(" ")}`.toLowerCase();
+        return terms.some(term => titleAndTags.includes(term));
       });
     }
   }
