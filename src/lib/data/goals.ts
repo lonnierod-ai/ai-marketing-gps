@@ -672,6 +672,7 @@ const TOPIC_KEYWORDS: Record<string, string[]> = {
   // Blog/Writing/Article-related searches - ONLY blog/article-specific terms
   // "posts" removed - too generic (social media also has "posts" tag)
   "blog": ["blog", "article"],
+  "blogs": ["blog", "article"],
   "create blog": ["blog", "article"],
   "create blog content": ["blog", "article"],
   "blog content": ["blog", "article"],
