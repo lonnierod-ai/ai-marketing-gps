@@ -1088,6 +1088,51 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "I need 50 product images with consistent white backgrounds for my website. What's the most efficient AI workflow to do this quickly?",
     ],
   },
+
+  {
+    id: "brand-audio-music",
+    title: "Create Brand Music & Audio Identity",
+    description:
+      "Build a consistent sonic brand identity using AI — custom jingles, podcast intro music, background tracks for videos and social content, and brand-matched audio. No musicians or studios required.",
+    category: "audio-marketing",
+    tags: [
+      "music",
+      "audio",
+      "jingle",
+      "sonic-branding",
+      "brand-audio",
+      "background-music",
+      "podcast",
+      "voice",
+    ],
+    difficulty: "beginner",
+    estimatedTimeframe: "Minutes per track",
+    recommendedTools: [
+      "suno",
+      "elevenlabs",
+      "adobe-audio",
+      "descript",
+    ],
+    workflow: {
+      description:
+        "Create a complete brand audio identity using AI tools",
+      steps: [
+        "Define your brand sonic personality: upbeat or calm, professional or playful, what instruments fit your brand?",
+        "Generate your brand jingle or intro music with Suno (describe style, mood, tempo, instruments)",
+        "Use Suno Personas to lock in a consistent vocal style across all brand music",
+        "Generate podcast intro/outro or video background music variations",
+        "Create voiceovers with ElevenLabs (clone your own voice or use Voice Design v3)",
+        "Generate custom video soundtrack music with Adobe Generate Speech & Soundtrack",
+        "Edit and sync audio to video content with Descript",
+      ],
+    },
+    examplePrompts: [
+      "Create a 15-second brand jingle for a [business type]. Style: [upbeat/professional/warm]. Instruments: [piano/guitar/synth]. Mood: [energetic/calm/trustworthy].",
+      "Generate background music for my weekly marketing podcast. Style: modern, professional, subtle — should not distract from conversation. 60 seconds, loops cleanly.",
+      "Create 3 variations of intro music for my YouTube channel about [topic]: one energetic, one calm, one inspirational.",
+      "I need a sonic logo — a 3-5 second audio signature that plays at the end of all my videos. Brand personality: [describe your brand].",
+    ],
+  },
 ];
 
 /**
@@ -1159,7 +1204,6 @@ const TOPIC_KEYWORDS: Record<string, string[]> = {
   "product descriptions": ["writing", "content", "e-commerce"],
   "ad copy": ["ads", "advertising", "copywriting"],
   "newsletter writing": ["newsletter", "email", "content"],
-  "content repurposing": ["repurposing", "content", "multi-format"],
 
   // Voice/Audio-related searches
   "voiceover": ["voice", "audio", "narration"],
@@ -1242,7 +1286,21 @@ const TOPIC_KEYWORDS: Record<string, string[]> = {
   "repurpose": ["repurposing", "content", "multi-format"],
   "repurpose content": ["repurposing", "content", "multi-format"],
   "repurpose video": ["repurposing", "video", "clips"],
+  "content repurposing": ["repurposing", "content", "automation"],
   "repurpose automation": ["repurposing", "automation", "distribution"],
+
+  // Music and sonic branding searches
+  "music": ["music", "audio", "jingle", "sonic-branding"],
+  "ai music": ["music", "audio", "jingle"],
+  "jingle": ["jingle", "music", "sonic-branding"],
+  "brand music": ["music", "sonic-branding", "brand-audio"],
+  "sonic branding": ["sonic-branding", "music", "brand-audio"],
+  "brand audio": ["brand-audio", "music", "audio"],
+  "background music": ["background-music", "music", "audio"],
+  "podcast music": ["music", "audio", "podcast"],
+  "intro music": ["music", "audio", "podcast"],
+  "audio branding": ["brand-audio", "sonic-branding", "music"],
+  "suno": ["music", "audio", "jingle"],
 };
 
 export function searchGoals(keyword: string): MarketingGoal[] {
