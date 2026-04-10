@@ -764,7 +764,7 @@ export const AI_TOOLS: AITool[] = [
     proTip: "Notion AI Agents can handle complex research tasks like 'compile all competitor blog posts from last month, analyze common themes, and suggest content gaps.' Runs autonomously while you work on other priorities.",
     tags: ["productivity", "automation", "research", "workflow", "agents"],
     relatedTools: ["zapier", "chatgpt"],
-    url: "https://www.notion.so",
+    url: "https://www.notion.com/product",
     lastUpdated: "November 2025",
   },
 
