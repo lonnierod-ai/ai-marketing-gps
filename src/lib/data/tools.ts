@@ -1,3 +1,4 @@
+// Updated: force rebuild April 2026
 import { AITool } from "@/types";
 
 /**
