@@ -889,6 +889,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "semrush",
       "surfer-seo",
       "neuronwriter",
+      "frase-io",
       "chatgpt",
       "claude",
       "grammarly",
@@ -977,6 +978,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     estimatedTimeframe: "Ongoing content updates",
     recommendedTools: [
       "perplexity-ai",
+      "frase-io",
       "chatgpt",
       "claude",
       "surfer-seo",
@@ -1204,6 +1206,7 @@ const TOPIC_KEYWORDS: Record<string, string[]> = {
   "product descriptions": ["writing", "content", "e-commerce"],
   "ad copy": ["ads", "advertising", "copywriting"],
   "newsletter writing": ["newsletter", "email", "content"],
+  "content repurposing": ["repurposing", "content", "multi-format"],
 
   // Voice/Audio-related searches
   "voiceover": ["voice", "audio", "narration"],
@@ -1286,7 +1289,6 @@ const TOPIC_KEYWORDS: Record<string, string[]> = {
   "repurpose": ["repurposing", "content", "multi-format"],
   "repurpose content": ["repurposing", "content", "multi-format"],
   "repurpose video": ["repurposing", "video", "clips"],
-  "content repurposing": ["repurposing", "content", "automation"],
   "repurpose automation": ["repurposing", "automation", "distribution"],
 
   // Music and sonic branding searches
