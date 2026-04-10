@@ -15,7 +15,7 @@ export default function HomePage() {
   const quickLinks = [
     { title: "Create Blog Content", href: "/goal/create-blog-content" },
     { title: "Launch Video Marketing", href: "/goal/create-video-content" },
-    { title: "Start a Podcast", href: "/goal/launch-podcast" },
+    { title: "Start a Podcast", href: "/goal/create-podcast-series" },
     { title: "Improve SEO", href: "/goal/seo-optimization" },
   ];
 
@@ -103,7 +103,7 @@ export default function HomePage() {
       </Link>
 
       <Link
-        href="/goal/launch-video-marketing"
+        href="/goal/create-video-content"
         className="flex justify-between items-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition"
       >
         <span>Launch Video Marketing</span>
@@ -111,7 +111,7 @@ export default function HomePage() {
       </Link>
 
       <Link
-        href="/goal/launch-podcast"
+        href="/goal/create-podcast-series"
         className="flex justify-between items-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition"
       >
         <span>Start a Podcast</span>
