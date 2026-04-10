@@ -2421,7 +2421,7 @@ export const AI_TOOLS: AITool[] = [
     ],
     tags: ["video", "ai-generation", "long-form", "multi-modal", "bytedance", "advanced"],
     relatedTools: ["kling-ai", "sora-2", "runway-gen-4", "google-veo-3"],
-    url: "https://jimeng.jianying.com",
+    url: "https://seed.bytedance.com/en/seedance2_0",
     lastUpdated: "February 2026",
   },
   {
