@@ -163,7 +163,7 @@ export default function HomePage() {
       </Link>
 
       <Link
-        href="/tool/notion"
+        href="/tool/notion-ai"
         className="flex justify-between items-center border rounded-lg py-3 px-4 hover:bg-gray-50 transition"
       >
         <span>Notion AI</span>
