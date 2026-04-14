@@ -41,7 +41,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["writing", "content", "blog", "social media", "brainstorming", "research", "llm", "memory", "dictation", "multimodal"],
     relatedTools: ["claude", "jasper-ai", "copy-ai", "notebooklm"],
     url: "https://chat.openai.com",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "claude",
@@ -72,7 +72,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["writing", "content", "strategy", "research", "long-form", "brand voice", "llm", "agents", "workflow", "cowork"],
     relatedTools: ["chatgpt", "jasper-ai", "notebooklm", "canva-ai"],
     url: "https://claude.ai",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "jasper-ai",
@@ -89,7 +89,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["writing", "marketing", "seo", "templates", "brand voice", "agency"],
     relatedTools: ["chatgpt", "claude", "copy-ai"],
     url: "https://www.jasper.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "copy-ai",
@@ -105,7 +105,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["copywriting", "social media", "ads", "short-form", "e-commerce"],
     relatedTools: ["jasper-ai", "chatgpt"],
     url: "https://www.copy.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "grammarly",
@@ -122,7 +122,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["editing", "grammar", "quality", "tone", "proofreading"],
     relatedTools: ["chatgpt", "claude", "jasper-ai"],
     url: "https://www.grammarly.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "gemini-3",
@@ -151,7 +151,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["writing", "content", "research", "automation", "agents", "reasoning", "workspace", "search-integration", "llm", "benchmarks"],
     relatedTools: ["chatgpt", "claude", "notebooklm", "google-ai-studio", "gemini-agent"],
     url: "https://gemini.google.com",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -172,7 +172,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "discontinued", "shutdown"],
     relatedTools: ["kling-ai", "google-veo-3", "runway-gen-4", "luma-ray-3"],
     url: "https://sora.com",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "google-veo-3",
@@ -218,7 +218,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "hdr", "draft-mode", "cost-effective"],
     relatedTools: ["sora-2", "google-veo-3", "runway-gen-4"],
     url: "https://lumalabs.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "runway-gen-4",
@@ -246,7 +246,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "character-consistency", "professional", "branding", "precision", "photorealistic"],
     relatedTools: ["sora-2", "google-veo-3", "luma-ray-3", "kling-ai", "adobe-firefly-video"],
     url: "https://runwayml.com",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "descript",
@@ -276,7 +276,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "podcast", "editing", "transcription", "voice-cloning", "captions", "lip-sync", "multilingual", "b-roll", "ai-editing"],
     relatedTools: ["opusclip", "riverside-fm", "castmagic", "kling-ai"],
     url: "https://www.descript.com",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "opusclip",
@@ -294,7 +294,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "repurposing", "social media", "clips", "automation"],
     relatedTools: ["descript", "castmagic", "riverside-fm"],
     url: "https://www.opus.pro",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "pika-labs",
@@ -311,7 +311,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "social", "templates", "community", "remix"],
     relatedTools: ["sora-2", "runway-gen-4"],
     url: "https://pika.art",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -322,29 +322,29 @@ export const AI_TOOLS: AITool[] = [
     name: "HeyGen",
     vendor: "HeyGen Technology Limited",
     category: "avatars",
-    description: "Leading AI avatar platform — named one of Fast Company's Most Innovative Companies in Video for 2026. 31 million total sign-ups, 101 million minutes of video generated in 2025 (4x growth from 2024). New Canva integration (March 9, 2026): generate AI avatar videos directly inside Canva — drag an avatar onto a social graphic, type a script, get a talking video without leaving the tool. Avatar IV (November 2025) brought natural movements, expression controls, and 4K export. Note: 'unlimited' plan refers to Avatar III quality — Avatar IV (photorealistic) still burns premium credits (~5 min/month on Creator plan before slower queues).",
+    description: "Leading AI avatar platform — Fast Company Most Innovative Companies in Video 2026. 31M sign-ups, 101M video minutes in 2025. Avatar V launched April 7, 2026: record 15 seconds once — multi-look generation separates your performance from your appearance so you can use different outfits, backgrounds, and visual looks for every video without re-recording. Integrates with Seedance 2.0 for cinematic B-roll, creating a near-complete production pipeline under $100/month. Canva integration (March 2026): generate avatar videos directly inside Canva.",
     bestFor: [
-      "AI avatar videos directly inside Canva — no separate tool needed (March 2026)",
+      "Re-recording elimination: Avatar V lets you change outfits/backgrounds without re-recording",
+      "Teams producing regular structured video — product explainers, social content, brand presenters",
+      "Near-complete production pipeline: Avatar V + Seedance 2.0 B-roll under $100/month",
+      "AI avatar videos directly inside Canva (March 2026)",
       "Multilingual content with lip-synced translations (140+ languages)",
-      "Rapid avatar creation from still photos (Unlimited Photo Avatars)",
-      "Scalable video production for training and marketing",
-      "Teams needing a legitimate enterprise avatar platform with Fast Company recognition",
     ],
-    proTip: "The Canva integration is the most practical HeyGen update for SMBs — generate avatar videos without switching platforms. Budget reality: Creator plan at $29/mo ($24 annual) gives ~5 minutes of Avatar IV quality before slower queues. A 5-person team on the Team plan runs $195+/mo minimum. If you only need straightforward presenter video without Avatar IV quality, Synthesia starts at $18/mo and may deliver better value.",
-    pricing: "Creator $29/month ($24 annual) | Pro $99/month | Team plan $195+/month (5-person min)",
+    proTip: "Avatar V is a legitimate workflow tool for SMBs producing regular structured video — not a film studio. 3 seconds of Avatar V = 1 premium credit; Creator plan's 200 credits ≈ 10 minutes of avatar video/month. Active teams producing more need the Pro plan ($99/mo). The HeyGen + Seedance 2.0 combo (Seedance now free via CapCut globally) gives you a near-complete production pipeline for under $100/month. One community member flagged two distinct speaking voices in the same video — isolated but worth monitoring.",
+    pricing: "Creator $29/month (200 premium credits ≈ 10 min Avatar V) | Pro $99/month | Business ~$229/month (5-person team)",
     features: [
-      "Fast Company Most Innovative Companies in Video 2026",
-      "31 million sign-ups | 101 million video minutes in 2025 (4x growth)",
-      "Canva integration: generate avatar videos directly inside Canva (March 9, 2026)",
-      "Avatar IV: photorealistic quality, ~5 min/month on Creator before slower queues",
+      "Avatar V (April 7, 2026): multi-look generation from 15-second recording",
+      "Separate performance from appearance — different outfit/background per video, no re-recording",
+      "Seedance 2.0 integration for cinematic B-roll",
+      "Canva integration: generate avatar videos directly inside Canva",
+      "3 sec Avatar V = 1 premium credit | Creator: 200 credits ≈ 10 min/month",
       "Unlimited Photo Avatars from still images",
       "140+ language lip-synced translations",
-      "Video Agent: automated multi-video creation workflows",
     ],
     tags: ["avatar", "video", "multilingual", "training", "education", "automation", "4k", "canva-integration"],
     relatedTools: ["synthesia", "elevenlabs", "descript", "canva-ai"],
     url: "https://www.heygen.com",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "synthesia",
@@ -373,7 +373,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["avatar", "video", "presentations", "multilingual", "corporate", "training", "voice-speed", "speech-regeneration"],
     relatedTools: ["heygen", "elevenlabs", "descript"],
     url: "https://www.synthesia.io",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -404,10 +404,10 @@ export const AI_TOOLS: AITool[] = [
       "29+ language support",
       "California AB 1836 compliant voice licensing",
     ],
-    tags: ["voice", "audio", "tts", "voice-cloning", "multilingual", "podcast", "celebrity-voices", "marketplace", "expressiveness"],
-    relatedTools: ["descript", "heygen", "synthesia", "adobe-audio", "suno"],
+    tags: ["voice", "audio", "tts", "voice-cloning", "multilingual", "podcast", "celebrity-voices", "marketplace", "expressiveness", "music"],
+    relatedTools: ["descript", "heygen", "synthesia", "adobe-audio", "suno", "eleven-music"],
     url: "https://elevenlabs.io",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "adobe-audio",
@@ -425,7 +425,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["voice", "audio", "music", "soundtrack", "tts", "royalty-free"],
     relatedTools: ["elevenlabs", "descript"],
     url: "https://www.adobe.com/products/firefly.html",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -447,7 +447,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "creative", "artistic", "visual"],
     relatedTools: ["dall-e-3", "adobe-firefly", "imagen-4"],
     url: "https://www.midjourney.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "dall-e-3",
@@ -464,7 +464,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "chatgpt", "text-in-image", "mockups"],
     relatedTools: ["midjourney", "adobe-firefly", "canva-ai"],
     url: "https://openai.com/dall-e-3",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "canva-ai",
@@ -497,7 +497,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["design", "graphics", "social media", "templates", "brand-kit", "presentations", "3d", "ai-generation", "claude-integration", "chatgpt-integration"],
     relatedTools: ["adobe-firefly", "dall-e-3", "nano-banana-pro", "claude"],
     url: "https://www.canva.com",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "adobe-firefly",
@@ -514,7 +514,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "adobe", "commercial-safe", "professional"],
     relatedTools: ["midjourney", "canva-ai", "imagen-4"],
     url: "https://www.adobe.com/products/firefly.html",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "imagen-4",
@@ -531,7 +531,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "google", "high-quality", "text-rendering"],
     relatedTools: ["midjourney", "dall-e-3", "adobe-firefly"],
     url: "https://deepmind.google/technologies/imagen-3/",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "nano-banana-pro",
@@ -568,7 +568,7 @@ export const AI_TOOLS: AITool[] = [
     ],
     relatedTools: ["midjourney", "dall-e-3", "imagen-4", "canva-ai"],
     url: "https://gemini.google.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -590,7 +590,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["no-code", "development", "multimodal", "prototyping", "automation"],
     relatedTools: ["chatgpt", "claude"],
     url: "https://aistudio.google.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -631,7 +631,7 @@ export const AI_TOOLS: AITool[] = [
     ],
     relatedTools: ["perplexity-ai", "claude", "marketmuse", "gemini-3"],
     url: "https://notebooklm.google.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "perplexity-ai",
@@ -659,7 +659,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["research", "search", "citations", "fact-checking", "aio", "advertising", "sponsored", "b2b"],
     relatedTools: ["notebooklm", "chatgpt", "claude", "google-search-console"],
     url: "https://www.perplexity.ai",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "surfer-seo",
@@ -676,7 +676,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "optimization", "keywords", "ranking", "analysis"],
     relatedTools: ["clearscope", "marketmuse", "chatgpt"],
     url: "https://surferseo.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "clearscope",
@@ -692,7 +692,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "optimization", "content-grading", "relevance"],
     relatedTools: ["surfer-seo", "marketmuse"],
     url: "https://www.clearscope.io",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "marketmuse",
@@ -709,7 +709,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "strategy", "content-gaps", "planning", "briefs"],
     relatedTools: ["surfer-seo", "clearscope", "notebooklm"],
     url: "https://www.marketmuse.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -730,7 +730,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social-media", "scheduling", "analytics", "management"],
     relatedTools: ["hootsuite", "copy-ai", "chatgpt"],
     url: "https://buffer.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "hootsuite",
@@ -747,7 +747,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social-media", "listening", "sentiment", "monitoring", "analytics"],
     relatedTools: ["buffer-ai", "hubspot-ai"],
     url: "https://www.hootsuite.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "notion-ai",
@@ -765,7 +765,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["productivity", "automation", "research", "workflow", "agents"],
     relatedTools: ["zapier", "chatgpt"],
     url: "https://www.notion.com/product",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -787,7 +787,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["podcast", "recording", "transcription", "video", "remote"],
     relatedTools: ["descript", "castmagic", "opusclip"],
     url: "https://riverside.fm",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "castmagic",
@@ -803,7 +803,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["podcast", "repurposing", "content", "automation", "marketing"],
     relatedTools: ["riverside-fm", "descript", "opusclip"],
     url: "https://www.castmagic.io",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "podcastle",
@@ -819,7 +819,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["podcast", "recording", "editing", "audio-enhancement", "all-in-one"],
     relatedTools: ["riverside-fm", "descript"],
     url: "https://podcastle.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -840,7 +840,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["crm", "email", "automation", "workflows", "lead-scoring", "enterprise"],
     relatedTools: ["mailchimp", "klaviyo", "zapier"],
     url: "https://www.hubspot.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "mailchimp",
@@ -860,7 +860,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "marketing", "newsletters", "automation", "b2b"],
     relatedTools: ["klaviyo", "hubspot-ai"],
     url: "https://mailchimp.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "klaviyo",
@@ -877,7 +877,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "sms", "e-commerce", "shopify", "predictive-analytics"],
     relatedTools: ["mailchimp", "hubspot-ai"],
     url: "https://www.klaviyo.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "zapier",
@@ -906,7 +906,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["automation", "workflows", "integration", "no-code", "productivity", "agents", "governance"],
     relatedTools: ["notion-ai", "hubspot-ai", "make-com", "google-ai-studio"],
     url: "https://zapier.com",
-    lastUpdated: "December 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -927,7 +927,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["analytics", "metrics", "data", "insights", "tracking"],
     relatedTools: ["hubspot-ai"],
     url: "https://analytics.google.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -949,7 +949,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "repurposing", "social media", "clips", "automation", "youtube", "tiktok"],
     relatedTools: ["opusclip", "descript", "castmagic"],
     url: "https://www.munchies.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "pictory",
@@ -975,7 +975,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "repurposing", "blog", "content", "automation", "social media", "interactive", "hosting", "avatars"],
     relatedTools: ["munch", "opusclip", "lumen5", "heygen"],
     url: "https://pictory.ai",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "lumen5",
@@ -992,7 +992,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "repurposing", "blog", "social media", "brand-kit", "automation"],
     relatedTools: ["pictory", "munch", "canva-ai"],
     url: "https://lumen5.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "repurpose-io",
@@ -1009,7 +1009,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["repurposing", "automation", "distribution", "podcast", "cross-platform", "workflow"],
     relatedTools: ["castmagic", "zapier", "opusclip"],
     url: "https://repurpose.io",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "vidyo-ai",
@@ -1026,7 +1026,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "repurposing", "clips", "captions", "social media", "automation"],
     relatedTools: ["munch", "opusclip", "descript"],
     url: "https://vidyo.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "swell-ai",
@@ -1043,7 +1043,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["podcast", "repurposing", "content", "automation", "newsletter", "blog"],
     relatedTools: ["castmagic", "repurpose-io", "riverside-fm"],
     url: "https://www.swellai.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -1065,7 +1065,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["headshots", "photos", "professional", "linkedin", "portrait", "ai-generation"],
     relatedTools: ["headshotpro", "profile-picture-ai"],
     url: "https://www.aragon.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "headshotpro",
@@ -1082,7 +1082,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["headshots", "photos", "professional", "corporate", "team", "portrait"],
     relatedTools: ["aragon-ai", "profile-picture-ai"],
     url: "https://www.headshotpro.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "profile-picture-ai",
@@ -1100,7 +1100,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["headshots", "photos", "profile", "social media", "linkedin", "personal-brand"],
     relatedTools: ["aragon-ai", "headshotpro"],
     url: "https://www.profilepicture.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "remini",
@@ -1117,7 +1117,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["headshots", "photos", "enhancement", "upscaling", "restoration", "portrait"],
     relatedTools: ["aragon-ai", "headshotpro"],
     url: "https://remini.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -1149,7 +1149,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image-editing", "photoshop", "generative-fill", "adobe", "professional", "retouching", "ai-assistant", "multi-model"],
     relatedTools: ["adobe-firefly", "canva-ai", "remove-bg", "clipdrop"],
     url: "https://www.adobe.com/products/photoshop.html",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "remove-bg",
@@ -1167,7 +1167,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image-editing", "background-removal", "product-photos", "e-commerce", "automation"],
     relatedTools: ["canva-ai", "adobe-photoshop-ai", "clipdrop"],
     url: "https://www.remove.bg",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "clipdrop",
@@ -1185,7 +1185,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image-editing", "background-removal", "upscaling", "relighting", "product-photos"],
     relatedTools: ["remove-bg", "adobe-photoshop-ai", "canva-ai"],
     url: "https://clipdrop.co",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "luminar-ai",
@@ -1203,7 +1203,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image-editing", "photo-editing", "portrait", "sky-replacement", "professional"],
     relatedTools: ["adobe-photoshop-ai", "clipdrop"],
     url: "https://skylum.com/luminar",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "photoroom",
@@ -1221,7 +1221,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image-editing", "product-photos", "e-commerce", "mobile", "background-generation", "batch"],
     relatedTools: ["remove-bg", "canva-ai", "clipdrop"],
     url: "https://www.photoroom.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "topaz-labs",
@@ -1239,7 +1239,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image-editing", "upscaling", "sharpening", "noise-reduction", "photo-quality"],
     relatedTools: ["adobe-photoshop-ai", "clipdrop", "luminar-ai"],
     url: "https://www.topazlabs.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -1261,7 +1261,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "open-source", "customizable", "local", "advanced"],
     relatedTools: ["midjourney", "dall-e-3", "adobe-firefly"],
     url: "https://stability.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "ideogram",
@@ -1279,7 +1279,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "text-in-image", "logos", "social media", "typography"],
     relatedTools: ["dall-e-3", "nano-banana-pro", "canva-ai"],
     url: "https://ideogram.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "flux-ai",
@@ -1297,7 +1297,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "photorealistic", "open-source", "high-quality"],
     relatedTools: ["midjourney", "stable-diffusion", "dall-e-3"],
     url: "https://blackforestlabs.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "leonardo-ai",
@@ -1315,7 +1315,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "brand", "fine-tuning", "design", "marketing"],
     relatedTools: ["midjourney", "stable-diffusion", "adobe-firefly"],
     url: "https://leonardo.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "playground-ai",
@@ -1333,7 +1333,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "free", "beginner-friendly", "social media"],
     relatedTools: ["ideogram", "dall-e-3", "leonardo-ai"],
     url: "https://playground.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "nightcafe",
@@ -1351,7 +1351,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "creative", "multi-model", "art", "merchandise"],
     relatedTools: ["midjourney", "playground-ai", "stable-diffusion"],
     url: "https://nightcafe.studio",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -1373,7 +1373,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "scheduling", "instagram", "analytics", "captions", "hashtags"],
     relatedTools: ["buffer-ai", "hootsuite", "planoly"],
     url: "https://later.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "planoly",
@@ -1391,7 +1391,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "instagram", "pinterest", "scheduling", "visual", "grid-planning"],
     relatedTools: ["later", "buffer-ai", "canva-ai"],
     url: "https://www.planoly.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "metricool",
@@ -1409,7 +1409,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "analytics", "scheduling", "competitive-analysis", "performance", "agency"],
     relatedTools: ["hootsuite", "buffer-ai", "later"],
     url: "https://metricool.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "flick-ai",
@@ -1427,7 +1427,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "content-creation", "ai-writing", "instagram", "linkedin", "captions"],
     relatedTools: ["later", "buffer-ai", "copy-ai"],
     url: "https://www.flick.social",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "sprout-social",
@@ -1445,7 +1445,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "enterprise", "analytics", "listening", "scheduling", "reporting"],
     relatedTools: ["hootsuite", "metricool", "hubspot-ai"],
     url: "https://sproutsocial.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "taplio",
@@ -1463,7 +1463,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "linkedin", "b2b", "content-creation", "scheduling", "professional"],
     relatedTools: ["flick-ai", "buffer-ai", "jasper-ai"],
     url: "https://taplio.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "tweet-hunter",
@@ -1481,7 +1481,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "twitter", "x", "content-creation", "scheduling", "growth"],
     relatedTools: ["taplio", "buffer-ai", "copy-ai"],
     url: "https://tweethunter.io",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -1503,7 +1503,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "newsletter", "monetization", "creator", "subscriber", "content"],
     relatedTools: ["convertkit", "mailchimp", "substack"],
     url: "https://www.beehiiv.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "convertkit",
@@ -1521,7 +1521,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "creator", "automation", "segmentation", "landing-pages", "digital-products"],
     relatedTools: ["beehiiv", "mailchimp", "hubspot-ai"],
     url: "https://kit.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "substack",
@@ -1539,7 +1539,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "newsletter", "monetization", "writing", "paid-subscriptions", "creator"],
     relatedTools: ["beehiiv", "convertkit"],
     url: "https://substack.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "activecampaign",
@@ -1557,7 +1557,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "crm", "automation", "lead-scoring", "customer-journey", "advanced"],
     relatedTools: ["hubspot-ai", "mailchimp", "klaviyo"],
     url: "https://www.activecampaign.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "instantly-ai",
@@ -1575,7 +1575,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "cold-email", "outreach", "sales", "b2b", "lead-generation", "automation"],
     relatedTools: ["hubspot-ai", "activecampaign", "copy-ai"],
     url: "https://instantly.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "smartlead",
@@ -1593,7 +1593,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "cold-email", "outreach", "linkedin", "multi-channel", "agency", "sales"],
     relatedTools: ["instantly-ai", "hubspot-ai", "taplio"],
     url: "https://smartlead.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -1615,7 +1615,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "keywords", "backlinks", "research", "competitive-analysis", "ranking"],
     relatedTools: ["semrush", "surfer-seo", "clearscope"],
     url: "https://ahrefs.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "semrush",
@@ -1633,7 +1633,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "keywords", "ppc", "competitive-analysis", "content", "advertising", "all-in-one"],
     relatedTools: ["ahrefs", "surfer-seo", "google-analytics-4"],
     url: "https://www.semrush.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "google-search-console",
@@ -1651,7 +1651,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "google", "search", "analytics", "indexing", "technical-seo", "free"],
     relatedTools: ["google-analytics-4", "ahrefs", "semrush"],
     url: "https://search.google.com/search-console",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "rankmath",
@@ -1669,7 +1669,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "wordpress", "on-page-seo", "schema", "plugin", "content-optimization"],
     relatedTools: ["surfer-seo", "google-search-console", "ahrefs"],
     url: "https://rankmath.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "keyword-insights",
@@ -1687,7 +1687,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "keywords", "clustering", "content-strategy", "topical-authority", "planning"],
     relatedTools: ["ahrefs", "semrush", "marketmuse"],
     url: "https://www.keywordinsights.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "neuronwriter",
@@ -1705,7 +1705,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "content-writing", "nlp", "optimization", "ranking", "competitor-analysis"],
     relatedTools: ["surfer-seo", "clearscope", "jasper-ai"],
     url: "https://www.neuronwriter.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -1727,7 +1727,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["ads", "advertising", "creative", "facebook", "instagram", "google-ads", "conversion"],
     relatedTools: ["canva-ai", "jasper-ai", "copy-ai"],
     url: "https://www.adcreative.ai",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "smartly-io",
@@ -1745,7 +1745,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["ads", "advertising", "automation", "enterprise", "paid-social", "optimization"],
     relatedTools: ["adcreative-ai", "hubspot-ai", "semrush"],
     url: "https://www.smartly.io",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "pencil-ai",
@@ -1763,7 +1763,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["ads", "advertising", "video", "creative", "performance-prediction", "e-commerce"],
     relatedTools: ["adcreative-ai", "canva-ai", "lumen5"],
     url: "https://www.trypencil.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "creatopy",
@@ -1781,7 +1781,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["ads", "advertising", "design", "banner-ads", "automation", "branding", "multi-format"],
     relatedTools: ["adcreative-ai", "canva-ai", "smartly-io"],
     url: "https://www.creatopy.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "motion-app",
@@ -1799,7 +1799,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["ads", "advertising", "analytics", "creative", "performance", "data-driven"],
     relatedTools: ["adcreative-ai", "google-analytics-4", "semrush"],
     url: "https://www.motionapp.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "foreplay-co",
@@ -1817,7 +1817,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["ads", "advertising", "research", "competitor-analysis", "creative-briefs", "inspiration"],
     relatedTools: ["adcreative-ai", "motion-app", "pencil-ai"],
     url: "https://foreplay.co",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -1839,7 +1839,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "google", "ppc", "search", "display", "youtube", "ai-optimization"],
     relatedTools: ["semrush", "google-analytics-4", "adcreative-ai"],
     url: "https://ads.google.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "meta-ads-ai",
@@ -1857,7 +1857,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "facebook", "instagram", "social-ads", "e-commerce", "ai-targeting"],
     relatedTools: ["adcreative-ai", "klaviyo", "smartly-io"],
     url: "https://www.facebook.com/business/ads",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "linkedin-ads",
@@ -1875,7 +1875,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "linkedin", "b2b", "professional", "lead-generation", "thought-leadership"],
     relatedTools: ["taplio", "hubspot-ai", "semrush"],
     url: "https://www.linkedin.com/campaignmanager",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "tiktok-ads",
@@ -1893,7 +1893,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "tiktok", "video-ads", "gen-z", "social-ads", "e-commerce"],
     relatedTools: ["adcreative-ai", "sora-2", "meta-ads-ai"],
     url: "https://ads.tiktok.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "wordstream",
@@ -1911,7 +1911,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "ppc", "google-ads", "facebook-ads", "smb", "optimization", "local"],
     relatedTools: ["google-ads-ai", "semrush", "hubspot-ai"],
     url: "https://www.wordstream.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "triple-whale",
@@ -1929,7 +1929,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["analytics", "attribution", "e-commerce", "shopify", "paid-ads", "first-party-data"],
     relatedTools: ["google-analytics-4", "klaviyo", "meta-ads-ai"],
     url: "https://triplewhale.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "northbeam",
@@ -1947,7 +1947,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["analytics", "attribution", "media-mix-modeling", "e-commerce", "dtc", "advanced"],
     relatedTools: ["triple-whale", "google-analytics-4", "meta-ads-ai"],
     url: "https://www.northbeam.io",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "make-com",
@@ -1976,7 +1976,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["automation", "workflows", "integration", "no-code", "advanced", "data-transformation", "agents"],
     relatedTools: ["zapier", "hubspot-ai", "google-analytics-4", "notion-ai"],
     url: "https://www.make.com",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "unbounce",
@@ -1994,7 +1994,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["landing-pages", "conversion", "a-b-testing", "advertising", "ai-optimization", "no-code"],
     relatedTools: ["google-ads-ai", "hubspot-ai", "adcreative-ai"],
     url: "https://unbounce.com",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -2027,7 +2027,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "audio", "ai-generation", "social media", "tiktok", "reels", "multi-shot", "4k", "short-form"],
     relatedTools: ["sora-2", "runway-gen-4", "google-veo-3", "kling-image-o1"],
     url: "https://klingai.com",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "tiktok-symphony",
@@ -2053,7 +2053,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["tiktok", "social media", "repurposing", "video", "clips", "content-creation", "free", "automation"],
     relatedTools: ["opusclip", "munch", "vidyo-ai", "tiktok-ads"],
     url: "https://ads.tiktok.com/business/creativecenter/inspiration/topads/pc/en",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "gemini-agent",
@@ -2081,7 +2081,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["automation", "agents", "research", "workflow", "google", "productivity", "email", "calendar"],
     relatedTools: ["notion-ai", "zapier", "notebooklm", "gemini-3"],
     url: "https://gemini.google.com",
-    lastUpdated: "December 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "claude-for-sheets",
@@ -2108,7 +2108,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["google-sheets", "automation", "spreadsheet", "content", "bulk-processing", "workspace", "claude"],
     relatedTools: ["claude", "google-ai-studio", "zapier", "notebooklm"],
     url: "https://workspace.google.com/marketplace",
-    lastUpdated: "November 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "meta-ai-creator-tools",
@@ -2135,7 +2135,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["influencer", "creator", "partnership", "facebook", "instagram", "social-ads", "predictive-analytics", "brand-matching"],
     relatedTools: ["meta-ads-ai", "taplio", "sprout-social", "adcreative-ai"],
     url: "https://www.facebook.com/business",
-    lastUpdated: "December 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "gpt-5-2",
@@ -2162,7 +2162,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["writing", "content", "research", "multimodal", "llm", "reasoning", "web-browsing", "advanced"],
     relatedTools: ["claude", "gemini-3", "notebooklm", "perplexity-ai"],
     url: "https://chat.openai.com",
-    lastUpdated: "December 2025",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -2192,7 +2192,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["llm", "writing", "content", "research", "cost-effective", "bulk-processing", "open-source"],
     relatedTools: ["chatgpt", "claude", "gemini-3"],
     url: "https://www.deepseek.com",
-    lastUpdated: "December 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "kling-image-o1",
@@ -2219,7 +2219,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "brand-consistency", "characters", "product-photos", "social media"],
     relatedTools: ["midjourney", "kling-ai", "leonardo-ai", "flux-ai"],
     url: "https://klingai.com",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "nvidia-digital-human",
@@ -2244,7 +2244,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["avatar", "digital-human", "interactive", "3d", "enterprise", "infrastructure", "future"],
     relatedTools: ["heygen", "synthesia", "kling-ai"],
     url: "https://www.nvidia.com/en-us/omniverse/ace/",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "perplexity-ads",
@@ -2270,7 +2270,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "aio", "ai-search", "b2b", "sponsored", "perplexity", "search-ads"],
     relatedTools: ["perplexity-ai", "google-ads-ai", "semrush"],
     url: "https://www.perplexity.ai/advertising",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "reddit-max-campaigns",
@@ -2298,7 +2298,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "reddit", "social-ads", "audience-targeting", "transparency", "b2b", "smb"],
     relatedTools: ["meta-ads-ai", "google-ads-ai", "linkedin-ads"],
     url: "https://ads.reddit.com",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "local-falcon",
@@ -2325,7 +2325,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "local-seo", "google-business", "ai-search", "geo", "visibility", "local"],
     relatedTools: ["google-search-console", "semrush", "ahrefs", "perplexity-ai"],
     url: "https://www.localfalcon.com",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "suno",
@@ -2350,7 +2350,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["audio", "music", "jingles", "sonic-branding", "podcast", "background-music", "ai-generation"],
     relatedTools: ["elevenlabs", "adobe-audio", "descript"],
     url: "https://suno.com",
-    lastUpdated: "December 2025",
+    lastUpdated: "April 2026",
   },
   {
     id: "chatgpt-canvas",
@@ -2375,7 +2375,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["writing", "content", "editing", "documents", "collaboration", "productivity", "llm"],
     relatedTools: ["chatgpt", "claude", "notion-ai"],
     url: "https://chat.openai.com",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "adobe-firefly-video",
@@ -2401,7 +2401,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "commercial-safe", "adobe", "premiere", "copyright-safe", "b-roll"],
     relatedTools: ["runway-gen-4", "adobe-firefly", "google-veo-3", "sora-2"],
     url: "https://www.adobe.com/products/firefly.html",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "microsoft-copilot-linkedin",
@@ -2426,7 +2426,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["linkedin", "social media", "b2b", "content-creation", "microsoft", "copilot", "professional"],
     relatedTools: ["taplio", "flick-ai", "chatgpt", "linkedin-ads"],
     url: "https://linkedin.com",
-    lastUpdated: "January 2026",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -2452,7 +2452,9 @@ export const AI_TOOLS: AITool[] = [
       "Multi-modal inputs: 9 images + 3 video clips + 3 audio files + text in one generation",
       "Native audio + video in same pass — no post-production audio layering",
       "Phoneme-level lip sync in 8 languages",
-      "U.S. access via Higgsfield ($49/mo), GlobalGPT ($10.80/mo), BigMotion, HailuoAI (April 2026)",
+      "U.S. access via Higgsfield ($49/mo), GlobalGPT ($10.80/mo), BigMotion, HailuoAI",
+      "Free global access via CapCut — ByteDance quietly rolled out globally (April 2026)",
+      "HeyGen Avatar V integrates Seedance 2.0 for cinematic B-roll",
       "Warning: Hollywood IP dispute ongoing, developer API paused, C2PA watermarks permanent",
     ],
     tags: ["video", "ai-generation", "long-form", "multi-modal", "bytedance", "advanced", "lip-sync"],
@@ -2484,7 +2486,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["agents", "automation", "open-source", "productivity", "slack", "email", "workflow", "advanced"],
     relatedTools: ["zapier", "make-com", "notion-ai", "gemini-agent"],
     url: "https://github.com/openclaw",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "apple-creator-studio",
@@ -2511,7 +2513,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "audio", "design", "apple", "final-cut", "logic-pro", "creative-suite", "cost-effective"],
     relatedTools: ["descript", "adobe-firefly", "adobe-audio", "runway-gen-4"],
     url: "https://www.apple.com/apple-one/",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "pixverse-r1",
@@ -2537,7 +2539,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "real-time", "prototyping", "live-direction", "beta"],
     relatedTools: ["runway-gen-4", "sora-2", "kling-ai", "google-veo-3"],
     url: "https://realtime.pixverse.ai",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "linkedin-premium-all-in-one",
@@ -2564,7 +2566,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["linkedin", "b2b", "advertising", "prospecting", "sales", "smb", "social media"],
     relatedTools: ["taplio", "linkedin-ads", "microsoft-copilot-linkedin", "hubspot-ai"],
     url: "https://www.linkedin.com/premium/",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "google-lyria-3",
@@ -2593,7 +2595,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["audio", "music", "ai-generation", "free", "social media", "google", "sonic-branding", "shorts"],
     relatedTools: ["suno", "elevenlabs", "adobe-audio", "gemini-3"],
     url: "https://gemini.google.com",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "gemini-3-1-pro",
@@ -2622,7 +2624,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["llm", "reasoning", "research", "content", "google", "benchmarks", "cost-effective", "api"],
     relatedTools: ["chatgpt", "claude", "gemini-3", "notebooklm"],
     url: "https://gemini.google.com",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "mozart-ai",
@@ -2648,7 +2650,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["audio", "music", "ai-generation", "commercial", "sonic-branding", "generative"],
     relatedTools: ["suno", "google-lyria-3", "elevenlabs", "adobe-audio"],
     url: "https://mozart.ai",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "wordpress-ai-assistant",
@@ -2673,7 +2675,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["wordpress", "content", "ai-writing", "website", "landing-pages", "cms", "no-code"],
     relatedTools: ["chatgpt", "canva-ai", "jasper-ai", "claude"],
     url: "https://wordpress.com",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "grok-4-2",
@@ -2698,7 +2700,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["llm", "research", "fact-checking", "multi-agent", "enterprise", "accuracy"],
     relatedTools: ["chatgpt", "claude", "perplexity-ai"],
     url: "https://x.ai",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -2729,7 +2731,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["agents", "automation", "multi-agent", "research", "workflow", "enterprise", "autonomous"],
     relatedTools: ["zapier", "make-com", "claude", "notion-ai", "openclaw"],
     url: "https://www.perplexity.ai",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "capcut-ai-video",
@@ -2756,7 +2758,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "storyboard", "social media", "free", "tiktok", "reels", "bytedance"],
     relatedTools: ["kling-ai", "runway-gen-4", "google-veo-3", "tiktok-symphony"],
     url: "https://www.capcut.com",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "gamma-imagine",
@@ -2784,7 +2786,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "presentations", "social media", "infographics", "design", "workflow"],
     relatedTools: ["canva-ai", "midjourney", "dall-e-3", "adobe-firefly"],
     url: "https://gamma.app",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "nvidia-nemoclaw",
@@ -2812,7 +2814,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["agents", "automation", "open-source", "enterprise", "security", "infrastructure", "advanced", "future"],
     relatedTools: ["openclaw", "zapier", "make-com", "nvidia-digital-human"],
     url: "https://www.nvidia.com/en-us/ai/",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "runway-characters",
@@ -2840,7 +2842,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["avatar", "interactive", "real-time", "conversational", "api", "brand", "video"],
     relatedTools: ["heygen", "synthesia", "nvidia-digital-human", "runway-gen-4"],
     url: "https://runwayml.com/characters",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "higgsfield-soul-cast",
@@ -2867,7 +2869,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["avatar", "video", "actors", "characters", "brand", "advertising", "ai-generation", "diversity"],
     relatedTools: ["heygen", "synthesia", "runway-gen-4", "kling-ai"],
     url: "https://higgsfield.ai",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "zoom-ai-office",
@@ -2890,7 +2892,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["productivity", "meetings", "avatar", "workspace", "email", "calendar", "automation"],
     relatedTools: ["notion-ai", "claude", "zapier", "heygen"],
     url: "https://zoom.us",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "claude-dispatch",
@@ -2918,7 +2920,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["automation", "agents", "productivity", "content-repurposing", "mobile", "desktop", "claude"],
     relatedTools: ["claude", "zapier", "make-com", "notion-ai"],
     url: "https://claude.ai",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "tapclicks-smartstory",
@@ -2942,7 +2944,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["analytics", "reporting", "automation", "agency", "marketing", "data"],
     relatedTools: ["google-analytics-4", "hubspot-ai", "semrush"],
     url: "https://tapclicks.com",
-    lastUpdated: "February 2026",
+    lastUpdated: "April 2026",
   },
   {
     id: "typeface-ai",
@@ -2966,7 +2968,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["content-creation", "enterprise", "agents", "automation", "brand", "campaigns", "orchestration"],
     relatedTools: ["jasper-ai", "hubspot-ai", "canva-ai", "adcreative-ai"],
     url: "https://www.typeface.ai",
-    lastUpdated: "March 2026",
+    lastUpdated: "April 2026",
   },
 
   // ========================================
@@ -3056,7 +3058,91 @@ export const AI_TOOLS: AITool[] = [
     url: "https://www.frase.io",
     lastUpdated: "April 2026",
   },
-];;;;
+
+  // ========================================
+  // NEW TOOLS FROM PODCAST EPISODE 24
+  // ========================================
+  {
+    id: "meta-muse-spark",
+    name: "Meta Muse Spark",
+    vendor: "Meta (Meta Superintelligence Labs)",
+    category: "digital-marketing",
+    description: "Meta's flagship AI model launched April 7, 2026 from its new $14.3B Meta Superintelligence Labs division under former Scale AI CEO Alexandr Wang. Live now at meta.ai and the Meta AI app, rolling out to Instagram, Facebook, WhatsApp, and Messenger. The key feature for content marketers: Shopping Mode — a user sees a creator post featuring your product, Muse Spark interprets that signal, and later surfaces your product in AI-assisted shopping recommendations — not through an ad slot, but through AI discovery. Meta stock jumped 8% on announcement day.",
+    bestFor: [
+      "SMBs co-creating with micro-influencers — creator content feeds Shopping Mode discovery",
+      "E-commerce brands: advertiser tools auto-generate multi-scene video ads from 20 product images",
+      "Instagram and Facebook marketers auditing visual content for AI readability",
+      "Brands wanting early-mover advantage before Shopping Mode rolls platform-wide",
+    ],
+    proTip: "Walk through Shopping Mode as a consumer in your niche right now — it's free and shows you what's surfacing. Brands with clean product visuals and active creator relationships will have a real advantage when this rolls platform-wide. Important caveats: Shopping Mode isn't inside Instagram yet (still rolling out), there's no ad slot to buy — the AI decides what surfaces based on content signals not budget, and Meta's privacy policy sets few limits on how data shared with their AI can be used.",
+    features: [
+      "Shopping Mode: AI-assisted product discovery powered by creator content signals",
+      "Auto-generates multi-scene video ads from up to 20 product images",
+      "Live at meta.ai and Meta AI app (April 7, 2026)",
+      "Rolling out to Instagram, Facebook, WhatsApp, Messenger",
+      "Built by Meta Superintelligence Labs ($14.3B division, former Scale AI CEO)",
+      "Note: fails ARC-AGI 2 — Claude and Gemini still stronger for text-heavy workflows",
+    ],
+    tags: ["facebook", "instagram", "social-ads", "ai-discovery", "shopping", "creator", "meta", "advertising"],
+    relatedTools: ["meta-ads-ai", "canva-ai", "adcreative-ai", "taplio"],
+    url: "https://meta.ai",
+    lastUpdated: "April 2026",
+  },
+  {
+    id: "eleven-music",
+    name: "ElevenMusic",
+    vendor: "ElevenLabs",
+    category: "voice-audio",
+    description: "ElevenLabs' AI music generation iOS app launched April 1, 2026 with a Spotify-style discovery layer. Key differentiator: built on licensed content from Merlin and Kobalt — giving it a legal foundation competitors Suno and Udio lack amid ongoing litigation. Generate to-brief custom tracks for social content, ads, and podcasts. Commercial use plan at $9.99/month. iOS only at launch — Android and web not yet available. Per-song cost runs $0.50-$2.00 depending on plan.",
+    bestFor: [
+      "SMBs spending $30-50/month on royalty-free music libraries — competitive alternative",
+      "Content teams wanting custom tracks generated to-brief instead of searching stock libraries",
+      "Marketers needing legally safe AI music for commercial ads — licensed from Merlin and Kobalt",
+      "Podcast creators wanting unique intro/outro music that won't trigger copyright issues",
+    ],
+    proTip: "ElevenMusic's legal foundation (licensed from Merlin and Kobalt) is its key advantage over Suno and Udio — if you're using AI music in commercial ads, this matters significantly. iOS only at launch so Android users will need to wait. The $9.99/month commercial plan is competitive if you're currently paying for a stock music subscription. Note: Reddit analysis found per-song cost runs $0.50-$2.00 depending on plan — factor that into volume calculations before committing.",
+    pricing: "$9.99/month for commercial use | iOS only at launch",
+    features: [
+      "Launched April 1, 2026 — iOS app with Spotify-style discovery layer",
+      "Licensed from Merlin and Kobalt — legally safe for commercial use",
+      "Advantage over Suno and Udio: licensed training data amid ongoing litigation",
+      "Generate custom tracks to-brief for ads, social content, podcasts",
+      "iOS only — Android and web not yet available",
+      "Per-song cost: ~$0.50-$2.00 depending on plan",
+    ],
+    tags: ["audio", "music", "ai-generation", "commercial-safe", "licensed", "ios", "podcast", "ads"],
+    relatedTools: ["suno", "google-lyria-3", "elevenlabs", "adobe-audio"],
+    url: "https://elevenlabs.io/music",
+    lastUpdated: "April 2026",
+  },
+  {
+    id: "microsoft-mai",
+    name: "Microsoft MAI (MAI-Transcribe-1 / MAI-Voice-1)",
+    vendor: "Microsoft",
+    category: "voice-audio",
+    description: "Microsoft's new first-party AI audio models released April 2, 2026. MAI-Transcribe-1: Microsoft AI CEO Mustafa Suleiman called it 'the most accurate transcription model in the world.' At $0.36/hour, a typical SMB podcast producing two 45-minute episodes weekly costs ~$2.16/month to transcribe — essentially free. MAI-Voice-1: builds a custom brand voice from seconds of audio input. MAI-Image-2 also released. Currently developer tools on Microsoft Foundry and Azure — not directly accessible to non-technical SMB teams today. Watch for consumer Copilot integration.",
+    bestFor: [
+      "Developer teams or technical marketers on Azure wanting world-class transcription at $0.36/hour",
+      "Agencies building custom voice and transcription pipelines for clients",
+      "Watch list: when it moves into consumer Copilot features, SMB access becomes immediate",
+      "Podcast teams calculating transcription ROI — $2.16/month for 2 weekly episodes",
+    ],
+    proTip: "MAI-Transcribe-1 changes the ROI on content repurposing completely — accurate transcription at near-zero cost means every piece of audio you record should become blog posts, newsletters, and social content. The catch: it requires Azure/Microsoft Foundry access today, meaning a developer on your team or a technical setup. When this moves into consumer Copilot features (expected later 2026), it becomes the most important transcription tool for SMBs. Watch for that announcement.",
+    pricing: "MAI-Transcribe-1: ~$0.36/hour | Available via Microsoft Foundry and Azure (developer access)",
+    features: [
+      "MAI-Transcribe-1: 'most accurate transcription model in the world' (Mustafa Suleiman, April 2, 2026)",
+      "~$0.36/hour transcription — ~$2.16/month for 2 weekly 45-min podcast episodes",
+      "MAI-Voice-1: custom brand voice from seconds of audio input",
+      "MAI-Image-2: image generation model",
+      "Currently: developer tools on Microsoft Foundry and Azure",
+      "Consumer Copilot integration expected later 2026 — watch for SMB accessibility",
+    ],
+    tags: ["voice", "transcription", "audio", "microsoft", "enterprise", "developer", "podcast", "brand-voice"],
+    relatedTools: ["elevenlabs", "descript", "eleven-music", "adobe-audio"],
+    url: "https://azure.microsoft.com/en-us/products/ai-services/",
+    lastUpdated: "April 2026",
+  },
+];;;;;
 
 /**
  * Get tool by ID
