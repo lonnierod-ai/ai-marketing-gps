@@ -701,6 +701,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "creative",
       "facebook",
       "instagram",
+      "meta",
       "google-ads",
       "conversion",
       "paid-social",
@@ -708,8 +709,11 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     difficulty: "intermediate",
     estimatedTimeframe: "Hours instead of days",
     recommendedTools: [
+      "meta-ai-business-assistant",
+      "meta-ads-ai",
       "adcreative-ai",
       "canva-ai",
+      "chatgpt-images-2",
       "pencil-ai",
       "creatopy",
       "foreplay-co",
@@ -1347,13 +1351,18 @@ const TOPIC_KEYWORDS: Record<string, string[]> = {
   "chatgpt search": ["aeo", "aio", "chatgpt", "ai-search"],
 
   // Ads-related searches
-  "ads": ["ads", "advertising", "creative"],
+  "ads": ["ads", "advertising", "creative", "meta", "facebook"],
   "ad creatives": ["ads", "advertising", "creative"],
-  "facebook ads": ["ads", "facebook", "advertising"],
+  "facebook ads": ["ads", "facebook", "advertising", "meta"],
+  "meta ads": ["ads", "facebook", "meta", "advertising"],
+  "instagram ads": ["ads", "instagram", "meta", "advertising"],
+  "meta advertising": ["ads", "meta", "facebook", "advertising"],
   "google ads": ["ads", "google-ads", "advertising"],
-  "paid ads": ["ads", "advertising", "paid-social"],
-  "advertising": ["ads", "advertising", "creative"],
+  "paid ads": ["ads", "advertising", "paid-social", "meta"],
+  "advertising": ["ads", "advertising", "creative", "meta", "facebook"],
   "ad design": ["ads", "advertising", "creative"],
+  "run ads": ["ads", "advertising", "meta", "facebook"],
+  "social ads": ["ads", "advertising", "facebook", "instagram", "meta"],
 
   // Repurposing-related searches
   "repurpose": ["repurposing", "content", "multi-format"],
