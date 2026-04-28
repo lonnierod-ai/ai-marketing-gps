@@ -4,9 +4,7 @@ import { MarketingGoal } from "@/types";
  * Marketing Goals Database
  * Curated based on use cases from the AI Toolkit
  * Each goal maps to specific tools that help achieve it
- * Updated: Added 10 new goals covering Headshots, Ad Creatives, LinkedIn,
- * YouTube, Email Newsletters, SEO Blog Writing, Social Scheduling,
- * AIO Optimization, Content Repurposing Automation, and Image Editing
+ * Updated: Added 11 new goals including AEO — April 2026
  */
 
 export const MARKETING_GOALS: MarketingGoal[] = [
