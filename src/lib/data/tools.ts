@@ -41,7 +41,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["writing", "content", "blog", "social media", "brainstorming", "research", "llm", "memory", "dictation", "multimodal"],
     relatedTools: ["claude", "jasper-ai", "copy-ai", "notebooklm"],
     url: "https://chat.openai.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "claude",
@@ -72,7 +72,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["writing", "content", "strategy", "research", "long-form", "brand voice", "llm", "agents", "workflow", "design", "prototyping"],
     relatedTools: ["chatgpt", "jasper-ai", "notebooklm", "canva-ai", "claude-design"],
     url: "https://claude.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "jasper-ai",
@@ -89,7 +89,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["writing", "marketing", "seo", "templates", "brand voice", "agency"],
     relatedTools: ["chatgpt", "claude", "copy-ai"],
     url: "https://www.jasper.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "copy-ai",
@@ -105,7 +105,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["copywriting", "social media", "ads", "short-form", "e-commerce"],
     relatedTools: ["jasper-ai", "chatgpt"],
     url: "https://www.copy.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "grammarly",
@@ -122,7 +122,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["editing", "grammar", "quality", "tone", "proofreading"],
     relatedTools: ["chatgpt", "claude", "jasper-ai"],
     url: "https://www.grammarly.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "gemini-3",
@@ -151,7 +151,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["writing", "content", "research", "automation", "agents", "reasoning", "workspace", "search-integration", "llm", "benchmarks"],
     relatedTools: ["chatgpt", "claude", "notebooklm", "google-ai-studio", "gemini-agent"],
     url: "https://gemini.google.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -172,7 +172,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "discontinued", "shutdown"],
     relatedTools: ["kling-ai", "google-veo-3", "runway-gen-4", "luma-ray-3"],
     url: "https://sora.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "google-veo-3",
@@ -201,7 +201,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "vertical-video", "shorts", "reels", "tiktok", "free", "google-workspace", "watermarking"],
     relatedTools: ["luma-ray-3", "runway-gen-4", "kling-ai", "google-lyria-3"],
     url: "https://vids.google.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "luma-ray-3",
@@ -218,7 +218,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "hdr", "draft-mode", "cost-effective"],
     relatedTools: ["sora-2", "google-veo-3", "runway-gen-4"],
     url: "https://lumalabs.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "runway-gen-4",
@@ -246,7 +246,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "character-consistency", "professional", "multi-model", "photorealistic"],
     relatedTools: ["kling-ai", "google-veo-3", "seedance-2", "luma-ray-3"],
     url: "https://runwayml.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "descript",
@@ -276,7 +276,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "podcast", "editing", "transcription", "voice-cloning", "captions", "lip-sync", "multilingual", "b-roll", "ai-editing"],
     relatedTools: ["opusclip", "riverside-fm", "castmagic", "kling-ai"],
     url: "https://www.descript.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "opusclip",
@@ -294,7 +294,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "repurposing", "social media", "clips", "automation"],
     relatedTools: ["descript", "castmagic", "riverside-fm"],
     url: "https://www.opus.pro",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "pika-labs",
@@ -311,7 +311,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "social", "templates", "community", "remix"],
     relatedTools: ["sora-2", "runway-gen-4"],
     url: "https://pika.art",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -344,7 +344,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["avatar", "video", "multilingual", "training", "education", "automation", "4k", "canva-integration"],
     relatedTools: ["synthesia", "elevenlabs", "descript", "canva-ai"],
     url: "https://www.heygen.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "synthesia",
@@ -373,7 +373,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["avatar", "video", "presentations", "multilingual", "corporate", "training", "voice-speed", "speech-regeneration"],
     relatedTools: ["heygen", "elevenlabs", "descript"],
     url: "https://www.synthesia.io",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -409,7 +409,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["voice", "audio", "tts", "voice-cloning", "agents", "collaboration", "multilingual", "podcast", "marketplace", "flows", "automation"],
     relatedTools: ["descript", "heygen", "eleven-music", "make-com", "zapier"],
     url: "https://elevenlabs.io",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "adobe-audio",
@@ -427,7 +427,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["voice", "audio", "music", "soundtrack", "tts", "royalty-free"],
     relatedTools: ["elevenlabs", "descript"],
     url: "https://www.adobe.com/products/firefly.html",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -449,7 +449,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "creative", "artistic", "visual"],
     relatedTools: ["dall-e-3", "adobe-firefly", "imagen-4"],
     url: "https://www.midjourney.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "dall-e-3",
@@ -466,7 +466,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "chatgpt", "text-in-image", "mockups"],
     relatedTools: ["midjourney", "adobe-firefly", "canva-ai"],
     url: "https://openai.com/dall-e-3",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "canva-ai",
@@ -499,7 +499,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["design", "graphics", "social media", "templates", "brand-kit", "presentations", "agentic", "scheduling", "automation", "connectors", "ai-generation"],
     relatedTools: ["adobe-firefly", "claude-design", "gamma-imagine", "claude", "chatgpt"],
     url: "https://www.canva.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "adobe-firefly",
@@ -527,7 +527,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "adobe", "commercial-safe", "professional", "multi-model", "video", "conversational"],
     relatedTools: ["canva-ai", "midjourney", "runway-gen-4", "kling-ai"],
     url: "https://www.adobe.com/products/firefly.html",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "imagen-4",
@@ -544,7 +544,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "google", "high-quality", "text-rendering"],
     relatedTools: ["midjourney", "dall-e-3", "adobe-firefly"],
     url: "https://deepmind.google/technologies/imagen-3/",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "nano-banana-pro",
@@ -581,7 +581,7 @@ export const AI_TOOLS: AITool[] = [
     ],
     relatedTools: ["midjourney", "dall-e-3", "imagen-4", "canva-ai"],
     url: "https://gemini.google.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -603,7 +603,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["no-code", "development", "multimodal", "prototyping", "automation"],
     relatedTools: ["chatgpt", "claude"],
     url: "https://aistudio.google.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -644,7 +644,7 @@ export const AI_TOOLS: AITool[] = [
     ],
     relatedTools: ["perplexity-ai", "claude", "marketmuse", "gemini-3"],
     url: "https://notebooklm.google.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "perplexity-ai",
@@ -672,7 +672,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["research", "search", "citations", "fact-checking", "aio", "advertising", "sponsored", "b2b"],
     relatedTools: ["notebooklm", "chatgpt", "claude", "google-search-console"],
     url: "https://www.perplexity.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "surfer-seo",
@@ -689,7 +689,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "optimization", "keywords", "ranking", "analysis"],
     relatedTools: ["clearscope", "marketmuse", "chatgpt"],
     url: "https://surferseo.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "clearscope",
@@ -705,7 +705,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "optimization", "content-grading", "relevance"],
     relatedTools: ["surfer-seo", "marketmuse"],
     url: "https://www.clearscope.io",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "marketmuse",
@@ -722,7 +722,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "strategy", "content-gaps", "planning", "briefs"],
     relatedTools: ["surfer-seo", "clearscope", "notebooklm"],
     url: "https://www.marketmuse.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -743,7 +743,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social-media", "scheduling", "analytics", "management"],
     relatedTools: ["hootsuite", "copy-ai", "chatgpt"],
     url: "https://buffer.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "hootsuite",
@@ -760,7 +760,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social-media", "listening", "sentiment", "monitoring", "analytics"],
     relatedTools: ["buffer-ai", "hubspot-ai"],
     url: "https://www.hootsuite.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "notion-ai",
@@ -778,7 +778,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["productivity", "automation", "research", "workflow", "agents"],
     relatedTools: ["zapier", "chatgpt"],
     url: "https://www.notion.com/product",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -800,7 +800,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["podcast", "recording", "transcription", "video", "remote"],
     relatedTools: ["descript", "castmagic", "opusclip"],
     url: "https://riverside.fm",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "castmagic",
@@ -816,7 +816,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["podcast", "repurposing", "content", "automation", "marketing"],
     relatedTools: ["riverside-fm", "descript", "opusclip"],
     url: "https://www.castmagic.io",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "podcastle",
@@ -832,7 +832,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["podcast", "recording", "editing", "audio-enhancement", "all-in-one"],
     relatedTools: ["riverside-fm", "descript"],
     url: "https://podcastle.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -853,7 +853,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["crm", "email", "automation", "workflows", "lead-scoring", "enterprise"],
     relatedTools: ["mailchimp", "klaviyo", "zapier"],
     url: "https://www.hubspot.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "mailchimp",
@@ -873,7 +873,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "marketing", "newsletters", "automation", "b2b"],
     relatedTools: ["klaviyo", "hubspot-ai"],
     url: "https://mailchimp.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "klaviyo",
@@ -890,7 +890,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "sms", "e-commerce", "shopify", "predictive-analytics"],
     relatedTools: ["mailchimp", "hubspot-ai"],
     url: "https://www.klaviyo.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "zapier",
@@ -919,7 +919,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["automation", "workflows", "integration", "no-code", "productivity", "agents", "governance"],
     relatedTools: ["notion-ai", "hubspot-ai", "make-com", "google-ai-studio"],
     url: "https://zapier.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -940,7 +940,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["analytics", "metrics", "data", "insights", "tracking"],
     relatedTools: ["hubspot-ai"],
     url: "https://analytics.google.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -962,7 +962,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "repurposing", "social media", "clips", "automation", "youtube", "tiktok"],
     relatedTools: ["opusclip", "descript", "castmagic"],
     url: "https://www.munchies.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "pictory",
@@ -988,7 +988,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "repurposing", "blog", "content", "automation", "social media", "interactive", "hosting", "avatars"],
     relatedTools: ["munch", "opusclip", "lumen5", "heygen"],
     url: "https://pictory.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "lumen5",
@@ -1005,7 +1005,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "repurposing", "blog", "social media", "brand-kit", "automation"],
     relatedTools: ["pictory", "munch", "canva-ai"],
     url: "https://lumen5.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "repurpose-io",
@@ -1022,7 +1022,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["repurposing", "automation", "distribution", "podcast", "cross-platform", "workflow"],
     relatedTools: ["castmagic", "zapier", "opusclip"],
     url: "https://repurpose.io",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "vidyo-ai",
@@ -1039,7 +1039,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "repurposing", "clips", "captions", "social media", "automation"],
     relatedTools: ["munch", "opusclip", "descript"],
     url: "https://vidyo.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "swell-ai",
@@ -1056,7 +1056,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["podcast", "repurposing", "content", "automation", "newsletter", "blog"],
     relatedTools: ["castmagic", "repurpose-io", "riverside-fm"],
     url: "https://www.swellai.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -1078,7 +1078,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["headshots", "photos", "professional", "linkedin", "portrait", "ai-generation"],
     relatedTools: ["headshotpro", "profile-picture-ai"],
     url: "https://www.aragon.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "headshotpro",
@@ -1095,7 +1095,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["headshots", "photos", "professional", "corporate", "team", "portrait"],
     relatedTools: ["aragon-ai", "profile-picture-ai"],
     url: "https://www.headshotpro.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "profile-picture-ai",
@@ -1113,7 +1113,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["headshots", "photos", "profile", "social media", "linkedin", "personal-brand"],
     relatedTools: ["aragon-ai", "headshotpro"],
     url: "https://www.profilepicture.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "remini",
@@ -1130,7 +1130,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["headshots", "photos", "enhancement", "upscaling", "restoration", "portrait"],
     relatedTools: ["aragon-ai", "headshotpro"],
     url: "https://remini.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -1162,7 +1162,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image-editing", "photoshop", "generative-fill", "adobe", "professional", "retouching", "ai-assistant", "multi-model"],
     relatedTools: ["adobe-firefly", "canva-ai", "remove-bg", "clipdrop"],
     url: "https://www.adobe.com/products/photoshop.html",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "remove-bg",
@@ -1180,7 +1180,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image-editing", "background-removal", "product-photos", "e-commerce", "automation"],
     relatedTools: ["canva-ai", "adobe-photoshop-ai", "clipdrop"],
     url: "https://www.remove.bg",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "clipdrop",
@@ -1198,7 +1198,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image-editing", "background-removal", "upscaling", "relighting", "product-photos"],
     relatedTools: ["remove-bg", "adobe-photoshop-ai", "canva-ai"],
     url: "https://clipdrop.co",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "luminar-ai",
@@ -1216,7 +1216,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image-editing", "photo-editing", "portrait", "sky-replacement", "professional"],
     relatedTools: ["adobe-photoshop-ai", "clipdrop"],
     url: "https://skylum.com/luminar",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "photoroom",
@@ -1234,7 +1234,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image-editing", "product-photos", "e-commerce", "mobile", "background-generation", "batch"],
     relatedTools: ["remove-bg", "canva-ai", "clipdrop"],
     url: "https://www.photoroom.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "topaz-labs",
@@ -1252,7 +1252,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image-editing", "upscaling", "sharpening", "noise-reduction", "photo-quality"],
     relatedTools: ["adobe-photoshop-ai", "clipdrop", "luminar-ai"],
     url: "https://www.topazlabs.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -1274,7 +1274,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "open-source", "customizable", "local", "advanced"],
     relatedTools: ["midjourney", "dall-e-3", "adobe-firefly"],
     url: "https://stability.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "ideogram",
@@ -1292,7 +1292,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "text-in-image", "logos", "social media", "typography"],
     relatedTools: ["dall-e-3", "nano-banana-pro", "canva-ai"],
     url: "https://ideogram.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "flux-ai",
@@ -1310,7 +1310,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "photorealistic", "open-source", "high-quality"],
     relatedTools: ["midjourney", "stable-diffusion", "dall-e-3"],
     url: "https://blackforestlabs.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "leonardo-ai",
@@ -1328,7 +1328,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "brand", "fine-tuning", "design", "marketing"],
     relatedTools: ["midjourney", "stable-diffusion", "adobe-firefly"],
     url: "https://leonardo.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "playground-ai",
@@ -1346,7 +1346,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "free", "beginner-friendly", "social media"],
     relatedTools: ["ideogram", "dall-e-3", "leonardo-ai"],
     url: "https://playground.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "nightcafe",
@@ -1364,7 +1364,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "creative", "multi-model", "art", "merchandise"],
     relatedTools: ["midjourney", "playground-ai", "stable-diffusion"],
     url: "https://nightcafe.studio",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -1386,7 +1386,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "scheduling", "instagram", "analytics", "captions", "hashtags"],
     relatedTools: ["buffer-ai", "hootsuite", "planoly"],
     url: "https://later.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "planoly",
@@ -1404,7 +1404,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "instagram", "pinterest", "scheduling", "visual", "grid-planning"],
     relatedTools: ["later", "buffer-ai", "canva-ai"],
     url: "https://www.planoly.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "metricool",
@@ -1422,7 +1422,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "analytics", "scheduling", "competitive-analysis", "performance", "agency"],
     relatedTools: ["hootsuite", "buffer-ai", "later"],
     url: "https://metricool.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "flick-ai",
@@ -1440,7 +1440,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "content-creation", "ai-writing", "instagram", "linkedin", "captions"],
     relatedTools: ["later", "buffer-ai", "copy-ai"],
     url: "https://www.flick.social",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "sprout-social",
@@ -1458,7 +1458,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "enterprise", "analytics", "listening", "scheduling", "reporting"],
     relatedTools: ["hootsuite", "metricool", "hubspot-ai"],
     url: "https://sproutsocial.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "taplio",
@@ -1476,7 +1476,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "linkedin", "b2b", "content-creation", "scheduling", "professional"],
     relatedTools: ["flick-ai", "buffer-ai", "jasper-ai"],
     url: "https://taplio.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "tweet-hunter",
@@ -1494,7 +1494,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["social media", "twitter", "x", "content-creation", "scheduling", "growth"],
     relatedTools: ["taplio", "buffer-ai", "copy-ai"],
     url: "https://tweethunter.io",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -1516,7 +1516,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "newsletter", "monetization", "creator", "subscriber", "content"],
     relatedTools: ["convertkit", "mailchimp", "substack"],
     url: "https://www.beehiiv.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "convertkit",
@@ -1534,7 +1534,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "creator", "automation", "segmentation", "landing-pages", "digital-products"],
     relatedTools: ["beehiiv", "mailchimp", "hubspot-ai"],
     url: "https://kit.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "substack",
@@ -1552,7 +1552,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "newsletter", "monetization", "writing", "paid-subscriptions", "creator"],
     relatedTools: ["beehiiv", "convertkit"],
     url: "https://substack.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "activecampaign",
@@ -1570,7 +1570,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "crm", "automation", "lead-scoring", "customer-journey", "advanced"],
     relatedTools: ["hubspot-ai", "mailchimp", "klaviyo"],
     url: "https://www.activecampaign.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "instantly-ai",
@@ -1588,7 +1588,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "cold-email", "outreach", "sales", "b2b", "lead-generation", "automation"],
     relatedTools: ["hubspot-ai", "activecampaign", "copy-ai"],
     url: "https://instantly.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "smartlead",
@@ -1606,7 +1606,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["email", "cold-email", "outreach", "linkedin", "multi-channel", "agency", "sales"],
     relatedTools: ["instantly-ai", "hubspot-ai", "taplio"],
     url: "https://smartlead.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -1628,7 +1628,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "keywords", "backlinks", "research", "competitive-analysis", "ranking"],
     relatedTools: ["semrush", "surfer-seo", "clearscope"],
     url: "https://ahrefs.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "semrush",
@@ -1646,7 +1646,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "keywords", "ppc", "competitive-analysis", "content", "advertising", "all-in-one"],
     relatedTools: ["ahrefs", "surfer-seo", "google-analytics-4"],
     url: "https://www.semrush.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "google-search-console",
@@ -1664,7 +1664,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "google", "search", "analytics", "indexing", "technical-seo", "free"],
     relatedTools: ["google-analytics-4", "ahrefs", "semrush"],
     url: "https://search.google.com/search-console",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "rankmath",
@@ -1682,7 +1682,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "wordpress", "on-page-seo", "schema", "plugin", "content-optimization"],
     relatedTools: ["surfer-seo", "google-search-console", "ahrefs"],
     url: "https://rankmath.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "keyword-insights",
@@ -1700,7 +1700,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "keywords", "clustering", "content-strategy", "topical-authority", "planning"],
     relatedTools: ["ahrefs", "semrush", "marketmuse"],
     url: "https://www.keywordinsights.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "neuronwriter",
@@ -1718,7 +1718,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "content-writing", "nlp", "optimization", "ranking", "competitor-analysis"],
     relatedTools: ["surfer-seo", "clearscope", "jasper-ai"],
     url: "https://www.neuronwriter.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -1740,7 +1740,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["ads", "advertising", "creative", "facebook", "instagram", "google-ads", "conversion"],
     relatedTools: ["canva-ai", "jasper-ai", "copy-ai"],
     url: "https://www.adcreative.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "smartly-io",
@@ -1758,7 +1758,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["ads", "advertising", "automation", "enterprise", "paid-social", "optimization"],
     relatedTools: ["adcreative-ai", "hubspot-ai", "semrush"],
     url: "https://www.smartly.io",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "pencil-ai",
@@ -1776,7 +1776,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["ads", "advertising", "video", "creative", "performance-prediction", "e-commerce"],
     relatedTools: ["adcreative-ai", "canva-ai", "lumen5"],
     url: "https://www.trypencil.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "creatopy",
@@ -1794,7 +1794,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["ads", "advertising", "design", "banner-ads", "automation", "branding", "multi-format"],
     relatedTools: ["adcreative-ai", "canva-ai", "smartly-io"],
     url: "https://www.creatopy.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "motion-app",
@@ -1812,7 +1812,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["ads", "advertising", "analytics", "creative", "performance", "data-driven"],
     relatedTools: ["adcreative-ai", "google-analytics-4", "semrush"],
     url: "https://www.motionapp.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "foreplay-co",
@@ -1830,7 +1830,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["ads", "advertising", "research", "competitor-analysis", "creative-briefs", "inspiration"],
     relatedTools: ["adcreative-ai", "motion-app", "pencil-ai"],
     url: "https://foreplay.co",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -1852,7 +1852,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "google", "ppc", "search", "display", "youtube", "ai-optimization"],
     relatedTools: ["semrush", "google-analytics-4", "adcreative-ai"],
     url: "https://ads.google.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "meta-ads-ai",
@@ -1881,7 +1881,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "facebook", "instagram", "social-ads", "e-commerce", "ai-targeting", "capi", "business-assistant"],
     relatedTools: ["adcreative-ai", "klaviyo", "smartly-io", "meta-muse-spark"],
     url: "https://www.facebook.com/business/ads",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "linkedin-ads",
@@ -1899,7 +1899,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "linkedin", "b2b", "professional", "lead-generation", "thought-leadership"],
     relatedTools: ["taplio", "hubspot-ai", "semrush"],
     url: "https://www.linkedin.com/campaignmanager",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "tiktok-ads",
@@ -1917,7 +1917,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "tiktok", "video-ads", "gen-z", "social-ads", "e-commerce"],
     relatedTools: ["adcreative-ai", "sora-2", "meta-ads-ai"],
     url: "https://ads.tiktok.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "wordstream",
@@ -1935,7 +1935,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "ppc", "google-ads", "facebook-ads", "smb", "optimization", "local"],
     relatedTools: ["google-ads-ai", "semrush", "hubspot-ai"],
     url: "https://www.wordstream.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "triple-whale",
@@ -1953,7 +1953,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["analytics", "attribution", "e-commerce", "shopify", "paid-ads", "first-party-data"],
     relatedTools: ["google-analytics-4", "klaviyo", "meta-ads-ai"],
     url: "https://triplewhale.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "northbeam",
@@ -1971,7 +1971,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["analytics", "attribution", "media-mix-modeling", "e-commerce", "dtc", "advanced"],
     relatedTools: ["triple-whale", "google-analytics-4", "meta-ads-ai"],
     url: "https://www.northbeam.io",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "make-com",
@@ -2000,7 +2000,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["automation", "workflows", "integration", "no-code", "advanced", "data-transformation", "agents"],
     relatedTools: ["zapier", "hubspot-ai", "google-analytics-4", "notion-ai"],
     url: "https://www.make.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "unbounce",
@@ -2018,7 +2018,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["landing-pages", "conversion", "a-b-testing", "advertising", "ai-optimization", "no-code"],
     relatedTools: ["google-ads-ai", "hubspot-ai", "adcreative-ai"],
     url: "https://unbounce.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -2051,7 +2051,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "audio", "ai-generation", "social media", "tiktok", "reels", "multi-shot", "4k", "short-form"],
     relatedTools: ["sora-2", "runway-gen-4", "google-veo-3", "kling-image-o1"],
     url: "https://klingai.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "tiktok-symphony",
@@ -2077,7 +2077,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["tiktok", "social media", "repurposing", "video", "clips", "content-creation", "free", "automation"],
     relatedTools: ["opusclip", "munch", "vidyo-ai", "tiktok-ads"],
     url: "https://ads.tiktok.com/business/creativecenter/inspiration/topads/pc/en",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "gemini-agent",
@@ -2105,7 +2105,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["automation", "agents", "research", "workflow", "google", "productivity", "email", "calendar"],
     relatedTools: ["notion-ai", "zapier", "notebooklm", "gemini-3"],
     url: "https://gemini.google.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "claude-for-sheets",
@@ -2132,7 +2132,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["google-sheets", "automation", "spreadsheet", "content", "bulk-processing", "workspace", "claude"],
     relatedTools: ["claude", "google-ai-studio", "zapier", "notebooklm"],
     url: "https://workspace.google.com/marketplace",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "meta-ai-creator-tools",
@@ -2159,7 +2159,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["influencer", "creator", "partnership", "facebook", "instagram", "social-ads", "predictive-analytics", "brand-matching"],
     relatedTools: ["meta-ads-ai", "taplio", "sprout-social", "adcreative-ai"],
     url: "https://www.facebook.com/business",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "gpt-5-2",
@@ -2186,7 +2186,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["writing", "content", "research", "multimodal", "llm", "reasoning", "web-browsing", "advanced"],
     relatedTools: ["claude", "gemini-3", "notebooklm", "perplexity-ai"],
     url: "https://chat.openai.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -2216,7 +2216,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["llm", "writing", "content", "research", "cost-effective", "bulk-processing", "open-source"],
     relatedTools: ["chatgpt", "claude", "gemini-3"],
     url: "https://www.deepseek.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "kling-image-o1",
@@ -2243,7 +2243,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "brand-consistency", "characters", "product-photos", "social media"],
     relatedTools: ["midjourney", "kling-ai", "leonardo-ai", "flux-ai"],
     url: "https://klingai.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "nvidia-digital-human",
@@ -2268,7 +2268,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["avatar", "digital-human", "interactive", "3d", "enterprise", "infrastructure", "future"],
     relatedTools: ["heygen", "synthesia", "kling-ai"],
     url: "https://www.nvidia.com/en-us/omniverse/ace/",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "perplexity-ads",
@@ -2294,7 +2294,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "aio", "ai-search", "b2b", "sponsored", "perplexity", "search-ads"],
     relatedTools: ["perplexity-ai", "google-ads-ai", "semrush"],
     url: "https://www.perplexity.ai/advertising",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "reddit-max-campaigns",
@@ -2322,7 +2322,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["advertising", "reddit", "social-ads", "audience-targeting", "transparency", "b2b", "smb"],
     relatedTools: ["meta-ads-ai", "google-ads-ai", "linkedin-ads"],
     url: "https://ads.reddit.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "local-falcon",
@@ -2349,7 +2349,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "local-seo", "google-business", "ai-search", "geo", "visibility", "local"],
     relatedTools: ["google-search-console", "semrush", "ahrefs", "perplexity-ai"],
     url: "https://www.localfalcon.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "suno",
@@ -2374,7 +2374,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["audio", "music", "jingles", "sonic-branding", "podcast", "background-music", "ai-generation"],
     relatedTools: ["elevenlabs", "adobe-audio", "descript"],
     url: "https://suno.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "chatgpt-canvas",
@@ -2399,7 +2399,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["writing", "content", "editing", "documents", "collaboration", "productivity", "llm"],
     relatedTools: ["chatgpt", "claude", "notion-ai"],
     url: "https://chat.openai.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "adobe-firefly-video",
@@ -2425,7 +2425,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "commercial-safe", "adobe", "premiere", "copyright-safe", "b-roll"],
     relatedTools: ["runway-gen-4", "adobe-firefly", "google-veo-3", "sora-2"],
     url: "https://www.adobe.com/products/firefly.html",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "microsoft-copilot-linkedin",
@@ -2450,7 +2450,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["linkedin", "social media", "b2b", "content-creation", "microsoft", "copilot", "professional"],
     relatedTools: ["taplio", "flick-ai", "chatgpt", "linkedin-ads"],
     url: "https://linkedin.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -2484,7 +2484,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "long-form", "multi-modal", "bytedance", "advanced", "lip-sync"],
     relatedTools: ["kling-ai", "runway-gen-4", "google-veo-3", "higgsfield-soul-cast"],
     url: "https://seed.bytedance.com/en/seedance2_0",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "openclaw",
@@ -2510,7 +2510,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["agents", "automation", "open-source", "productivity", "slack", "email", "workflow", "advanced"],
     relatedTools: ["zapier", "make-com", "notion-ai", "gemini-agent"],
     url: "https://github.com/openclaw",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "apple-creator-studio",
@@ -2537,7 +2537,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "audio", "design", "apple", "final-cut", "logic-pro", "creative-suite", "cost-effective"],
     relatedTools: ["descript", "adobe-firefly", "adobe-audio", "runway-gen-4"],
     url: "https://www.apple.com/apple-one/",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "pixverse-r1",
@@ -2563,7 +2563,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "real-time", "prototyping", "live-direction", "beta"],
     relatedTools: ["runway-gen-4", "sora-2", "kling-ai", "google-veo-3"],
     url: "https://realtime.pixverse.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "linkedin-premium-all-in-one",
@@ -2590,7 +2590,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["linkedin", "b2b", "advertising", "prospecting", "sales", "smb", "social media"],
     relatedTools: ["taplio", "linkedin-ads", "microsoft-copilot-linkedin", "hubspot-ai"],
     url: "https://www.linkedin.com/premium/",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "google-lyria-3",
@@ -2619,7 +2619,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["audio", "music", "ai-generation", "free", "social media", "google", "sonic-branding", "shorts"],
     relatedTools: ["suno", "elevenlabs", "adobe-audio", "gemini-3"],
     url: "https://gemini.google.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "gemini-3-1-pro",
@@ -2648,7 +2648,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["llm", "reasoning", "research", "content", "google", "benchmarks", "cost-effective", "api"],
     relatedTools: ["chatgpt", "claude", "gemini-3", "notebooklm"],
     url: "https://gemini.google.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "mozart-ai",
@@ -2674,7 +2674,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["audio", "music", "ai-generation", "commercial", "sonic-branding", "generative"],
     relatedTools: ["suno", "google-lyria-3", "elevenlabs", "adobe-audio"],
     url: "https://mozart.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "wordpress-ai-assistant",
@@ -2699,7 +2699,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["wordpress", "content", "ai-writing", "website", "landing-pages", "cms", "no-code"],
     relatedTools: ["chatgpt", "canva-ai", "jasper-ai", "claude"],
     url: "https://wordpress.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "grok-4-2",
@@ -2724,7 +2724,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["llm", "research", "fact-checking", "multi-agent", "enterprise", "accuracy"],
     relatedTools: ["chatgpt", "claude", "perplexity-ai"],
     url: "https://x.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -2755,7 +2755,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["agents", "automation", "multi-agent", "research", "workflow", "enterprise", "autonomous"],
     relatedTools: ["zapier", "make-com", "claude", "notion-ai", "openclaw"],
     url: "https://www.perplexity.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "capcut-ai-video",
@@ -2782,7 +2782,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "storyboard", "social media", "free", "tiktok", "reels", "bytedance"],
     relatedTools: ["kling-ai", "runway-gen-4", "google-veo-3", "tiktok-symphony"],
     url: "https://www.capcut.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "gamma-imagine",
@@ -2810,7 +2810,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "presentations", "social media", "infographics", "design", "workflow"],
     relatedTools: ["canva-ai", "midjourney", "dall-e-3", "adobe-firefly"],
     url: "https://gamma.app",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "nvidia-nemoclaw",
@@ -2838,7 +2838,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["agents", "automation", "open-source", "enterprise", "security", "infrastructure", "advanced", "future"],
     relatedTools: ["openclaw", "zapier", "make-com", "nvidia-digital-human"],
     url: "https://www.nvidia.com/en-us/ai/",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "runway-characters",
@@ -2866,7 +2866,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["avatar", "interactive", "real-time", "conversational", "api", "brand", "video"],
     relatedTools: ["heygen", "synthesia", "nvidia-digital-human", "runway-gen-4"],
     url: "https://runwayml.com/characters",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "higgsfield-soul-cast",
@@ -2893,7 +2893,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["avatar", "video", "actors", "characters", "brand", "advertising", "ai-generation", "diversity"],
     relatedTools: ["heygen", "synthesia", "runway-gen-4", "kling-ai"],
     url: "https://higgsfield.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "zoom-ai-office",
@@ -2916,7 +2916,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["productivity", "meetings", "avatar", "workspace", "email", "calendar", "automation"],
     relatedTools: ["notion-ai", "claude", "zapier", "heygen"],
     url: "https://zoom.us",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "claude-dispatch",
@@ -2944,7 +2944,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["automation", "agents", "productivity", "content-repurposing", "mobile", "desktop", "claude"],
     relatedTools: ["claude", "zapier", "make-com", "notion-ai"],
     url: "https://claude.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "tapclicks-smartstory",
@@ -2968,7 +2968,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["analytics", "reporting", "automation", "agency", "marketing", "data"],
     relatedTools: ["google-analytics-4", "hubspot-ai", "semrush"],
     url: "https://tapclicks.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "typeface-ai",
@@ -2992,7 +2992,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["content-creation", "enterprise", "agents", "automation", "brand", "campaigns", "orchestration"],
     relatedTools: ["jasper-ai", "hubspot-ai", "canva-ai", "adcreative-ai"],
     url: "https://www.typeface.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -3025,7 +3025,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["llm", "open-source", "free", "privacy", "local", "content", "writing", "bulk-processing"],
     relatedTools: ["deepseek-v3", "chatgpt", "claude", "gemini-3"],
     url: "https://ollama.com/library/gemma",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "google-vids",
@@ -3052,7 +3052,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["video", "ai-generation", "free", "google", "social media", "short-form", "beginner-friendly"],
     relatedTools: ["google-veo-3", "kling-ai", "capcut-ai-video", "google-lyria-3"],
     url: "https://vids.google.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "frase-io",
@@ -3081,7 +3081,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "geo", "aio", "ai-search", "content-optimization", "competitor-analysis", "citations", "perplexity", "chatgpt"],
     relatedTools: ["surfer-seo", "clearscope", "neuronwriter", "perplexity-ai", "ahrefs"],
     url: "https://www.frase.io",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -3111,7 +3111,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["facebook", "instagram", "social-ads", "ai-discovery", "shopping", "creator", "meta", "advertising"],
     relatedTools: ["meta-ads-ai", "canva-ai", "adcreative-ai", "taplio"],
     url: "https://meta.ai",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "eleven-music",
@@ -3138,7 +3138,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["audio", "music", "ai-generation", "commercial-safe", "licensed", "ios", "podcast", "ads"],
     relatedTools: ["suno", "google-lyria-3", "elevenlabs", "adobe-audio"],
     url: "https://elevenlabs.io/music",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "microsoft-mai",
@@ -3165,7 +3165,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["voice", "transcription", "audio", "microsoft", "enterprise", "developer", "podcast", "brand-voice"],
     relatedTools: ["elevenlabs", "descript", "eleven-music", "adobe-audio"],
     url: "https://azure.microsoft.com/en-us/products/ai-services/",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -3200,7 +3200,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["design", "prototyping", "pitch-decks", "landing-pages", "visuals", "wireframes", "claude", "no-designer"],
     relatedTools: ["claude", "canva-ai", "gamma-imagine", "adobe-firefly"],
     url: "https://claude.ai/design",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "webflow-aeo",
@@ -3225,7 +3225,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["seo", "aeo", "geo", "ai-search", "answer-engine", "citations", "webflow", "enterprise"],
     relatedTools: ["frase-io", "local-falcon", "surfer-seo", "perplexity-ai"],
     url: "https://webflow.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "supermetrics",
@@ -3250,7 +3250,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["analytics", "reporting", "data", "paid-ads", "performance-marketing", "automation", "claude"],
     relatedTools: ["google-analytics-4", "hubspot-ai", "semrush", "claude"],
     url: "https://supermetrics.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -3283,7 +3283,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["image", "ai-generation", "typography", "social-media", "infographics", "multilingual", "free"],
     relatedTools: ["chatgpt", "canva-ai", "adobe-firefly", "dall-e-3", "midjourney"],
     url: "https://chat.openai.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "chatgpt-workspace-agents",
@@ -3309,7 +3309,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["agents", "automation", "workflow", "productivity", "scheduling", "chatgpt", "overnight"],
     relatedTools: ["chatgpt", "zapier", "make-com", "claude-dispatch", "perplexity-computer"],
     url: "https://chat.openai.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "meta-ai-business-assistant",
@@ -3338,7 +3338,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["facebook", "instagram", "advertising", "meta", "capi", "free", "campaign-analysis", "smb"],
     relatedTools: ["meta-ads-ai", "meta-muse-spark", "adcreative-ai", "tapclicks-smartstory"],
     url: "https://www.facebook.com/business/ads",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "linkedin-360brew",
@@ -3366,7 +3366,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["linkedin", "algorithm", "distribution", "b2b", "content", "thought-leadership", "organic"],
     relatedTools: ["taplio", "linkedin-premium-all-in-one", "microsoft-copilot-linkedin", "claude"],
     url: "https://www.linkedin.com",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 
   // ========================================
@@ -3399,7 +3399,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["agents", "automation", "voice", "lead-generation", "customer-support", "no-code", "smb"],
     relatedTools: ["elevenlabs", "zapier", "make-com", "hubspot-ai"],
     url: "https://elevenlabs.io/agents",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
   {
     id: "elevenlabs-flows",
@@ -3428,7 +3428,7 @@ export const AI_TOOLS: AITool[] = [
     tags: ["collaboration", "video", "audio", "workflow", "multi-model", "production", "team", "review"],
     relatedTools: ["elevenlabs", "descript", "make-com", "runway-gen-4"],
     url: "https://elevenlabs.io/creative",
-    lastUpdated: "April 2026",
+    lastUpdated: "May 2026",
   },
 ];;;;;;;;
 

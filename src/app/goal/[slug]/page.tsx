@@ -174,7 +174,7 @@ export default async function GoalDetailPage({
       <footer className="border-t mt-16 py-8 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600 text-sm">
           <p>
-            Data updated April 2026 · Updated weekly from AI Marketing GPS research
+            AI Marketing GPS · Updated May 2026
           </p>
         </div>
       </footer>
