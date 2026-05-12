@@ -16,7 +16,46 @@ function stripMarkdown(text: string): string {
 }
 
 function normalizeForSpeech(text: string): string {
-  return text
+  // Product name pronunciation fixes — must run before other replacements
+  const productNames: [RegExp, string][] = [
+    [/NotebookLM/gi, "Notebook L M"],
+    [/ChatGPT/gi, "Chat G P T"],
+    [/GPT-(\d+\.?\d*)/gi, "G P T $1"],
+    [/GPT(\d+\.?\d*)/gi, "G P T $1"],
+    [/OpenAI/gi, "Open A I"],
+    [/ElevenLabs/gi, "Eleven Labs"],
+    [/HeyGen/gi, "Hey Gen"],
+    [/TikTok/gi, "Tick Tock"],
+    [/YouTube/gi, "You Tube"],
+    [/LinkedIn/gi, "Linked In"],
+    [/Canva/gi, "Can-va"],
+    [/CapCut/gi, "Cap Cut"],
+    [/OpusClip/gi, "Opus Clip"],
+    [/Midjourney/gi, "Mid Journey"],
+    [/RunwayML/gi, "Runway M L"],
+    [/Runway/gi, "Runway"],
+    [/Veo\s?(\d+\.?\d*)/gi, "Veo $1"],
+    [/Gen-(\d+\.?\d*)/gi, "Gen $1"],
+    [/Gen(\d+\.?\d*)/gi, "Gen $1"],
+    [/Avatar\s?V\b/gi, "Avatar Five"],
+    [/Avatar\s?IV\b/gi, "Avatar Four"],
+    [/v(\d+\.?\d*)\b/g, "version $1"],
+    [/AI\b/g, "A I"],
+    [/SEO/gi, "S E O"],
+    [/API/gi, "A P I"],
+    [/SMB/gi, "S M B"],
+    [/ROI/gi, "R O I"],
+    [/CRM/gi, "C R M"],
+    [/SaaS/gi, "sass"],
+    [/RAG/gi, "R A G"],
+    [/LLM/gi, "L L M"],
+  ];
+
+  let result = text;
+  for (const [pattern, replacement] of productNames) {
+    result = result.replace(pattern, replacement);
+  }
+  return result
     // Currency: $29/month → 29 dollars a month
     .replace(/\$(\d+(?:\.\d+)?)\/month/g, "$1 dollars a month")
     .replace(/\$(\d+(?:\.\d+)?)\/mo/g, "$1 dollars a month")
