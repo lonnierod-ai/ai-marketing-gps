@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
     }
 
     const clean = normalizeForSpeech(stripMarkdown(text));
-    const capped = capAtSentence(clean, 300);
+    const capped = capAtSentence(clean, 450);
 
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
@@ -127,12 +127,13 @@ export async function POST(req: NextRequest) {
         },
         body: JSON.stringify({
           text: capped,
-          model_id: "eleven_turbo_v2",
+          model_id: "eleven_multilingual_v2",
           voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.75,
-            style: 0.3,
+            stability: 0.65,
+            similarity_boost: 0.80,
+            style: 0.0,
             use_speaker_boost: true,
+            speed: 0.90,
           },
         }),
       }
