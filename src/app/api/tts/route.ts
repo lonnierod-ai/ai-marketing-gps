@@ -1,38 +1,53 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// ============================================================
-// AI Marketing GPS — ElevenLabs TTS Route
-// POST /api/tts
-// Converts Maya's text responses to audio using Lonnie's voice clone
-//
-// ENV REQUIRED: ELEVENLABS_API_KEY in Vercel environment variables
-// VOICE ID: 8JvhNdsw7A5KtUA0z2gr (Lonnie's voice clone / Maya)
-// ============================================================
-
 const VOICE_ID = "8JvhNdsw7A5KtUA0z2gr";
 
 function stripMarkdown(text: string): string {
   return text
-    .replace(/\*\*(.*?)\*\*/g, "$1")        // bold
-    .replace(/\*(.*?)\*/g, "$1")              // italic
-    .replace(/`(.*?)`/g, "$1")                 // code
-    .replace(/https?:\/\/[^\s,)]+/g, "")    // URLs
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // markdown links
-    .replace(/#{1,6}\s/g, "")                 // headers
-    .replace(/[-*]\s/g, "")                   // list items
-    .replace(/\n{3,}/g, "\n\n")              // excess newlines
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .replace(/\*(.*?)\*/g, "$1")
+    .replace(/`(.*?)`/g, "$1")
+    .replace(/https?:\/\/[^\s,)]+/g, "")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/#{1,6}\s/g, "")
+    .replace(/[-*]\s/g, "")
+    .replace(/\n{3,}/g, "\n\n")
     .trim();
+}
+
+function capAtSentence(text: string, maxChars: number): string {
+  if (text.length <= maxChars) return text;
+  
+  // Find the last sentence ending (. ? !) before maxChars
+  const chunk = text.slice(0, maxChars);
+  const lastSentenceEnd = Math.max(
+    chunk.lastIndexOf(". "),
+    chunk.lastIndexOf("? "),
+    chunk.lastIndexOf("! "),
+    chunk.lastIndexOf(".\n"),
+    chunk.lastIndexOf("?\n"),
+    chunk.lastIndexOf("!\n")
+  );
+
+  if (lastSentenceEnd > 50) {
+    // Return up to and including the punctuation
+    return text.slice(0, lastSentenceEnd + 1).trim();
+  }
+
+  // Fallback: cut at last space before maxChars
+  const lastSpace = chunk.lastIndexOf(" ");
+  return text.slice(0, lastSpace > 0 ? lastSpace : maxChars).trim();
 }
 
 export async function POST(req: NextRequest) {
   try {
     const { text } = await req.json();
-
     if (!text) {
       return NextResponse.json({ error: "No text provided" }, { status: 400 });
     }
 
-    const cleanText = stripMarkdown(text).slice(0, 2500); // ElevenLabs limit safety
+    const clean = stripMarkdown(text);
+    const capped = capAtSentence(clean, 300);
 
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
@@ -44,7 +59,7 @@ export async function POST(req: NextRequest) {
           Accept: "audio/mpeg",
         },
         body: JSON.stringify({
-          text: cleanText,
+          text: capped,
           model_id: "eleven_turbo_v2",
           voice_settings: {
             stability: 0.5,
