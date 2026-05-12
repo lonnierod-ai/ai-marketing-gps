@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
             similarity_boost: 0.80,
             style: 0.0,
             use_speaker_boost: true,
-            speed: 0.95,
+            speed: 1.0,
           },
         }),
       }
