@@ -61,6 +61,7 @@ function normalizeForSpeech(text: string): string {
     .replace(/\$(\d+(?:\.\d+)?)\/mo/g, "$1 dollars a month")
     .replace(/\$(\d+(?:\.\d+)?)\/year/g, "$1 dollars a year")
     .replace(/\$(\d+(?:\.\d+)?)\/yr/g, "$1 dollars a year")
+    .replace(/\$(\d+(?:\.\d+)?)[-–](\d+(?:\.\d+)?)/g, "$1 to $2 dollars")
     .replace(/\$(\d+(?:\.\d+)?)/g, "$1 dollars")
     // Percentages: 67% → 67 percent
     .replace(/(\d+)%/g, "$1 percent")
@@ -137,7 +138,7 @@ export async function POST(req: NextRequest) {
             similarity_boost: 0.80,
             style: 0.0,
             use_speaker_boost: true,
-            speed: 0.90,
+            speed: 0.95,
           },
         }),
       }
