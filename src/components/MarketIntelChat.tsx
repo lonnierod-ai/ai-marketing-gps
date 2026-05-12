@@ -80,8 +80,8 @@ export default function MarketIntelChat() {
   // Show nudge bubble after 5 seconds, hide after 8 seconds
   useEffect(() => {
     if (isOpen) { setShowNudge(false); return; }
-    const showTimer = setTimeout(() => setShowNudge(true), 5000);
-    const hideTimer = setTimeout(() => setShowNudge(false), 13000);
+    const showTimer = setTimeout(() => setShowNudge(true), 4000);
+    const hideTimer = setTimeout(() => setShowNudge(false), 24000);
     return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
   }, [isOpen]);
 
@@ -582,38 +582,46 @@ export default function MarketIntelChat() {
 
         .lonnie-nudge {
           position: absolute;
-          bottom: 72px;
+          bottom: 76px;
           right: 0;
-          background: #ffffff;
-          border: 1.5px solid #cdb39b;
-          border-radius: 12px 12px 2px 12px;
-          padding: 10px 14px;
-          font-size: 12px;
-          color: #3b658a;
-          font-weight: 600;
+          background: #3b658a;
+          border: 2px solid #f37021;
+          border-radius: 16px 16px 2px 16px;
+          padding: 16px 20px;
+          font-size: 14px;
+          color: #ffffff;
+          font-weight: 700;
           white-space: nowrap;
-          box-shadow: 0 4px 20px rgba(59,101,138,0.15);
-          animation: nudge-in 0.3s cubic-bezier(0.34,1.56,0.64,1);
+          box-shadow: 0 8px 32px rgba(59,101,138,0.35), 0 0 0 4px rgba(243,112,33,0.15);
+          animation: nudge-in 0.4s cubic-bezier(0.34,1.56,0.64,1);
           cursor: pointer;
           font-family: inherit;
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 10px;
+          letter-spacing: 0.01em;
         }
 
         .lonnie-nudge:hover {
-          background: #3b658a;
-          color: #fff;
-          border-color: #3b658a;
+          background: #f37021;
+          border-color: #f37021;
+          transform: scale(1.03);
+          transition: all 0.15s;
         }
 
         .lonnie-nudge-dot {
-          width: 7px;
-          height: 7px;
+          width: 10px;
+          height: 10px;
           background: #f37021;
           border-radius: 50%;
-          animation: nudge-pulse 1.2s infinite;
+          animation: nudge-pulse 1s infinite;
           flex-shrink: 0;
+          box-shadow: 0 0 0 3px rgba(243,112,33,0.3);
+        }
+
+        .lonnie-nudge:hover .lonnie-nudge-dot {
+          background: #fff;
+          box-shadow: 0 0 0 3px rgba(255,255,255,0.3);
         }
 
         @keyframes nudge-in {
