@@ -84,26 +84,30 @@ function normalizeForSpeech(text: string): string {
 
 function capAtSentence(text: string, maxChars: number): string {
   if (text.length <= maxChars) return text;
-  
-  // Find the last sentence ending (. ? !) before maxChars
-  const chunk = text.slice(0, maxChars);
-  const lastSentenceEnd = Math.max(
-    chunk.lastIndexOf(". "),
-    chunk.lastIndexOf("? "),
-    chunk.lastIndexOf("! "),
-    chunk.lastIndexOf(".\n"),
-    chunk.lastIndexOf("?\n"),
-    chunk.lastIndexOf("!\n")
-  );
 
-  if (lastSentenceEnd > 50) {
-    // Return up to and including the punctuation
-    return text.slice(0, lastSentenceEnd + 1).trim();
+  // Split into sentences
+  const raw = text.match(/[^.!?]+[.!?]+/g) || [text];
+  const sentences = raw.map((s) => s.trim()).filter(Boolean);
+
+  if (sentences.length <= 1) {
+    return text.trim();
   }
 
-  // Fallback: cut at last space before maxChars
-  const lastSpace = chunk.lastIndexOf(" ");
-  return text.slice(0, lastSpace > 0 ? lastSpace : maxChars).trim();
+  // Always keep the last sentence (the follow-up question)
+  const lastSentence = sentences[sentences.length - 1];
+
+  // Build from start, always preserving the final question
+  let built = "";
+  for (let i = 0; i < sentences.length - 1; i++) {
+    const next = (built + " " + sentences[i]).trim();
+    if (next.length + 1 + lastSentence.length <= maxChars * 1.6) {
+      built = next;
+    } else {
+      break;
+    }
+  }
+
+  return (built + " " + lastSentence).trim();
 }
 
 export async function POST(req: NextRequest) {
@@ -114,7 +118,7 @@ export async function POST(req: NextRequest) {
     }
 
     const clean = normalizeForSpeech(stripMarkdown(text));
-    const capped = capAtSentence(clean, 450);
+    const capped = capAtSentence(clean, 300);
 
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
