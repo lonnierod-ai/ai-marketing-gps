@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "next/link";import MarketIntelChat from "@/components/MarketIntelChat";
 
 export const metadata: Metadata = {
   title: "AI Marketing GPS",
@@ -56,7 +56,8 @@ export default function RootLayout({
           </div>
         </header>
         {children}
-      </body>
+      <MarketIntelChat />
+</body>
     </html>
   );
 }
