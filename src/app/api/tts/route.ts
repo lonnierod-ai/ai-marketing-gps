@@ -119,7 +119,7 @@ export async function POST(req: NextRequest) {
     }
 
     const clean = normalizeForSpeech(stripMarkdown(text));
-    const capped = capAtSentence(clean, 300);
+    const capped = capAtSentence(clean, 600);
 
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
