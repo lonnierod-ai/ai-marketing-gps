@@ -1,15 +1,15 @@
 "use client";
 
 // ============================================================
-// AI Marketing GPS — Chat Widget
+// AI Marketing GPS — Maya Chat Widget v2
 // File: src/components/MarketIntelChat.tsx
 //
-// Usage: Import and drop anywhere in your Next.js app
-//   import MarketIntelChat from "@/components/MarketIntelChat";
-//   <MarketIntelChat />
-//
-// Requires: /src/app/api/chat/route.ts to be present
-// Requires: ANTHROPIC_API_KEY in .env.local
+// Replace the previous version with this file.
+// Requires:
+//   /src/app/api/chat/route.ts   — Claude API route
+//   /src/app/api/tts/route.ts    — ElevenLabs TTS route
+//   ANTHROPIC_API_KEY            — Vercel env var
+//   ELEVENLABS_API_KEY           — Vercel env var
 // ============================================================
 
 import { useState, useRef, useEffect, KeyboardEvent } from "react";
@@ -22,33 +22,29 @@ interface Message {
 }
 
 const SUGGESTED_QUESTIONS = [
-  "What's the best free tool for repurposing podcast episodes?",
+  "What's the best free tool for short-form video?",
   "Compare HeyGen vs Synthesia for SMBs",
+  "How do I repurpose my podcast into social content?",
+  "What AI tools work best together for content marketing?",
   "What changed with Canva AI recently?",
-  "Best AI tools for creating vertical video content",
-  "How do I get started with AI avatars on a budget?",
 ];
 
 function formatMessage(text: string) {
-  // Bold **text**
-  let formatted = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-  // Convert URLs to links (tool URLs)
-  formatted = formatted.replace(
+  let f = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+  f = f.replace(
     /(https?:\/\/[^\s,)]+)/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer" class="gps-link">$1</a>'
+    '<a href="$1" target="_blank" rel="noopener noreferrer" class="maya-link">$1</a>'
   );
-  // Episode citation badge — "Ep06" or "Episode 6" pattern
-  formatted = formatted.replace(
-    /Market Intel Ep(\d+)/g,
-    '<span class="gps-badge">🎙 Market Intel Ep$1</span>'
+  f = f.replace(
+    /Market Intel Ep(\d+)/gi,
+    '<span class="maya-badge">🎙 Market Intel Ep$1</span>'
   );
-  formatted = formatted.replace(
-    /Episode (\d+)/g,
-    '<span class="gps-badge">🎙 Ep$1</span>'
+  f = f.replace(
+    /Episode (\d+)/gi,
+    '<span class="maya-badge">🎙 Ep$1</span>'
   );
-  // Line breaks
-  formatted = formatted.replace(/\n\n/g, "</p><p>").replace(/\n/g, "<br/>");
-  return `<p>${formatted}</p>`;
+  f = f.replace(/\n\n/g, "</p><p>").replace(/\n/g, "<br/>");
+  return `<p>${f}</p>`;
 }
 
 export default function MarketIntelChat() {
@@ -56,28 +52,64 @@ export default function MarketIntelChat() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [voiceOn, setVoiceOn] = useState(true);
+  const [speaking, setSpeaking] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
   useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100);
-    }
+    if (isOpen) setTimeout(() => inputRef.current?.focus(), 150);
   }, [isOpen]);
+
+  async function speakText(text: string) {
+    if (!voiceOn) return;
+    try {
+      setSpeaking(true);
+      const res = await fetch("/api/tts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+      if (!res.ok) { setSpeaking(false); return; }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        URL.revokeObjectURL(audioRef.current.src);
+      }
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      audio.onended = () => { setSpeaking(false); URL.revokeObjectURL(url); };
+      audio.onerror = () => setSpeaking(false);
+      audio.play();
+    } catch {
+      setSpeaking(false);
+    }
+  }
+
+  function stopSpeaking() {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    setSpeaking(false);
+  }
 
   async function send(text?: string) {
     const query = (text ?? input).trim();
     if (!query || loading) return;
 
-    const userMessage: Message = { role: "user", content: query };
-    const updated = [...messages, userMessage];
+    const userMsg: Message = { role: "user", content: query };
+    const updated = [...messages, userMsg];
     setMessages(updated);
     setInput("");
     setLoading(true);
+    stopSpeaking();
 
     try {
       const res = await fetch("/api/chat", {
@@ -85,20 +117,15 @@ export default function MarketIntelChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: updated }),
       });
-
       const data = await res.json();
-      const assistantMessage: Message = {
-        role: "assistant",
-        content: data.message || "Sorry, something went wrong. Try again.",
-      };
-      setMessages((prev) => [...prev, assistantMessage]);
+      const reply = data.message || "Something went wrong — try again.";
+      const assistantMsg: Message = { role: "assistant", content: reply };
+      setMessages((prev) => [...prev, assistantMsg]);
+      speakText(reply);
     } catch {
       setMessages((prev) => [
         ...prev,
-        {
-          role: "assistant",
-          content: "Connection error. Check your API key and try again.",
-        },
+        { role: "assistant", content: "Connection issue. Please try again." },
       ]);
     } finally {
       setLoading(false);
@@ -117,58 +144,59 @@ export default function MarketIntelChat() {
   return (
     <>
       <style>{`
-        .gps-widget {
+        @import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;600;700;900&display=swap');
+
+        .maya-widget {
           position: fixed;
           bottom: 24px;
           right: 24px;
           z-index: 9999;
-          font-family: 'IBM Plex Mono', 'Courier New', monospace;
+          font-family: 'Gothic A1', sans-serif;
         }
 
-        .gps-toggle {
-          width: 56px;
-          height: 56px;
+        .maya-toggle {
+          width: 60px;
+          height: 60px;
           border-radius: 50%;
-          background: #0f0f0f;
-          border: 2px solid #333;
-          color: #f5f5f0;
-          font-size: 22px;
+          background: #f37021;
+          border: none;
+          color: #fff;
+          font-size: 24px;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-          transition: transform 0.2s, background 0.2s;
+          box-shadow: 0 4px 20px rgba(243,112,33,0.4);
+          transition: transform 0.2s, box-shadow 0.2s;
           margin-left: auto;
         }
 
-        .gps-toggle:hover {
-          background: #1a1a1a;
-          transform: scale(1.05);
+        .maya-toggle:hover {
+          transform: scale(1.08);
+          box-shadow: 0 6px 28px rgba(243,112,33,0.5);
         }
 
-        .gps-panel {
-          width: 400px;
+        .maya-panel {
+          width: 380px;
           height: 560px;
-          background: #fafaf8;
-          border: 1.5px solid #d4d4c8;
-          border-radius: 12px;
+          background: #ffffff;
+          border: 1.5px solid #cdb39b;
+          border-radius: 16px;
           display: flex;
           flex-direction: column;
           overflow: hidden;
-          box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+          box-shadow: 0 12px 48px rgba(59,101,138,0.18);
           margin-bottom: 12px;
-          animation: gps-slide-up 0.2s ease-out;
+          animation: maya-rise 0.22s cubic-bezier(0.34,1.56,0.64,1);
         }
 
-        @keyframes gps-slide-up {
-          from { opacity: 0; transform: translateY(12px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes maya-rise {
+          from { opacity: 0; transform: translateY(16px) scale(0.97); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .gps-header {
-          background: #0f0f0f;
-          color: #f5f5f0;
+        .maya-header {
+          background: #3b658a;
           padding: 14px 16px;
           display: flex;
           align-items: center;
@@ -176,297 +204,378 @@ export default function MarketIntelChat() {
           flex-shrink: 0;
         }
 
-        .gps-header-title {
-          font-size: 12px;
-          font-weight: 600;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
+        .maya-avatar {
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+          background: #f37021;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 900;
+          font-size: 16px;
+          color: #fff;
+          flex-shrink: 0;
+          letter-spacing: -0.5px;
         }
 
-        .gps-header-sub {
+        .maya-header-info {
+          flex: 1;
+          margin-left: 10px;
+        }
+
+        .maya-name {
+          font-size: 14px;
+          font-weight: 700;
+          color: #ffffff;
+          letter-spacing: 0.02em;
+        }
+
+        .maya-status {
           font-size: 10px;
-          color: #888;
-          margin-top: 2px;
-          letter-spacing: 0.04em;
+          color: #cdb39b;
+          margin-top: 1px;
+          font-weight: 400;
         }
 
-        .gps-close {
+        .maya-header-actions {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .maya-voice-btn {
+          background: none;
+          border: 1.5px solid rgba(205,179,155,0.5);
+          border-radius: 20px;
+          color: #cdb39b;
+          font-size: 13px;
+          padding: 3px 10px;
+          cursor: pointer;
+          font-family: inherit;
+          font-weight: 600;
+          transition: all 0.15s;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+
+        .maya-voice-btn.active {
+          background: rgba(243,112,33,0.2);
+          border-color: #f37021;
+          color: #f37021;
+        }
+
+        .maya-voice-btn:hover {
+          border-color: #f37021;
+          color: #f37021;
+        }
+
+        .maya-close {
           background: none;
           border: none;
-          color: #888;
+          color: rgba(255,255,255,0.6);
           cursor: pointer;
-          font-size: 18px;
+          font-size: 20px;
           padding: 0;
           line-height: 1;
           transition: color 0.15s;
         }
 
-        .gps-close:hover { color: #f5f5f0; }
+        .maya-close:hover { color: #fff; }
 
-        .gps-messages {
+        .maya-messages {
           flex: 1;
           overflow-y: auto;
           padding: 16px;
           display: flex;
           flex-direction: column;
           gap: 12px;
+          background: #fdf9f6;
         }
 
-        .gps-messages::-webkit-scrollbar {
-          width: 4px;
-        }
+        .maya-messages::-webkit-scrollbar { width: 3px; }
+        .maya-messages::-webkit-scrollbar-track { background: transparent; }
+        .maya-messages::-webkit-scrollbar-thumb { background: #cdb39b; border-radius: 2px; }
 
-        .gps-messages::-webkit-scrollbar-track {
-          background: transparent;
-        }
-
-        .gps-messages::-webkit-scrollbar-thumb {
-          background: #d4d4c8;
-          border-radius: 2px;
-        }
-
-        .gps-empty {
-          flex: 1;
+        .maya-empty {
           display: flex;
           flex-direction: column;
-          padding: 20px 16px 0;
         }
 
-        .gps-empty-title {
+        .maya-greeting {
+          background: #3b658a;
+          border-radius: 12px 12px 12px 2px;
+          padding: 12px 14px;
+          margin-bottom: 14px;
+        }
+
+        .maya-greeting-text {
           font-size: 13px;
-          font-weight: 600;
-          color: #0f0f0f;
-          margin-bottom: 4px;
-          letter-spacing: 0.02em;
+          color: #ffffff;
+          line-height: 1.6;
+          font-weight: 400;
         }
 
-        .gps-empty-sub {
-          font-size: 11px;
-          color: #777;
-          line-height: 1.5;
-          margin-bottom: 16px;
+        .maya-greeting-text strong {
+          color: #f37021;
         }
 
-        .gps-suggestions {
+        .maya-suggestions-label {
+          font-size: 10px;
+          font-weight: 700;
+          color: #52575b;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          margin-bottom: 8px;
+        }
+
+        .maya-suggestions {
           display: flex;
           flex-direction: column;
           gap: 6px;
         }
 
-        .gps-suggestion {
+        .maya-suggestion {
           background: #fff;
-          border: 1px solid #e0e0d8;
-          border-radius: 6px;
+          border: 1.5px solid #cdb39b;
+          border-radius: 8px;
           padding: 8px 12px;
-          font-size: 11px;
-          color: #444;
+          font-size: 12px;
+          color: #3b658a;
           cursor: pointer;
           text-align: left;
-          transition: border-color 0.15s, background 0.15s;
-          line-height: 1.4;
+          transition: all 0.15s;
           font-family: inherit;
+          font-weight: 600;
+          line-height: 1.4;
         }
 
-        .gps-suggestion:hover {
-          border-color: #0f0f0f;
-          background: #f0f0eb;
-          color: #0f0f0f;
+        .maya-suggestion:hover {
+          background: #3b658a;
+          border-color: #3b658a;
+          color: #fff;
         }
 
-        .gps-msg {
+        .maya-msg {
           display: flex;
           flex-direction: column;
-          gap: 4px;
         }
 
-        .gps-msg-user {
-          align-items: flex-end;
-        }
+        .maya-msg-user { align-items: flex-end; }
+        .maya-msg-assistant { align-items: flex-start; }
 
-        .gps-msg-assistant {
-          align-items: flex-start;
-        }
-
-        .gps-bubble {
-          max-width: 88%;
-          padding: 10px 12px;
-          border-radius: 8px;
-          font-size: 12px;
-          line-height: 1.6;
+        .maya-bubble {
+          max-width: 90%;
+          padding: 10px 13px;
+          border-radius: 12px;
+          font-size: 13px;
+          line-height: 1.65;
           word-break: break-word;
         }
 
-        .gps-bubble-user {
-          background: #0f0f0f;
-          color: #f5f5f0;
-          border-radius: 8px 8px 2px 8px;
+        .maya-bubble-user {
+          background: #3b658a;
+          color: #fff;
+          border-radius: 12px 12px 2px 12px;
+          font-weight: 600;
         }
 
-        .gps-bubble-assistant {
+        .maya-bubble-assistant {
           background: #fff;
-          color: #1a1a1a;
-          border: 1px solid #e0e0d8;
-          border-radius: 8px 8px 8px 2px;
+          color: #52575b;
+          border: 1.5px solid #cdb39b;
+          border-radius: 12px 12px 12px 2px;
         }
 
-        .gps-bubble-assistant p {
+        .maya-bubble-assistant p {
           margin: 0 0 8px;
         }
 
-        .gps-bubble-assistant p:last-child {
-          margin-bottom: 0;
-        }
+        .maya-bubble-assistant p:last-child { margin-bottom: 0; }
 
-        .gps-link {
-          color: #2563eb;
+        .maya-link {
+          color: #f37021;
           text-decoration: underline;
           text-underline-offset: 2px;
           word-break: break-all;
+          font-weight: 600;
         }
 
-        .gps-badge {
+        .maya-badge {
           display: inline-block;
-          background: #f0f0eb;
-          border: 1px solid #d4d4c8;
+          background: rgba(59,101,138,0.08);
+          border: 1px solid rgba(59,101,138,0.2);
           border-radius: 4px;
-          padding: 1px 6px;
+          padding: 1px 7px;
           font-size: 10px;
-          color: #555;
+          color: #3b658a;
+          font-weight: 700;
           margin: 0 2px;
           white-space: nowrap;
         }
 
-        .gps-typing {
+        .maya-typing {
           display: flex;
           align-items: center;
-          gap: 4px;
-          padding: 10px 12px;
+          gap: 5px;
+          padding: 12px 14px;
           background: #fff;
-          border: 1px solid #e0e0d8;
-          border-radius: 8px 8px 8px 2px;
+          border: 1.5px solid #cdb39b;
+          border-radius: 12px 12px 12px 2px;
           width: fit-content;
         }
 
-        .gps-dot {
+        .maya-dot {
+          width: 7px;
+          height: 7px;
+          background: #cdb39b;
+          border-radius: 50%;
+          animation: maya-bounce 1.2s infinite ease-in-out;
+        }
+
+        .maya-dot:nth-child(2) { animation-delay: 0.2s; background: #3b658a; }
+        .maya-dot:nth-child(3) { animation-delay: 0.4s; background: #f37021; }
+
+        @keyframes maya-bounce {
+          0%, 60%, 100% { transform: translateY(0); }
+          30% { transform: translateY(-6px); }
+        }
+
+        .maya-speaking-indicator {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 10px;
+          color: #f37021;
+          font-weight: 700;
+          margin-top: 4px;
+          padding-left: 2px;
+          letter-spacing: 0.04em;
+        }
+
+        .maya-speaking-dot {
           width: 6px;
           height: 6px;
-          background: #bbb;
+          background: #f37021;
           border-radius: 50%;
-          animation: gps-bounce 1.2s infinite ease-in-out;
+          animation: maya-pulse 1s infinite;
         }
 
-        .gps-dot:nth-child(2) { animation-delay: 0.2s; }
-        .gps-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes gps-bounce {
-          0%, 60%, 100% { transform: translateY(0); }
-          30% { transform: translateY(-5px); }
+        @keyframes maya-pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(0.7); }
         }
 
-        .gps-footer {
-          border-top: 1px solid #e0e0d8;
+        .maya-footer {
+          border-top: 1.5px solid #e8ddd4;
           padding: 12px;
-          background: #fafaf8;
+          background: #fff;
           flex-shrink: 0;
         }
 
-        .gps-input-row {
+        .maya-input-row {
           display: flex;
           gap: 8px;
           align-items: flex-end;
         }
 
-        .gps-input {
+        .maya-input {
           flex: 1;
-          background: #fff;
-          border: 1.5px solid #d4d4c8;
-          border-radius: 8px;
-          padding: 9px 12px;
-          font-size: 12px;
+          background: #fdf9f6;
+          border: 1.5px solid #cdb39b;
+          border-radius: 10px;
+          padding: 10px 13px;
+          font-size: 13px;
           font-family: inherit;
-          color: #1a1a1a;
+          color: #52575b;
           resize: none;
           outline: none;
           max-height: 90px;
           line-height: 1.5;
           transition: border-color 0.15s;
+          font-weight: 400;
         }
 
-        .gps-input:focus {
-          border-color: #0f0f0f;
-        }
+        .maya-input:focus { border-color: #3b658a; }
+        .maya-input::placeholder { color: #bba99a; }
 
-        .gps-input::placeholder {
-          color: #aaa;
-        }
-
-        .gps-send {
-          background: #0f0f0f;
+        .maya-send {
+          background: #f37021;
           border: none;
-          color: #f5f5f0;
-          width: 36px;
-          height: 36px;
-          border-radius: 8px;
+          color: #fff;
+          width: 38px;
+          height: 38px;
+          border-radius: 10px;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
-          transition: background 0.15s, opacity 0.15s;
-          font-size: 14px;
+          font-size: 16px;
+          transition: background 0.15s, transform 0.1s;
+          font-weight: 900;
         }
 
-        .gps-send:hover { background: #333; }
-        .gps-send:disabled { opacity: 0.4; cursor: not-allowed; }
+        .maya-send:hover { background: #d45f18; transform: scale(1.05); }
+        .maya-send:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-        .gps-powered {
+        .maya-powered {
           text-align: center;
           font-size: 9px;
-          color: #bbb;
+          color: #bba99a;
           margin-top: 8px;
-          letter-spacing: 0.04em;
+          letter-spacing: 0.05em;
+          font-weight: 600;
+          text-transform: uppercase;
         }
 
         @media (max-width: 480px) {
-          .gps-panel {
-            width: calc(100vw - 32px);
-            right: 0;
-          }
-          .gps-widget {
-            right: 16px;
-          }
+          .maya-panel { width: calc(100vw - 32px); }
+          .maya-widget { right: 16px; }
         }
       `}</style>
 
-      <div className="gps-widget">
+      <div className="maya-widget">
         {isOpen && (
-          <div className="gps-panel">
+          <div className="maya-panel">
             {/* Header */}
-            <div className="gps-header">
-              <div>
-                <div className="gps-header-title">AI Tool Finder</div>
-                <div className="gps-header-sub">150 tools · Market Intel indexed</div>
+            <div className="maya-header">
+              <div className="maya-avatar">M</div>
+              <div className="maya-header-info">
+                <div className="maya-name">Maya</div>
+                <div className="maya-status">AI Marketing GPS · 150 tools indexed</div>
               </div>
-              <button className="gps-close" onClick={() => setIsOpen(false)}>
-                ×
-              </button>
+              <div className="maya-header-actions">
+                <button
+                  className={`maya-voice-btn ${voiceOn ? "active" : ""}`}
+                  onClick={() => {
+                    if (voiceOn) stopSpeaking();
+                    setVoiceOn((v) => !v);
+                  }}
+                  title={voiceOn ? "Turn off voice" : "Turn on voice"}
+                >
+                  {voiceOn ? "🔊" : "🔇"}
+                </button>
+                <button className="maya-close" onClick={() => { setIsOpen(false); stopSpeaking(); }}>
+                  ×
+                </button>
+              </div>
             </div>
 
             {/* Messages */}
-            <div className="gps-messages">
+            <div className="maya-messages">
               {isEmpty ? (
-                <div className="gps-empty">
-                  <div className="gps-empty-title">Find the right AI tool.</div>
-                  <div className="gps-empty-sub">
-                    Ask about any tool, use case, or workflow. No paid placements — just straight answers.
+                <div className="maya-empty">
+                  <div className="maya-greeting">
+                    <div className="maya-greeting-text">
+                      Hey! I'm <strong>Maya</strong> — your AI tool guide. Tell me what you're trying to do and I'll point you to the right tools. No fluff, no paid placements.
+                    </div>
                   </div>
-                  <div className="gps-suggestions">
+                  <div className="maya-suggestions-label">Try asking me…</div>
+                  <div className="maya-suggestions">
                     {SUGGESTED_QUESTIONS.map((q) => (
-                      <button
-                        key={q}
-                        className="gps-suggestion"
-                        onClick={() => send(q)}
-                      >
+                      <button key={q} className="maya-suggestion" onClick={() => send(q)}>
                         {q}
                       </button>
                     ))}
@@ -475,29 +584,28 @@ export default function MarketIntelChat() {
               ) : (
                 <>
                   {messages.map((msg, i) => (
-                    <div
-                      key={i}
-                      className={`gps-msg gps-msg-${msg.role}`}
-                    >
-                      <div className={`gps-bubble gps-bubble-${msg.role}`}>
+                    <div key={i} className={`maya-msg maya-msg-${msg.role}`}>
+                      <div className={`maya-bubble maya-bubble-${msg.role}`}>
                         {msg.role === "assistant" ? (
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: formatMessage(msg.content),
-                            }}
-                          />
+                          <div dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
                         ) : (
                           msg.content
                         )}
                       </div>
+                      {msg.role === "assistant" && speaking && i === messages.length - 1 && (
+                        <div className="maya-speaking-indicator">
+                          <div className="maya-speaking-dot" />
+                          Maya is speaking…
+                        </div>
+                      )}
                     </div>
                   ))}
                   {loading && (
-                    <div className="gps-msg gps-msg-assistant">
-                      <div className="gps-typing">
-                        <div className="gps-dot" />
-                        <div className="gps-dot" />
-                        <div className="gps-dot" />
+                    <div className="maya-msg maya-msg-assistant">
+                      <div className="maya-typing">
+                        <div className="maya-dot" />
+                        <div className="maya-dot" />
+                        <div className="maya-dot" />
                       </div>
                     </div>
                   )}
@@ -507,32 +615,32 @@ export default function MarketIntelChat() {
             </div>
 
             {/* Input */}
-            <div className="gps-footer">
-              <div className="gps-input-row">
+            <div className="maya-footer">
+              <div className="maya-input-row">
                 <textarea
                   ref={inputRef}
-                  className="gps-input"
+                  className="maya-input"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKey}
-                  placeholder="Ask about tools, pricing, use cases…"
+                  placeholder="Ask about tools, pricing, workflows…"
                   rows={1}
                 />
                 <button
-                  className="gps-send"
+                  className="maya-send"
                   onClick={() => send()}
                   disabled={!input.trim() || loading}
                 >
                   ↑
                 </button>
               </div>
-              <div className="gps-powered">Powered by Claude · AI Marketing GPS</div>
+              <div className="maya-powered">Powered by Claude · AI Marketing GPS</div>
             </div>
           </div>
         )}
 
-        {/* Toggle button */}
-        <button className="gps-toggle" onClick={() => setIsOpen((o) => !o)}>
+        {/* Toggle */}
+        <button className="maya-toggle" onClick={() => { setIsOpen((o) => !o); if (isOpen) stopSpeaking(); }}>
           {isOpen ? "×" : "🧭"}
         </button>
       </div>
