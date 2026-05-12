@@ -88,25 +88,76 @@ export default function MarketIntelChat() {
     if (!voiceOn) return;
     try {
       setSpeaking(true);
-      // Cap at 300 chars for natural pacing
-      const clean = stripMarkdown(text).slice(0, 300);
+
       const res = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: clean }),
+        body: JSON.stringify({ text }),
       });
-      if (!res.ok) { setSpeaking(false); return; }
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
+
+      if (!res.ok || !res.body) { setSpeaking(false); return; }
+
+      // Stream audio chunks via MediaSource API
+      const mediaSource = new MediaSource();
+      const url = URL.createObjectURL(mediaSource);
+
       if (audioRef.current) {
         audioRef.current.pause();
-        URL.revokeObjectURL(audioRef.current.src);
       }
+
       const audio = new Audio(url);
       audioRef.current = audio;
-      audio.onended = () => { setSpeaking(false); URL.revokeObjectURL(url); };
-      audio.onerror = () => setSpeaking(false);
       audio.play();
+
+      mediaSource.addEventListener("sourceopen", async () => {
+        let sourceBuffer: SourceBuffer;
+        try {
+          sourceBuffer = mediaSource.addSourceBuffer("audio/mpeg");
+        } catch {
+          // Fallback: buffer entire response if MediaSource fails
+          const blob = await res.clone().blob().catch(() => null);
+          if (!blob) { setSpeaking(false); URL.revokeObjectURL(url); return; }
+          const fallbackUrl = URL.createObjectURL(blob);
+          const fallback = new Audio(fallbackUrl);
+          audioRef.current = fallback;
+          fallback.onended = () => { setSpeaking(false); URL.revokeObjectURL(fallbackUrl); };
+          fallback.onerror = () => setSpeaking(false);
+          fallback.play();
+          return;
+        }
+
+        const reader = res.body!.getReader();
+        const pump = async (): Promise<void> => {
+          const { done, value } = await reader.read();
+          if (done) {
+            if (!sourceBuffer.updating) {
+              mediaSource.endOfStream();
+            } else {
+              sourceBuffer.addEventListener("updateend", () => {
+                mediaSource.endOfStream();
+              }, { once: true });
+            }
+            return;
+          }
+          if (sourceBuffer.updating) {
+            await new Promise<void>((r) =>
+              sourceBuffer.addEventListener("updateend", () => r(), { once: true })
+            );
+          }
+          sourceBuffer.appendBuffer(value);
+          await pump();
+        };
+
+        sourceBuffer.addEventListener("updateend", () => {}, { once: true });
+        await pump().catch(() => {
+          try { mediaSource.endOfStream("decode"); } catch {}
+          setSpeaking(false);
+        });
+      });
+
+      audio.onended = () => { setSpeaking(false); URL.revokeObjectURL(url); };
+      audio.onerror = () => { setSpeaking(false); URL.revokeObjectURL(url); };
+
     } catch {
       setSpeaking(false);
     }
