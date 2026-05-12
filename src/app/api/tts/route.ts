@@ -15,6 +15,34 @@ function stripMarkdown(text: string): string {
     .trim();
 }
 
+function normalizeForSpeech(text: string): string {
+  return text
+    // Currency: $29/month → 29 dollars a month
+    .replace(/\$(\d+(?:\.\d+)?)\/month/g, "$1 dollars a month")
+    .replace(/\$(\d+(?:\.\d+)?)\/mo/g, "$1 dollars a month")
+    .replace(/\$(\d+(?:\.\d+)?)\/year/g, "$1 dollars a year")
+    .replace(/\$(\d+(?:\.\d+)?)\/yr/g, "$1 dollars a year")
+    .replace(/\$(\d+(?:\.\d+)?)/g, "$1 dollars")
+    // Percentages: 67% → 67 percent
+    .replace(/(\d+)%/g, "$1 percent")
+    // Per: 40¢/video → 40 cents per video
+    .replace(/(\d+)¢\/(\w+)/g, "$1 cents per $2")
+    // Slash combos: 9:16 → 9 by 16
+    .replace(/(\d+):(\d+)/g, "$1 by $2")
+    // K shorthand: 10K → 10 thousand
+    .replace(/(\d+)K\b/g, "$1 thousand")
+    // M shorthand: 1M → 1 million
+    .replace(/(\d+)M\b/g, "$1 million")
+    // Plus sign
+    .replace(/\+/g, " plus")
+    // Ampersand
+    .replace(/&/g, "and")
+    // Remove remaining special chars that confuse TTS
+    .replace(/[#@^*~|]/g, "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 function capAtSentence(text: string, maxChars: number): string {
   if (text.length <= maxChars) return text;
   
@@ -46,7 +74,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No text provided" }, { status: 400 });
     }
 
-    const clean = stripMarkdown(text);
+    const clean = normalizeForSpeech(stripMarkdown(text));
     const capped = capAtSentence(clean, 300);
 
     const response = await fetch(
