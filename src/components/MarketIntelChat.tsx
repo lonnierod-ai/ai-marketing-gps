@@ -64,6 +64,7 @@ export default function MarketIntelChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [voiceOn, setVoiceOn] = useState(true);
   const [speaking, setSpeaking] = useState(false);
+  const [showNudge, setShowNudge] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -74,6 +75,14 @@ export default function MarketIntelChat() {
 
   useEffect(() => {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 150);
+  }, [isOpen]);
+
+  // Show nudge bubble after 5 seconds, hide after 8 seconds
+  useEffect(() => {
+    if (isOpen) { setShowNudge(false); return; }
+    const showTimer = setTimeout(() => setShowNudge(true), 5000);
+    const hideTimer = setTimeout(() => setShowNudge(false), 13000);
+    return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
   }, [isOpen]);
 
   function stopSpeaking() {
@@ -570,6 +579,52 @@ export default function MarketIntelChat() {
           .lonnie-panel { width: calc(100vw - 32px); }
           .lonnie-widget { right: 16px; }
         }
+
+        .lonnie-nudge {
+          position: absolute;
+          bottom: 72px;
+          right: 0;
+          background: #ffffff;
+          border: 1.5px solid #cdb39b;
+          border-radius: 12px 12px 2px 12px;
+          padding: 10px 14px;
+          font-size: 12px;
+          color: #3b658a;
+          font-weight: 600;
+          white-space: nowrap;
+          box-shadow: 0 4px 20px rgba(59,101,138,0.15);
+          animation: nudge-in 0.3s cubic-bezier(0.34,1.56,0.64,1);
+          cursor: pointer;
+          font-family: inherit;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .lonnie-nudge:hover {
+          background: #3b658a;
+          color: #fff;
+          border-color: #3b658a;
+        }
+
+        .lonnie-nudge-dot {
+          width: 7px;
+          height: 7px;
+          background: #f37021;
+          border-radius: 50%;
+          animation: nudge-pulse 1.2s infinite;
+          flex-shrink: 0;
+        }
+
+        @keyframes nudge-in {
+          from { opacity: 0; transform: translateY(8px) scale(0.95); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes nudge-pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(0.6); }
+        }
       `}</style>
 
       <div className="lonnie-widget">
@@ -679,10 +734,21 @@ export default function MarketIntelChat() {
           </div>
         )}
 
+        {/* Nudge bubble */}
+        {showNudge && !isOpen && (
+          <button
+            className="lonnie-nudge"
+            onClick={() => { setShowNudge(false); setIsOpen(true); }}
+          >
+            <span className="lonnie-nudge-dot" />
+            Not sure where to start? Ask me.
+          </button>
+        )}
+
         {/* Toggle — chat bubble */}
         <button
           className="lonnie-toggle"
-          onClick={() => { setIsOpen((o) => !o); if (isOpen) stopSpeaking(); }}
+          onClick={() => { setIsOpen((o) => !o); if (isOpen) stopSpeaking(); setShowNudge(false); }}
           title="Chat with Lonnie"
         >
           {isOpen ? "×" : "💬"}
