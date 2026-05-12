@@ -1,15 +1,15 @@
 "use client";
 
 // ============================================================
-// AI Marketing GPS — Maya Chat Widget v2
+// AI Marketing GPS — Lonnie Chat Widget v3
 // File: src/components/MarketIntelChat.tsx
 //
-// Replace the previous version with this file.
-// Requires:
-//   /src/app/api/chat/route.ts   — Claude API route
-//   /src/app/api/tts/route.ts    — ElevenLabs TTS route
-//   ANTHROPIC_API_KEY            — Vercel env var
-//   ELEVENLABS_API_KEY           — Vercel env var
+// Changes from v2:
+//   - Name: Lonnie (not Maya)
+//   - Icon: chat bubble instead of compass
+//   - Voice: capped at 300 chars for natural pacing
+//   - Voice: visible STOP button while speaking
+//   - Tone: casual, short responses, always asks a question
 // ============================================================
 
 import { useState, useRef, useEffect, KeyboardEvent } from "react";
@@ -23,28 +23,38 @@ interface Message {
 
 const SUGGESTED_QUESTIONS = [
   "What's the best free tool for short-form video?",
-  "Compare HeyGen vs Synthesia for SMBs",
   "How do I repurpose my podcast into social content?",
-  "What AI tools work best together for content marketing?",
-  "What changed with Canva AI recently?",
+  "Compare HeyGen vs Synthesia — which one's worth it?",
+  "What AI tools actually work well together?",
+  "I want to start with AI content but don't know where to begin",
 ];
 
 function formatMessage(text: string) {
   let f = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
   f = f.replace(
     /(https?:\/\/[^\s,)]+)/g,
-    '<a href="$1" target="_blank" rel="noopener noreferrer" class="maya-link">$1</a>'
+    '<a href="$1" target="_blank" rel="noopener noreferrer" class="lonnie-link">$1</a>'
   );
   f = f.replace(
     /Market Intel Ep(\d+)/gi,
-    '<span class="maya-badge">🎙 Market Intel Ep$1</span>'
+    '<span class="lonnie-badge">🎙 Market Intel Ep$1</span>'
   );
-  f = f.replace(
-    /Episode (\d+)/gi,
-    '<span class="maya-badge">🎙 Ep$1</span>'
-  );
+  f = f.replace(/Episode (\d+)/gi, '<span class="lonnie-badge">🎙 Ep$1</span>');
   f = f.replace(/\n\n/g, "</p><p>").replace(/\n/g, "<br/>");
   return `<p>${f}</p>`;
+}
+
+function stripMarkdown(text: string): string {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .replace(/\*(.*?)\*/g, "$1")
+    .replace(/`(.*?)`/g, "$1")
+    .replace(/https?:\/\/[^\s,)]+/g, "")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/#{1,6}\s/g, "")
+    .replace(/[-*]\s/g, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
 }
 
 export default function MarketIntelChat() {
@@ -66,14 +76,24 @@ export default function MarketIntelChat() {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 150);
   }, [isOpen]);
 
+  function stopSpeaking() {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+    setSpeaking(false);
+  }
+
   async function speakText(text: string) {
     if (!voiceOn) return;
     try {
       setSpeaking(true);
+      // Cap at 300 chars for natural pacing
+      const clean = stripMarkdown(text).slice(0, 300);
       const res = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text: clean }),
       });
       if (!res.ok) { setSpeaking(false); return; }
       const blob = await res.blob();
@@ -90,14 +110,6 @@ export default function MarketIntelChat() {
     } catch {
       setSpeaking(false);
     }
-  }
-
-  function stopSpeaking() {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-    setSpeaking(false);
   }
 
   async function send(text?: string) {
@@ -119,13 +131,12 @@ export default function MarketIntelChat() {
       });
       const data = await res.json();
       const reply = data.message || "Something went wrong — try again.";
-      const assistantMsg: Message = { role: "assistant", content: reply };
-      setMessages((prev) => [...prev, assistantMsg]);
+      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
       speakText(reply);
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Connection issue. Please try again." },
+        { role: "assistant", content: "Connection issue. Try again in a sec." },
       ]);
     } finally {
       setLoading(false);
@@ -146,7 +157,7 @@ export default function MarketIntelChat() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;600;700;900&display=swap');
 
-        .maya-widget {
+        .lonnie-widget {
           position: fixed;
           bottom: 24px;
           right: 24px;
@@ -154,29 +165,29 @@ export default function MarketIntelChat() {
           font-family: 'Gothic A1', sans-serif;
         }
 
-        .maya-toggle {
+        .lonnie-toggle {
           width: 60px;
           height: 60px;
           border-radius: 50%;
           background: #f37021;
           border: none;
           color: #fff;
-          font-size: 24px;
+          font-size: 26px;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 4px 20px rgba(243,112,33,0.4);
+          box-shadow: 0 4px 20px rgba(243,112,33,0.45);
           transition: transform 0.2s, box-shadow 0.2s;
           margin-left: auto;
         }
 
-        .maya-toggle:hover {
+        .lonnie-toggle:hover {
           transform: scale(1.08);
-          box-shadow: 0 6px 28px rgba(243,112,33,0.5);
+          box-shadow: 0 6px 28px rgba(243,112,33,0.55);
         }
 
-        .maya-panel {
+        .lonnie-panel {
           width: 380px;
           height: 560px;
           background: #ffffff;
@@ -187,15 +198,15 @@ export default function MarketIntelChat() {
           overflow: hidden;
           box-shadow: 0 12px 48px rgba(59,101,138,0.18);
           margin-bottom: 12px;
-          animation: maya-rise 0.22s cubic-bezier(0.34,1.56,0.64,1);
+          animation: lonnie-rise 0.22s cubic-bezier(0.34,1.56,0.64,1);
         }
 
-        @keyframes maya-rise {
+        @keyframes lonnie-rise {
           from { opacity: 0; transform: translateY(16px) scale(0.97); }
           to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .maya-header {
+        .lonnie-header {
           background: #3b658a;
           padding: 14px 16px;
           display: flex;
@@ -204,7 +215,7 @@ export default function MarketIntelChat() {
           flex-shrink: 0;
         }
 
-        .maya-avatar {
+        .lonnie-avatar {
           width: 38px;
           height: 38px;
           border-radius: 50%;
@@ -216,65 +227,73 @@ export default function MarketIntelChat() {
           font-size: 16px;
           color: #fff;
           flex-shrink: 0;
-          letter-spacing: -0.5px;
         }
 
-        .maya-header-info {
+        .lonnie-header-info {
           flex: 1;
           margin-left: 10px;
         }
 
-        .maya-name {
+        .lonnie-name {
           font-size: 14px;
           font-weight: 700;
           color: #ffffff;
-          letter-spacing: 0.02em;
         }
 
-        .maya-status {
+        .lonnie-status {
           font-size: 10px;
           color: #cdb39b;
           margin-top: 1px;
           font-weight: 400;
         }
 
-        .maya-header-actions {
+        .lonnie-header-actions {
           display: flex;
           align-items: center;
           gap: 8px;
         }
 
-        .maya-voice-btn {
+        .lonnie-voice-btn {
           background: none;
           border: 1.5px solid rgba(205,179,155,0.5);
           border-radius: 20px;
           color: #cdb39b;
-          font-size: 13px;
-          padding: 3px 10px;
+          font-size: 11px;
+          padding: 4px 10px;
           cursor: pointer;
           font-family: inherit;
-          font-weight: 600;
+          font-weight: 700;
           transition: all 0.15s;
-          display: flex;
-          align-items: center;
-          gap: 4px;
+          letter-spacing: 0.03em;
+          white-space: nowrap;
         }
 
-        .maya-voice-btn.active {
-          background: rgba(243,112,33,0.2);
+        .lonnie-voice-btn.speaking {
+          background: rgba(243,112,33,0.15);
           border-color: #f37021;
           color: #f37021;
+          animation: lonnie-pulse-border 1.5s infinite;
         }
 
-        .maya-voice-btn:hover {
-          border-color: #f37021;
-          color: #f37021;
+        .lonnie-voice-btn.on {
+          border-color: rgba(205,179,155,0.5);
+          color: #cdb39b;
         }
 
-        .maya-close {
+        .lonnie-voice-btn.off {
+          border-color: rgba(255,255,255,0.2);
+          color: rgba(255,255,255,0.35);
+        }
+
+        @keyframes lonnie-pulse-border {
+          0%, 100% { border-color: #f37021; }
+          50% { border-color: rgba(243,112,33,0.4); }
+        }
+
+        .lonnie-close {
           background: none;
           border: none;
-          color: rgba(255,255,255,0.6);
+          color: rgba(255,255,255,0.5);
           cursor: pointer;
           font-size: 20px;
           padding: 0;
@@ -282,9 +301,9 @@ export default function MarketIntelChat() {
           transition: color 0.15s;
         }
 
-        .maya-close:hover { color: #fff; }
+        .lonnie-close:hover { color: #fff; }
 
-        .maya-messages {
+        .lonnie-messages {
           flex: 1;
           overflow-y: auto;
           padding: 16px;
@@ -294,34 +313,29 @@ export default function MarketIntelChat() {
           background: #fdf9f6;
         }
 
-        .maya-messages::-webkit-scrollbar { width: 3px; }
-        .maya-messages::-webkit-scrollbar-track { background: transparent; }
-        .maya-messages::-webkit-scrollbar-thumb { background: #cdb39b; border-radius: 2px; }
+        .lonnie-messages::-webkit-scrollbar { width: 3px; }
+        .lonnie-messages::-webkit-scrollbar-track { background: transparent; }
+        .lonnie-messages::-webkit-scrollbar-thumb { background: #cdb39b; border-radius: 2px; }
 
-        .maya-empty {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .maya-greeting {
+        .lonnie-greeting {
           background: #3b658a;
           border-radius: 12px 12px 12px 2px;
           padding: 12px 14px;
           margin-bottom: 14px;
         }
 
-        .maya-greeting-text {
+        .lonnie-greeting-text {
           font-size: 13px;
           color: #ffffff;
-          line-height: 1.6;
+          line-height: 1.65;
           font-weight: 400;
         }
 
-        .maya-greeting-text strong {
+        .lonnie-greeting-text strong {
           color: #f37021;
         }
 
-        .maya-suggestions-label {
+        .lonnie-suggestions-label {
           font-size: 10px;
           font-weight: 700;
           color: #52575b;
@@ -330,13 +344,13 @@ export default function MarketIntelChat() {
           margin-bottom: 8px;
         }
 
-        .maya-suggestions {
+        .lonnie-suggestions {
           display: flex;
           flex-direction: column;
           gap: 6px;
         }
 
-        .maya-suggestion {
+        .lonnie-suggestion {
           background: #fff;
           border: 1.5px solid #cdb39b;
           border-radius: 8px;
@@ -351,21 +365,21 @@ export default function MarketIntelChat() {
           line-height: 1.4;
         }
 
-        .maya-suggestion:hover {
+        .lonnie-suggestion:hover {
           background: #3b658a;
           border-color: #3b658a;
           color: #fff;
         }
 
-        .maya-msg {
+        .lonnie-msg {
           display: flex;
           flex-direction: column;
         }
 
-        .maya-msg-user { align-items: flex-end; }
-        .maya-msg-assistant { align-items: flex-start; }
+        .lonnie-msg-user { align-items: flex-end; }
+        .lonnie-msg-assistant { align-items: flex-start; }
 
-        .maya-bubble {
+        .lonnie-bubble {
           max-width: 90%;
           padding: 10px 13px;
           border-radius: 12px;
@@ -374,27 +388,24 @@ export default function MarketIntelChat() {
           word-break: break-word;
         }
 
-        .maya-bubble-user {
+        .lonnie-bubble-user {
           background: #3b658a;
           color: #fff;
           border-radius: 12px 12px 2px 12px;
           font-weight: 600;
         }
 
-        .maya-bubble-assistant {
+        .lonnie-bubble-assistant {
           background: #fff;
           color: #52575b;
           border: 1.5px solid #cdb39b;
           border-radius: 12px 12px 12px 2px;
         }
 
-        .maya-bubble-assistant p {
-          margin: 0 0 8px;
-        }
+        .lonnie-bubble-assistant p { margin: 0 0 8px; }
+        .lonnie-bubble-assistant p:last-child { margin-bottom: 0; }
 
-        .maya-bubble-assistant p:last-child { margin-bottom: 0; }
-
-        .maya-link {
+        .lonnie-link {
           color: #f37021;
           text-decoration: underline;
           text-underline-offset: 2px;
@@ -402,7 +413,7 @@ export default function MarketIntelChat() {
           font-weight: 600;
         }
 
-        .maya-badge {
+        .lonnie-badge {
           display: inline-block;
           background: rgba(59,101,138,0.08);
           border: 1px solid rgba(59,101,138,0.2);
@@ -415,7 +426,7 @@ export default function MarketIntelChat() {
           white-space: nowrap;
         }
 
-        .maya-typing {
+        .lonnie-typing {
           display: flex;
           align-items: center;
           gap: 5px;
@@ -426,61 +437,36 @@ export default function MarketIntelChat() {
           width: fit-content;
         }
 
-        .maya-dot {
+        .lonnie-dot {
           width: 7px;
           height: 7px;
-          background: #cdb39b;
           border-radius: 50%;
-          animation: maya-bounce 1.2s infinite ease-in-out;
+          animation: lonnie-bounce 1.2s infinite ease-in-out;
         }
 
-        .maya-dot:nth-child(2) { animation-delay: 0.2s; background: #3b658a; }
-        .maya-dot:nth-child(3) { animation-delay: 0.4s; background: #f37021; }
+        .lonnie-dot:nth-child(1) { background: #cdb39b; }
+        .lonnie-dot:nth-child(2) { background: #3b658a; animation-delay: 0.2s; }
+        .lonnie-dot:nth-child(3) { background: #f37021; animation-delay: 0.4s; }
 
-        @keyframes maya-bounce {
+        @keyframes lonnie-bounce {
           0%, 60%, 100% { transform: translateY(0); }
           30% { transform: translateY(-6px); }
         }
 
-        .maya-speaking-indicator {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 10px;
-          color: #f37021;
-          font-weight: 700;
-          margin-top: 4px;
-          padding-left: 2px;
-          letter-spacing: 0.04em;
-        }
-
-        .maya-speaking-dot {
-          width: 6px;
-          height: 6px;
-          background: #f37021;
-          border-radius: 50%;
-          animation: maya-pulse 1s infinite;
-        }
-
-        @keyframes maya-pulse {
-          0%, 100% { opacity: 1; transform: scale(1); }
-          50% { opacity: 0.4; transform: scale(0.7); }
-        }
-
-        .maya-footer {
+        .lonnie-footer {
           border-top: 1.5px solid #e8ddd4;
           padding: 12px;
           background: #fff;
           flex-shrink: 0;
         }
 
-        .maya-input-row {
+        .lonnie-input-row {
           display: flex;
           gap: 8px;
           align-items: flex-end;
         }
 
-        .maya-input {
+        .lonnie-input {
           flex: 1;
           background: #fdf9f6;
           border: 1.5px solid #cdb39b;
@@ -494,13 +480,12 @@ export default function MarketIntelChat() {
           max-height: 90px;
           line-height: 1.5;
           transition: border-color 0.15s;
-          font-weight: 400;
         }
 
-        .maya-input:focus { border-color: #3b658a; }
-        .maya-input::placeholder { color: #bba99a; }
+        .lonnie-input:focus { border-color: #3b658a; }
+        .lonnie-input::placeholder { color: #bba99a; }
 
-        .maya-send {
+        .lonnie-send {
           background: #f37021;
           border: none;
           color: #fff;
@@ -517,10 +502,10 @@ export default function MarketIntelChat() {
           font-weight: 900;
         }
 
-        .maya-send:hover { background: #d45f18; transform: scale(1.05); }
-        .maya-send:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .lonnie-send:hover { background: #d45f18; transform: scale(1.05); }
+        .lonnie-send:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-        .maya-powered {
+        .lonnie-powered {
           text-align: center;
           font-size: 9px;
           color: #bba99a;
@@ -531,81 +516,85 @@ export default function MarketIntelChat() {
         }
 
         @media (max-width: 480px) {
-          .maya-panel { width: calc(100vw - 32px); }
-          .maya-widget { right: 16px; }
+          .lonnie-panel { width: calc(100vw - 32px); }
+          .lonnie-widget { right: 16px; }
         }
       `}</style>
 
-      <div className="maya-widget">
+      <div className="lonnie-widget">
         {isOpen && (
-          <div className="maya-panel">
+          <div className="lonnie-panel">
             {/* Header */}
-            <div className="maya-header">
-              <div className="maya-avatar">M</div>
-              <div className="maya-header-info">
-                <div className="maya-name">Maya</div>
-                <div className="maya-status">AI Marketing GPS · 150 tools indexed</div>
+            <div className="lonnie-header">
+              <div className="lonnie-avatar">L</div>
+              <div className="lonnie-header-info">
+                <div className="lonnie-name">Lonnie</div>
+                <div className="lonnie-status">AI Marketing GPS · 150 tools indexed</div>
               </div>
-              <div className="maya-header-actions">
+              <div className="lonnie-header-actions">
+                {speaking ? (
+                  <button
+                    className="lonnie-voice-btn speaking"
+                    onClick={stopSpeaking}
+                  >
+                    ■ STOP
+                  </button>
+                ) : (
+                  <button
+                    className={`lonnie-voice-btn ${voiceOn ? "on" : "off"}`}
+                    onClick={() => setVoiceOn((v) => !v)}
+                  >
+                    {voiceOn ? "🔊 Voice on" : "🔇 Voice off"}
+                  </button>
+                )}
                 <button
-                  className={`maya-voice-btn ${voiceOn ? "active" : ""}`}
-                  onClick={() => {
-                    if (voiceOn) stopSpeaking();
-                    setVoiceOn((v) => !v);
-                  }}
-                  title={voiceOn ? "Turn off voice" : "Turn on voice"}
+                  className="lonnie-close"
+                  onClick={() => { setIsOpen(false); stopSpeaking(); }}
                 >
-                  {voiceOn ? "🔊" : "🔇"}
-                </button>
-                <button className="maya-close" onClick={() => { setIsOpen(false); stopSpeaking(); }}>
                   ×
                 </button>
               </div>
             </div>
 
             {/* Messages */}
-            <div className="maya-messages">
+            <div className="lonnie-messages">
               {isEmpty ? (
-                <div className="maya-empty">
-                  <div className="maya-greeting">
-                    <div className="maya-greeting-text">
-                      Hey! I'm <strong>Maya</strong> — your AI tool guide. Tell me what you're trying to do and I'll point you to the right tools. No fluff, no paid placements.
+                <>
+                  <div className="lonnie-greeting">
+                    <div className="lonnie-greeting-text">
+                      Hey — I'm <strong>Lonnie</strong>. Tell me what you're trying to do and I'll cut through the noise and point you somewhere useful. What's the goal?
                     </div>
                   </div>
-                  <div className="maya-suggestions-label">Try asking me…</div>
-                  <div className="maya-suggestions">
+                  <div className="lonnie-suggestions-label">Or pick one of these</div>
+                  <div className="lonnie-suggestions">
                     {SUGGESTED_QUESTIONS.map((q) => (
-                      <button key={q} className="maya-suggestion" onClick={() => send(q)}>
+                      <button key={q} className="lonnie-suggestion" onClick={() => send(q)}>
                         {q}
                       </button>
                     ))}
                   </div>
-                </div>
+                </>
               ) : (
                 <>
                   {messages.map((msg, i) => (
-                    <div key={i} className={`maya-msg maya-msg-${msg.role}`}>
-                      <div className={`maya-bubble maya-bubble-${msg.role}`}>
+                    <div key={i} className={`lonnie-msg lonnie-msg-${msg.role}`}>
+                      <div className={`lonnie-bubble lonnie-bubble-${msg.role}`}>
                         {msg.role === "assistant" ? (
-                          <div dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }} />
+                          <div
+                            dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }}
+                          />
                         ) : (
                           msg.content
                         )}
                       </div>
-                      {msg.role === "assistant" && speaking && i === messages.length - 1 && (
-                        <div className="maya-speaking-indicator">
-                          <div className="maya-speaking-dot" />
-                          Maya is speaking…
-                        </div>
-                      )}
                     </div>
                   ))}
                   {loading && (
-                    <div className="maya-msg maya-msg-assistant">
-                      <div className="maya-typing">
-                        <div className="maya-dot" />
-                        <div className="maya-dot" />
-                        <div className="maya-dot" />
+                    <div className="lonnie-msg lonnie-msg-assistant">
+                      <div className="lonnie-typing">
+                        <div className="lonnie-dot" />
+                        <div className="lonnie-dot" />
+                        <div className="lonnie-dot" />
                       </div>
                     </div>
                   )}
@@ -615,33 +604,37 @@ export default function MarketIntelChat() {
             </div>
 
             {/* Input */}
-            <div className="maya-footer">
-              <div className="maya-input-row">
+            <div className="lonnie-footer">
+              <div className="lonnie-input-row">
                 <textarea
                   ref={inputRef}
-                  className="maya-input"
+                  className="lonnie-input"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKey}
-                  placeholder="Ask about tools, pricing, workflows…"
+                  placeholder="What are you trying to do?"
                   rows={1}
                 />
                 <button
-                  className="maya-send"
+                  className="lonnie-send"
                   onClick={() => send()}
                   disabled={!input.trim() || loading}
                 >
                   ↑
                 </button>
               </div>
-              <div className="maya-powered">Powered by Claude · AI Marketing GPS</div>
+              <div className="lonnie-powered">Powered by Claude · AI Marketing GPS</div>
             </div>
           </div>
         )}
 
-        {/* Toggle */}
-        <button className="maya-toggle" onClick={() => { setIsOpen((o) => !o); if (isOpen) stopSpeaking(); }}>
-          {isOpen ? "×" : "🧭"}
+        {/* Toggle — chat bubble */}
+        <button
+          className="lonnie-toggle"
+          onClick={() => { setIsOpen((o) => !o); if (isOpen) stopSpeaking(); }}
+          title="Chat with Lonnie"
+        >
+          {isOpen ? "×" : "💬"}
         </button>
       </div>
     </>
