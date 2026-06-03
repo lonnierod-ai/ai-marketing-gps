@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getGoalById, getAllGoals } from "@/lib/data/goals";
@@ -10,6 +11,39 @@ export async function generateStaticParams() {
   return goals.map((goal) => ({
     slug: goal.id,
   }));
+}
+
+// Dynamic metadata per goal page
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const goal = getGoalById(slug);
+  if (!goal) return {};
+
+  const title = `${goal.title} — AI Tools & Step-by-Step Workflow`;
+  const description = `${goal.description.slice(0, 155)}...`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/goal/${goal.id}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://www.aimarketinggps.com/goal/${goal.id}`,
+      type: "article",
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+    },
+  };
 }
 
 export default async function GoalDetailPage({
@@ -35,10 +69,86 @@ export default async function GoalDetailPage({
     advanced: "secondary",
   } as const;
 
-  return (
-    <div className="min-h-screen bg-gray-50">
+  // HowTo schema — perfect for Google AI Overviews + Perplexity citations
+  const howToJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: goal.title,
+    description: goal.description,
+    estimatedCost: {
+      "@type": "MonetaryAmount",
+      currency: "USD",
+      value: "0",
+    },
+    totalTime: goal.estimatedTimeframe,
+    step: goal.workflow.steps.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      name: step.split("(")[0].trim(),
+      text: step,
+    })),
+    tool: goal.recommendedTools.map((toolId) => ({
+      "@type": "HowToTool",
+      name: toolId,
+    })),
+  };
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  // FAQ schema — structured Q&A for AIO/GEO extraction
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `What AI tools should I use to ${goal.title.toLowerCase()}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `The best AI tools for this goal are: ${goal.recommendedTools.join(", ")}. ${goal.description}`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `How long does it take to ${goal.title.toLowerCase()}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Estimated timeframe: ${goal.estimatedTimeframe}. Difficulty level: ${goal.difficulty}.`,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `What are the steps to ${goal.title.toLowerCase()}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: goal.workflow.steps.join(" → "),
+        },
+      },
+      ...(goal.examplePrompts?.length
+        ? [
+            {
+              "@type": "Question",
+              name: `What AI prompts should I use to ${goal.title.toLowerCase()}?`,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: goal.examplePrompts[0],
+              },
+            },
+          ]
+        : []),
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <div className="min-h-screen bg-gray-50">
+        <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
         <nav className="mb-6 text-sm">
           <Link href="/" className="text-blue-600 hover:underline">
@@ -170,14 +280,15 @@ export default async function GoalDetailPage({
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t mt-16 py-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600 text-sm">
-          <p>
-            AI Marketing GPS · Updated May 2026
-          </p>
-        </div>
-      </footer>
-    </div>
+        {/* Footer */}
+        <footer className="border-t mt-16 py-8 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600 text-sm">
+            <p>
+              AI Marketing GPS · Updated May 2026
+            </p>
+          </div>
+        </footer>
+      </div>
+    </>
   );
 }

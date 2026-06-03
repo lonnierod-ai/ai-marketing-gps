@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getToolById, getAllTools } from "@/lib/data/tools";
@@ -13,6 +14,39 @@ export async function generateStaticParams() {
   return tools.map((tool) => ({
     slug: tool.id,
   }));
+}
+
+// Dynamic metadata per tool page
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const tool = getToolById(slug);
+  if (!tool) return {};
+
+  const title = `${tool.name} — AI Marketing Tool for ${tool.bestFor[0]}`;
+  const description = `${tool.description.slice(0, 155)}...`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `/tool/${tool.id}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://www.aimarketinggps.com/tool/${tool.id}`,
+      type: "article",
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+    },
+  };
 }
 
 export default async function ToolDetailPage({
@@ -39,9 +73,72 @@ export default async function ToolDetailPage({
     goal.recommendedTools.includes(tool.id)
   );
 
+  // Schema.org: SoftwareApplication for the tool
+  const toolJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: tool.name,
+    description: tool.description,
+    applicationCategory: "BusinessApplication",
+    url: tool.url,
+    offers: {
+      "@type": "Offer",
+      availability: "https://schema.org/OnlineOnly",
+    },
+    creator: {
+      "@type": "Organization",
+      name: tool.vendor,
+    },
+  };
+
+  // FAQ schema for AIO/GEO — answers common questions AI engines ask
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `What is ${tool.name} used for?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: tool.description,
+        },
+      },
+      {
+        "@type": "Question",
+        name: `Who is ${tool.name} best for?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: tool.bestFor.join(", "),
+        },
+      },
+      ...(tool.proTip
+        ? [
+            {
+              "@type": "Question",
+              name: `What is a pro tip for using ${tool.name}?`,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: tool.proTip,
+              },
+            },
+          ]
+        : []),
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(toolJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <div className="min-h-screen bg-gray-50">
+        <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
         <nav className="mb-6 text-sm">
           <Link href="/" className="text-blue-600 hover:underline">
@@ -216,12 +313,13 @@ export default async function ToolDetailPage({
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t mt-16 py-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600 text-sm">
-          <p>Last updated: {tool.lastUpdated || "May 2026"}</p>
-        </div>
-      </footer>
-    </div>
+        {/* Footer */}
+        <footer className="border-t mt-16 py-8 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-600 text-sm">
+            <p>Last updated: {tool.lastUpdated || "May 2026"}</p>
+          </div>
+        </footer>
+      </div>
+    </>
   );
 }
