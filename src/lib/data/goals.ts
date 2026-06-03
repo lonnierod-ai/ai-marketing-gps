@@ -153,6 +153,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "content",
       "visual",
       "youtube",
+      "transcription",
     ],
     difficulty: "intermediate",
     estimatedTimeframe: "Days instead of weeks",
@@ -230,6 +231,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "tiktok",
       "reels",
       "video",
+      "transcription",
     ],
     difficulty: "beginner",
     estimatedTimeframe: "1 hour â†’ 20+ clips",
@@ -332,6 +334,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     tags: [
       "podcast",
       "audio",
+      "transcription",
       "series",
       "content",
       "voice",
@@ -571,6 +574,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "multi-format",
       "productivity",
       "writing",
+      "transcription",
     ],
     difficulty: "beginner",
     estimatedTimeframe: "One asset â†’ 10+ formats",
@@ -802,6 +806,12 @@ export function getAllGoals(): MarketingGoal[] {
 // SEMANTIC SEARCH - Topic-based with precise matching
 
 const TOPIC_KEYWORDS: Record<string, string[]> = {
+  "transcription": ["transcription", "podcast", "video"],
+  "transcribe": ["transcription", "podcast", "video"],
+  "meeting notes": ["transcription"],
+  "speech to text": ["transcription", "voice"],
+  "captions": ["transcription", "video", "captions"],
+  "subtitles": ["transcription", "video"],
   "podcast": ["podcast", "audio"],
   "create podcast": ["podcast", "audio"],
   "launch podcast": ["podcast", "audio"],

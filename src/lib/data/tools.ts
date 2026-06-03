@@ -1268,6 +1268,86 @@ export const AI_TOOLS: AITool[] = [
     lastUpdated: "June 2026",
   },
 
+  // ========================================
+  // TRANSCRIPTION TOOLS
+  // ========================================
+  {
+    id: "otter-ai",
+    name: "Otter.ai",
+    vendor: "Otter.ai",
+    category: "podcast-production",
+    description: "AI meeting assistant that automatically transcribes meetings in real-time, captures action items, generates summaries, and integrates with Zoom, Microsoft Teams, and Google Meet. Also transcribes audio and video files. One of the most widely used transcription tools for small teams — freemium plan covers most SMB needs.",
+    bestFor: [
+      "Transcribing Zoom, Teams, and Google Meet calls automatically",
+      "Capturing meeting notes and action items without manual note-taking",
+      "Transcribing interviews, podcast recordings, and client calls",
+      "Teams that need searchable transcripts of all conversations",
+    ],
+    proTip: "Connect Otter to your Google Calendar and it automatically joins and transcribes every meeting — no manual start needed. Then use the transcript to generate follow-up emails and action items with ChatGPT or Claude.",
+    pricing: "Free (300 min/month) | Pro $16.99/month | Business $30/user/month",
+    tags: ["transcription", "meeting notes", "otter", "otter.ai", "ai transcription", "meeting transcription", "zoom transcription", "real-time transcription", "speech to text", "audio transcription", "video transcription", "action items", "meeting summary", "note taking"],
+    relatedTools: ["fireflies-ai", "descript", "riverside-fm"],
+    url: "https://otter.ai",
+    lastUpdated: "June 2026",
+  },
+  {
+    id: "fireflies-ai",
+    name: "Fireflies.ai",
+    vendor: "Fireflies.ai",
+    category: "podcast-production",
+    description: "AI assistant that records, transcribes, and makes your meetings searchable. Joins Zoom, Teams, Meet, and Webex calls automatically. Features AI summaries, topic detection, sentiment analysis, and a conversation intelligence layer that lets you search across all past meetings. Strong CRM integrations for sales teams.",
+    bestFor: [
+      "Teams who want searchable archives of every meeting",
+      "Sales teams tracking conversation intelligence and CRM updates",
+      "Business owners transcribing client calls and interviews",
+      "Agencies capturing client briefs and feedback calls accurately",
+    ],
+    proTip: "Use Fireflies' search to find every meeting where a specific topic, competitor, or client name was mentioned — across months of calls. Game-changer for sales follow-up and client relationship management.",
+    pricing: "Free (limited storage) | Pro $18/seat/month | Business $29/seat/month",
+    tags: ["transcription", "meeting transcription", "fireflies", "fireflies.ai", "ai meeting", "meeting recorder", "speech to text", "conversation intelligence", "zoom transcription", "crm integration", "meeting search", "sales transcription", "client calls", "audio transcription"],
+    relatedTools: ["otter-ai", "descript", "hubspot-ai"],
+    url: "https://fireflies.ai",
+    lastUpdated: "June 2026",
+  },
+  {
+    id: "tldv",
+    name: "tl;dv",
+    vendor: "tl;dv",
+    category: "podcast-production",
+    description: "AI meeting recorder and transcription tool with automatic summaries, timestamped highlights, and CRM integration. Records Zoom, Teams, and Google Meet. Freemium model with generous free tier. Known for clean, readable AI summaries that capture decisions and next steps — not just a raw transcript dump.",
+    bestFor: [
+      "Small teams who want meeting recordings with clean AI summaries",
+      "Anyone tired of writing meeting notes manually after every call",
+      "Teams sharing meeting highlights with stakeholders who weren't present",
+      "Freelancers and consultants transcribing client discovery calls",
+    ],
+    proTip: "tl;dv's clip feature lets you cut and share a specific 30-second moment from a meeting — perfect for sharing a client's exact words with your team or using a quote in a follow-up proposal.",
+    pricing: "Free (unlimited recordings) | Pro $18/month | Business $59/month",
+    tags: ["transcription", "meeting transcription", "tldv", "tl;dv", "meeting recorder", "meeting summary", "ai summary", "zoom recording", "google meet recording", "speech to text", "meeting notes", "highlights", "freemium transcription", "client calls"],
+    relatedTools: ["otter-ai", "fireflies-ai", "notion-ai"],
+    url: "https://tldv.io",
+    lastUpdated: "June 2026",
+  },
+  {
+    id: "laxis",
+    name: "Laxis",
+    vendor: "Laxis",
+    category: "podcast-production",
+    description: "AI transcription tool built specifically for content repurposing — converts audio and video recordings into blog posts, newsletters, show notes, and social media posts with one click. Ideal for podcasters, content marketers, and creators who want to turn recordings into published content automatically.",
+    bestFor: [
+      "Podcasters who want show notes and blog posts generated from every episode",
+      "Content marketers turning interview recordings into published articles",
+      "Creators who want social posts auto-generated from audio content",
+      "Anyone looking to maximize ROI from every recording session",
+    ],
+    proTip: "Record your podcast or interview, upload to Laxis, and get a blog post, show notes, and 5 social media posts in minutes. One recording becomes a full week of content.",
+    pricing: "Free trial | Starter $15.99/month | Premium $34.99/month",
+    tags: ["transcription", "content repurposing", "laxis", "podcast transcription", "audio to blog", "show notes", "podcast repurposing", "speech to text", "audio transcription", "content from audio", "newsletter from podcast", "social posts from audio", "ai transcription"],
+    relatedTools: ["castmagic", "descript", "otter-ai"],
+    url: "https://laxis.com",
+    lastUpdated: "June 2026",
+  },
+
 ];
 
 /**
