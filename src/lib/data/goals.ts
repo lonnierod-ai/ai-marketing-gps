@@ -502,10 +502,16 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "integration",
       "productivity",
       "zapier",
+      "make",
+      "n8n",
+      "bardeen",
+      "no-code",
+      "connect apps",
+      "time-saving",
     ],
     difficulty: "intermediate",
     estimatedTimeframe: "5-10 hours saved per week",
-    recommendedTools: ["zapier", "notion-ai", "hubspot-ai"],
+    recommendedTools: ["zapier", "make-com", "n8n", "bardeen", "notion-ai", "google-ai-studio", "hubspot-ai"],
     workflow: {
       description:
         "Set up automated workflows that run 24/7",
