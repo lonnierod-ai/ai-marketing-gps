@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
 import Script from "next/script";
+import MarketIntelChat from "@/components/MarketIntelChat";
 
 const GA_ID = "G-03GTB18VLH";
 
@@ -142,6 +143,7 @@ export default function RootLayout({
           </div>
         </header>
         {children}
+        <MarketIntelChat />
       </body>
     </html>
   );
