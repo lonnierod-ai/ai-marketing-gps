@@ -26,7 +26,7 @@ const SUGGESTED_QUESTIONS = [
   "How do I repurpose my podcast into social content?",
   "Compare HeyGen vs Synthesia — which one's worth it?",
   "What AI tools actually work well together?",
-  "I want to start with AI content but don't know where to begin",
+  "⚡ HELP ME WRITE AN AI PROMPT",
 ];
 
 function formatMessage(text: string) {
@@ -65,6 +65,7 @@ export default function MarketIntelChat() {
   const [voiceOn, setVoiceOn] = useState(true);
   const [speaking, setSpeaking] = useState(false);
   const [showNudge, setShowNudge] = useState(false);
+  const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -170,6 +171,47 @@ export default function MarketIntelChat() {
     } catch {
       setSpeaking(false);
     }
+  }
+
+  function copyPrompt(promptText: string, promptId: string) {
+    navigator.clipboard.writeText(promptText).then(() => {
+      setCopiedPrompt(promptId);
+      setTimeout(() => setCopiedPrompt(null), 2000);
+    });
+  }
+
+  function renderMessageContent(content: string, messageIndex: number) {
+    const promptStart = content.indexOf("---PROMPT START---");
+    const promptEnd = content.indexOf("---PROMPT END---");
+
+    if (promptStart !== -1 && promptEnd !== -1) {
+      const beforePrompt = content.substring(0, promptStart).trim();
+      const promptText = content.substring(promptStart + 18, promptEnd).trim();
+      const afterPrompt = content.substring(promptEnd + 17).trim();
+      const promptId = `prompt-${messageIndex}`;
+
+      return (
+        <>
+          {beforePrompt && (
+            <div dangerouslySetInnerHTML={{ __html: formatMessage(beforePrompt) }} />
+          )}
+          <div className="lonnie-prompt-card">
+            <button
+              className={`lonnie-prompt-copy-btn ${copiedPrompt === promptId ? 'copied' : ''}`}
+              onClick={() => copyPrompt(promptText, promptId)}
+            >
+              {copiedPrompt === promptId ? 'Copied! ✓' : 'Copy Prompt'}
+            </button>
+            {promptText}
+          </div>
+          {afterPrompt && (
+            <div dangerouslySetInnerHTML={{ __html: formatMessage(afterPrompt) }} />
+          )}
+        </>
+      );
+    }
+
+    return <div dangerouslySetInnerHTML={{ __html: formatMessage(content) }} />;
   }
 
   async function send(text?: string) {
@@ -431,6 +473,64 @@ export default function MarketIntelChat() {
           color: #fff;
         }
 
+        .lonnie-suggestion-cta {
+          background: #f37021 !important;
+          border-color: #f37021 !important;
+          color: #fff !important;
+          font-weight: 700 !important;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          font-size: 13px !important;
+          text-align: center !important;
+        }
+
+        .lonnie-suggestion-cta:hover {
+          background: #d45f18 !important;
+          border-color: #d45f18 !important;
+          color: #fff !important;
+        }
+
+        .lonnie-prompt-card {
+          background: #2d2d2d;
+          border: 1.5px solid #cdb39b;
+          border-radius: 8px;
+          padding: 16px;
+          margin: 8px 0;
+          position: relative;
+          font-family: 'Courier New', monospace;
+          font-size: 12px;
+          line-height: 1.6;
+          color: #e0e0e0;
+          white-space: pre-wrap;
+          word-break: break-word;
+        }
+
+        .lonnie-prompt-copy-btn {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background: #f37021;
+          border: none;
+          color: #fff;
+          padding: 6px 12px;
+          border-radius: 6px;
+          font-size: 11px;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.15s;
+          font-family: 'Gothic A1', sans-serif;
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
+        }
+
+        .lonnie-prompt-copy-btn:hover {
+          background: #d45f18;
+        }
+
+        .lonnie-prompt-copy-btn.copied {
+          background: #3b658a;
+        }
+
         .lonnie-msg {
           display: flex;
           flex-direction: column;
@@ -681,8 +781,12 @@ export default function MarketIntelChat() {
                   </div>
                   <div className="lonnie-suggestions-label">Or pick one of these</div>
                   <div className="lonnie-suggestions">
-                    {SUGGESTED_QUESTIONS.map((q) => (
-                      <button key={q} className="lonnie-suggestion" onClick={() => send(q)}>
+                    {SUGGESTED_QUESTIONS.map((q, idx) => (
+                      <button
+                        key={q}
+                        className={idx === SUGGESTED_QUESTIONS.length - 1 ? "lonnie-suggestion lonnie-suggestion-cta" : "lonnie-suggestion"}
+                        onClick={() => send(q)}
+                      >
                         {q}
                       </button>
                     ))}
@@ -694,9 +798,7 @@ export default function MarketIntelChat() {
                     <div key={i} className={`lonnie-msg lonnie-msg-${msg.role}`}>
                       <div className={`lonnie-bubble lonnie-bubble-${msg.role}`}>
                         {msg.role === "assistant" ? (
-                          <div
-                            dangerouslySetInnerHTML={{ __html: formatMessage(msg.content) }}
-                          />
+                          renderMessageContent(msg.content, i)
                         ) : (
                           msg.content
                         )}
