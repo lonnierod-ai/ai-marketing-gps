@@ -1464,6 +1464,62 @@ export const AI_TOOLS: AITool[] = [
     lastUpdated: "June 2026",
   },
 
+  {
+    id: "contentbase",
+    name: "Contentbase",
+    vendor: "Contentbase",
+    category: "research-seo",
+    description: "All-in-one SEO and GEO platform that automates your entire content strategy. Input your website URL and Contentbase analyzes your business and competitors, identifies top keywords, builds a 30-day content calendar, and auto-generates SEO and GEO-optimized blog posts on autopilot. Exports in Markdown, HTML, and DOCX. Integrates with major CMS platforms for automated publishing. Built for agencies, freelancers, and SMB owners who want organic traffic without manual content planning.",
+    bestFor: [
+      "SMBs who want SEO blog content generated automatically without a content team",
+      "Agencies managing content strategy for multiple clients",
+      "Business owners who want to rank in Google and AI search engines simultaneously",
+      "Anyone wanting a 30-day content plan built from competitor analysis in minutes",
+    ],
+    proTip: "Input your website URL and let Contentbase run a competitor analysis first — it identifies keyword gaps your competitors rank for that you're missing. Then approve the 30-day content calendar and let it autopilot from there.",
+    tags: ["seo", "geo", "contentbase", "content strategy", "content automation", "seo content", "geo optimization", "blog automation", "keyword research", "competitor analysis", "content calendar", "ai content", "organic traffic", "cms integration", "autopilot content", "ai seo"],
+    relatedTools: ["surfer-seo", "semrush", "writesonic", "jasper-ai"],
+    url: "https://contentbase.ai",
+    lastUpdated: "June 2026",
+  },
+  {
+    id: "xpptx",
+    name: "Xpptx",
+    vendor: "Xpptx",
+    category: "content-creation",
+    description: "AI-powered presentation tool that converts existing documents — PDFs, Word files, and Mind Maps — into professional PowerPoint slides with one click. Automatically applies clean layouts, retains key information from complex PDF structures, and produces editable slides. Ideal for SMBs who need to turn reports, proposals, and research documents into polished presentations without manual formatting.",
+    bestFor: [
+      "Business owners turning reports and proposals into presentations quickly",
+      "Teams converting existing Word or PDF documents into slides",
+      "Anyone who needs polished presentations without starting from scratch",
+      "Consultants and agencies creating client-facing decks from research documents",
+    ],
+    proTip: "Upload your existing proposal or report PDF and let Xpptx extract and reformat the content into slides automatically. Edit the output in PowerPoint — you'll save 80% of the formatting time.",
+    tags: ["presentations", "slides", "xpptx", "pdf to slides", "word to slides", "powerpoint", "pptx", "presentation maker", "document to presentation", "ai slides", "slide generator", "deck builder", "proposal slides", "report to slides", "one click presentation"],
+    relatedTools: ["canva-ai", "textdeck", "claude"],
+    url: "https://xpptx.com",
+    lastUpdated: "June 2026",
+  },
+  {
+    id: "textdeck",
+    name: "TextDeck",
+    vendor: "TextDeck",
+    category: "content-creation",
+    description: "AI-powered presentation generator that creates professional PowerPoint slides in 60 seconds from a text prompt. Free to use with PPTX export. Enter a topic or brief and TextDeck generates a complete, visually appealing presentation ready to download and present. Best for quick turnaround presentations for business meetings, pitches, and marketing decks.",
+    bestFor: [
+      "Business owners who need a presentation in under 5 minutes",
+      "Marketers creating pitch decks and proposal presentations fast",
+      "Teams who need polished slides without a designer",
+      "Anyone who wants free AI presentation generation with PPTX export",
+    ],
+    proTip: "Be specific in your prompt for better results: 'Create a 10-slide presentation for a local bakery's investor pitch covering market opportunity, product overview, pricing, and growth plan' — not just 'bakery presentation.'",
+    pricing: "Free with PPTX export",
+    tags: ["presentations", "slides", "textdeck", "text deck", "ai slides", "powerpoint", "pptx", "presentation maker", "slide generator", "free presentation", "60 second slides", "pitch deck", "marketing deck", "ai presentation", "fast slides", "deck builder"],
+    relatedTools: ["xpptx", "canva-ai", "gamma"],
+    url: "https://www.textdeck.com",
+    lastUpdated: "June 2026",
+  },
+
 ];
 
 /**
