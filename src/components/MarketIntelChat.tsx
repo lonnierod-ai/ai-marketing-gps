@@ -202,7 +202,9 @@ export default function MarketIntelChat() {
             >
               {copiedPrompt === promptId ? 'Copied! ✓' : 'Copy Prompt'}
             </button>
-            {promptText}
+            <div className="lonnie-prompt-text">
+              {promptText}
+            </div>
           </div>
           {afterPrompt && (
             <div dangerouslySetInnerHTML={{ __html: formatMessage(afterPrompt) }} />
@@ -490,6 +492,7 @@ export default function MarketIntelChat() {
           color: #fff !important;
         }
 
+        /* ── Prompt card: scrollable, copy button always visible ── */
         .lonnie-prompt-card {
           background: #2d2d2d;
           border: 1.5px solid #cdb39b;
@@ -497,13 +500,25 @@ export default function MarketIntelChat() {
           padding: 16px;
           margin: 8px 0;
           position: relative;
+          word-break: break-word;
+        }
+
+        .lonnie-prompt-text {
           font-family: 'Courier New', monospace;
           font-size: 12px;
           line-height: 1.6;
           color: #e0e0e0;
           white-space: pre-wrap;
           word-break: break-word;
+          max-height: 280px;
+          overflow-y: auto;
+          padding-top: 36px;
+          padding-right: 4px;
         }
+
+        .lonnie-prompt-text::-webkit-scrollbar { width: 3px; }
+        .lonnie-prompt-text::-webkit-scrollbar-track { background: transparent; }
+        .lonnie-prompt-text::-webkit-scrollbar-thumb { background: #cdb39b; border-radius: 2px; }
 
         .lonnie-prompt-copy-btn {
           position: absolute;
@@ -521,6 +536,7 @@ export default function MarketIntelChat() {
           font-family: 'Gothic A1', sans-serif;
           text-transform: uppercase;
           letter-spacing: 0.03em;
+          z-index: 1;
         }
 
         .lonnie-prompt-copy-btn:hover {
