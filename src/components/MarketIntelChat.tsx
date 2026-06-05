@@ -1,15 +1,13 @@
 "use client";
 
 // ============================================================
-// AI Marketing GPS — Lonnie Chat Widget v3
+// AI Marketing GPS — Lonnie Chat Widget v4
 // File: src/components/MarketIntelChat.tsx
 //
-// Changes from v2:
-//   - Name: Lonnie (not Maya)
-//   - Icon: chat bubble instead of compass
-//   - Voice: capped at 300 chars for natural pacing
-//   - Voice: visible STOP button while speaking
-//   - Tone: casual, short responses, always asks a question
+// Changes from v3:
+//   - Voice / TTS completely removed
+//   - Header simplified to avatar + name/status + close button only
+//   - max_tokens bumped to 1500 in route.ts (handles full prompts)
 // ============================================================
 
 import { useState, useRef, useEffect, KeyboardEvent } from "react";
@@ -44,31 +42,15 @@ function formatMessage(text: string) {
   return `<p>${f}</p>`;
 }
 
-function stripMarkdown(text: string): string {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, "$1")
-    .replace(/\*(.*?)\*/g, "$1")
-    .replace(/`(.*?)`/g, "$1")
-    .replace(/https?:\/\/[^\s,)]+/g, "")
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-    .replace(/#{1,6}\s/g, "")
-    .replace(/[-*]\s/g, "")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
-}
-
 export default function MarketIntelChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [voiceOn, setVoiceOn] = useState(true);
-  const [speaking, setSpeaking] = useState(false);
   const [showNudge, setShowNudge] = useState(false);
   const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -78,100 +60,12 @@ export default function MarketIntelChat() {
     if (isOpen) setTimeout(() => inputRef.current?.focus(), 150);
   }, [isOpen]);
 
-  // Show nudge bubble after 5 seconds, hide after 8 seconds
   useEffect(() => {
     if (isOpen) { setShowNudge(false); return; }
     const showTimer = setTimeout(() => setShowNudge(true), 4000);
     const hideTimer = setTimeout(() => setShowNudge(false), 24000);
     return () => { clearTimeout(showTimer); clearTimeout(hideTimer); };
   }, [isOpen]);
-
-  function stopSpeaking() {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-    setSpeaking(false);
-  }
-
-  async function speakText(text: string) {
-    if (!voiceOn) return;
-    try {
-      setSpeaking(true);
-
-      const res = await fetch("/api/tts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
-      });
-
-      if (!res.ok || !res.body) { setSpeaking(false); return; }
-
-      // Stream audio chunks via MediaSource API
-      const mediaSource = new MediaSource();
-      const url = URL.createObjectURL(mediaSource);
-
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-
-      const audio = new Audio(url);
-      audioRef.current = audio;
-      audio.play();
-
-      mediaSource.addEventListener("sourceopen", async () => {
-        let sourceBuffer: SourceBuffer;
-        try {
-          sourceBuffer = mediaSource.addSourceBuffer("audio/mpeg");
-        } catch {
-          // Fallback: buffer entire response if MediaSource fails
-          const blob = await res.clone().blob().catch(() => null);
-          if (!blob) { setSpeaking(false); URL.revokeObjectURL(url); return; }
-          const fallbackUrl = URL.createObjectURL(blob);
-          const fallback = new Audio(fallbackUrl);
-          audioRef.current = fallback;
-          fallback.onended = () => { setSpeaking(false); URL.revokeObjectURL(fallbackUrl); };
-          fallback.onerror = () => setSpeaking(false);
-          fallback.play();
-          return;
-        }
-
-        const reader = res.body!.getReader();
-        const pump = async (): Promise<void> => {
-          const { done, value } = await reader.read();
-          if (done) {
-            if (!sourceBuffer.updating) {
-              mediaSource.endOfStream();
-            } else {
-              sourceBuffer.addEventListener("updateend", () => {
-                mediaSource.endOfStream();
-              }, { once: true });
-            }
-            return;
-          }
-          if (sourceBuffer.updating) {
-            await new Promise<void>((r) =>
-              sourceBuffer.addEventListener("updateend", () => r(), { once: true })
-            );
-          }
-          sourceBuffer.appendBuffer(value);
-          await pump();
-        };
-
-        sourceBuffer.addEventListener("updateend", () => {}, { once: true });
-        await pump().catch(() => {
-          try { mediaSource.endOfStream("decode"); } catch {}
-          setSpeaking(false);
-        });
-      });
-
-      audio.onended = () => { setSpeaking(false); URL.revokeObjectURL(url); };
-      audio.onerror = () => { setSpeaking(false); URL.revokeObjectURL(url); };
-
-    } catch {
-      setSpeaking(false);
-    }
-  }
 
   function copyPrompt(promptText: string, promptId: string) {
     navigator.clipboard.writeText(promptText).then(() => {
@@ -197,10 +91,10 @@ export default function MarketIntelChat() {
           )}
           <div className="lonnie-prompt-card">
             <button
-              className={`lonnie-prompt-copy-btn ${copiedPrompt === promptId ? 'copied' : ''}`}
+              className={`lonnie-prompt-copy-btn ${copiedPrompt === promptId ? "copied" : ""}`}
               onClick={() => copyPrompt(promptText, promptId)}
             >
-              {copiedPrompt === promptId ? 'Copied! ✓' : 'Copy Prompt'}
+              {copiedPrompt === promptId ? "Copied! ✓" : "Copy Prompt"}
             </button>
             <div className="lonnie-prompt-text">
               {promptText}
@@ -225,7 +119,6 @@ export default function MarketIntelChat() {
     setMessages(updated);
     setInput("");
     setLoading(true);
-    stopSpeaking();
 
     try {
       const res = await fetch("/api/chat", {
@@ -236,7 +129,6 @@ export default function MarketIntelChat() {
       const data = await res.json();
       const reply = data.message || "Something went wrong — try again.";
       setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
-      speakText(reply);
     } catch {
       setMessages((prev) => [
         ...prev,
@@ -351,49 +243,6 @@ export default function MarketIntelChat() {
           font-weight: 400;
         }
 
-        .lonnie-header-actions {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .lonnie-voice-btn {
-          background: none;
-          border: 1.5px solid rgba(205,179,155,0.5);
-          border-radius: 20px;
-          color: #cdb39b;
-          font-size: 11px;
-          padding: 4px 10px;
-          cursor: pointer;
-          font-family: inherit;
-          font-weight: 700;
-          transition: all 0.15s;
-          letter-spacing: 0.03em;
-          white-space: nowrap;
-        }
-
-        .lonnie-voice-btn.speaking {
-          background: rgba(243,112,33,0.15);
-          border-color: #f37021;
-          color: #f37021;
-          animation: lonnie-pulse-border 1.5s infinite;
-        }
-
-        .lonnie-voice-btn.on {
-          border-color: rgba(205,179,155,0.5);
-          color: #cdb39b;
-        }
-
-        .lonnie-voice-btn.off {
-          border-color: rgba(255,255,255,0.2);
-          color: rgba(255,255,255,0.35);
-        }
-
-        @keyframes lonnie-pulse-border {
-          0%, 100% { border-color: #f37021; }
-          50% { border-color: rgba(243,112,33,0.4); }
-        }
-
         .lonnie-close {
           background: none;
           border: none;
@@ -435,9 +284,7 @@ export default function MarketIntelChat() {
           font-weight: 400;
         }
 
-        .lonnie-greeting-text strong {
-          color: #f37021;
-        }
+        .lonnie-greeting-text strong { color: #f37021; }
 
         .lonnie-suggestions-label {
           font-size: 10px;
@@ -492,7 +339,6 @@ export default function MarketIntelChat() {
           color: #fff !important;
         }
 
-        /* ── Prompt card: scrollable, copy button always visible ── */
         .lonnie-prompt-card {
           background: #2d2d2d;
           border: 1.5px solid #cdb39b;
@@ -539,19 +385,10 @@ export default function MarketIntelChat() {
           z-index: 1;
         }
 
-        .lonnie-prompt-copy-btn:hover {
-          background: #d45f18;
-        }
+        .lonnie-prompt-copy-btn:hover { background: #d45f18; }
+        .lonnie-prompt-copy-btn.copied { background: #3b658a; }
 
-        .lonnie-prompt-copy-btn.copied {
-          background: #3b658a;
-        }
-
-        .lonnie-msg {
-          display: flex;
-          flex-direction: column;
-        }
-
+        .lonnie-msg { display: flex; flex-direction: column; }
         .lonnie-msg-user { align-items: flex-end; }
         .lonnie-msg-assistant { align-items: flex-start; }
 
@@ -754,36 +591,19 @@ export default function MarketIntelChat() {
       <div className="lonnie-widget">
         {isOpen && (
           <div className="lonnie-panel">
-            {/* Header */}
+            {/* Header — avatar + name/status + close only */}
             <div className="lonnie-header">
               <div className="lonnie-avatar">L</div>
               <div className="lonnie-header-info">
                 <div className="lonnie-name">Lonnie</div>
                 <div className="lonnie-status">AI Marketing GPS · 150 tools indexed</div>
               </div>
-              <div className="lonnie-header-actions">
-                {speaking ? (
-                  <button
-                    className="lonnie-voice-btn speaking"
-                    onClick={stopSpeaking}
-                  >
-                    ■ STOP
-                  </button>
-                ) : (
-                  <button
-                    className={`lonnie-voice-btn ${voiceOn ? "on" : "off"}`}
-                    onClick={() => setVoiceOn((v) => !v)}
-                  >
-                    {voiceOn ? "🔊 Voice on" : "🔇 Voice off"}
-                  </button>
-                )}
-                <button
-                  className="lonnie-close"
-                  onClick={() => { setIsOpen(false); stopSpeaking(); }}
-                >
-                  ×
-                </button>
-              </div>
+              <button
+                className="lonnie-close"
+                onClick={() => setIsOpen(false)}
+              >
+                ×
+              </button>
             </div>
 
             {/* Messages */}
@@ -792,7 +612,7 @@ export default function MarketIntelChat() {
                 <>
                   <div className="lonnie-greeting">
                     <div className="lonnie-greeting-text">
-                      Hey — I'm <strong>Lonnie</strong>. Tell me what you're trying to do and I'll cut through the noise and point you somewhere useful. What's the goal?
+                      Hey — I&apos;m <strong>Lonnie</strong>. Tell me what you&apos;re trying to do and I&apos;ll cut through the noise and point you somewhere useful. What&apos;s the goal?
                     </div>
                   </div>
                   <div className="lonnie-suggestions-label">Or pick one of these</div>
@@ -800,7 +620,11 @@ export default function MarketIntelChat() {
                     {SUGGESTED_QUESTIONS.map((q, idx) => (
                       <button
                         key={q}
-                        className={idx === SUGGESTED_QUESTIONS.length - 1 ? "lonnie-suggestion lonnie-suggestion-cta" : "lonnie-suggestion"}
+                        className={
+                          idx === SUGGESTED_QUESTIONS.length - 1
+                            ? "lonnie-suggestion lonnie-suggestion-cta"
+                            : "lonnie-suggestion"
+                        }
                         onClick={() => send(q)}
                       >
                         {q}
@@ -813,11 +637,9 @@ export default function MarketIntelChat() {
                   {messages.map((msg, i) => (
                     <div key={i} className={`lonnie-msg lonnie-msg-${msg.role}`}>
                       <div className={`lonnie-bubble lonnie-bubble-${msg.role}`}>
-                        {msg.role === "assistant" ? (
-                          renderMessageContent(msg.content, i)
-                        ) : (
-                          msg.content
-                        )}
+                        {msg.role === "assistant"
+                          ? renderMessageContent(msg.content, i)
+                          : msg.content}
                       </div>
                     </div>
                   ))}
@@ -871,10 +693,10 @@ export default function MarketIntelChat() {
           </button>
         )}
 
-        {/* Toggle — chat bubble */}
+        {/* Toggle */}
         <button
           className="lonnie-toggle"
-          onClick={() => { setIsOpen((o) => !o); if (isOpen) stopSpeaking(); setShowNudge(false); }}
+          onClick={() => { setIsOpen((o) => !o); setShowNudge(false); }}
           title="Chat with Lonnie"
         >
           {isOpen ? "×" : "💬"}
