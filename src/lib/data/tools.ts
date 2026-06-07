@@ -1612,7 +1612,7 @@ export const AI_TOOLS: AITool[] = [
     pricing: "Contact for pricing",
     tags: ["ai training", "ai learning", "ai literacy", "trainedup", "trainedupai", "ai education", "non-technical", "team training", "ai onboarding", "productivity training", "ai adoption", "skill building"],
     relatedTools: ["chatgpt", "claude", "notion-ai"],
-    url: "https://trainedup.ai/",
+    url: "https://trainedup.ai",
     lastUpdated: "June 2026",
   },
   {
@@ -1631,7 +1631,7 @@ export const AI_TOOLS: AITool[] = [
     pricing: "Contact for pricing",
     tags: ["chatbot", "customer support", "sales automation", "jaweb", "ai chatbot", "shopify chatbot", "whatsapp chatbot", "e-commerce automation", "lead capture", "website chatbot", "automated support", "conversational ai"],
     relatedTools: ["intercom", "drift", "tidio"],
-    url: "https://jaweb.co",
+    url: "https://www.jaweb.me",
     lastUpdated: "June 2026",
   },
   {
@@ -1650,7 +1650,7 @@ export const AI_TOOLS: AITool[] = [
     pricing: "Contact for pricing",
     tags: ["ai image generation", "zimage", "z-image", "image generator", "fast image generation", "bilingual images", "product images", "social graphics", "ad creatives", "visual content", "stock photo alternative", "brand visuals"],
     relatedTools: ["midjourney", "canva-ai", "ideogram"],
-    url: "https://z-image.ai",
+    url: "https://z-image.net",
     lastUpdated: "June 2026",
   },
   {
