@@ -539,7 +539,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     ],
     difficulty: "intermediate",
     estimatedTimeframe: "5-10 hours saved per week",
-    recommendedTools: ["zapier", "make-com", "n8n", "bardeen", "notion-ai", "google-ai-studio", "bolt-new", "lovable", "cursor", "hubspot-ai"],
+    recommendedTools: ["zapier", "make-com", "n8n", "bardeen", "notion-ai", "google-ai-studio", "bolt-new", "lovable", "cursor", "hubspot-ai", "jaweb"],
     workflow: {
       description:
         "Set up automated workflows that run 24/7",
@@ -665,6 +665,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "adobe-firefly",
       "imagen-4",
       "nano-banana-pro",
+      "z-image",
     ],
     workflow: {
       description: "AI-powered image creation workflow",
@@ -982,6 +983,8 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "typingmind",
       "zapier",
       "wave-app",
+      "trainedupai",
+      "xtensio",
     ],
     workflow: {
       description: "Set up AI tools that save hours every week",
@@ -1230,6 +1233,26 @@ const TOPIC_KEYWORDS: Record<string, string[]> = {
   "content repurposing": ["repurposing", "content"],
   "repurpose content": ["repurposing", "content"],
   "recycle content": ["repurposing", "content"],
+  "ai training": ["productivity", "ai training", "learning"],
+  "learn ai": ["productivity", "ai training", "learning"],
+  "ai education": ["productivity", "ai training", "learning"],
+  "ai literacy": ["productivity", "ai training", "learning"],
+  "team training": ["productivity", "ai training"],
+  "chatbot": ["automation", "chatbot", "customer service"],
+  "customer service": ["automation", "chatbot", "customer service"],
+  "customer support": ["automation", "chatbot", "customer service"],
+  "shopify chatbot": ["automation", "chatbot", "e-commerce"],
+  "whatsapp chatbot": ["automation", "chatbot"],
+  "website chatbot": ["automation", "chatbot"],
+  "fast image": ["visual", "images", "image generation"],
+  "bilingual images": ["visual", "images", "multilingual"],
+  "bilingual graphics": ["visual", "images", "multilingual"],
+  "proposals": ["content", "documents", "proposals"],
+  "create proposal": ["content", "documents", "proposals"],
+  "client proposal": ["content", "documents", "proposals"],
+  "branded documents": ["content", "documents"],
+  "live documents": ["content", "documents", "collaboration"],
+  "one-pagers": ["content", "documents", "marketing materials"],
 };
 
 export function searchGoals(keyword: string): MarketingGoal[] {
