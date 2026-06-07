@@ -1612,7 +1612,7 @@ export const AI_TOOLS: AITool[] = [
     pricing: "Contact for pricing",
     tags: ["ai training", "ai learning", "ai literacy", "trainedup", "trainedupai", "ai education", "non-technical", "team training", "ai onboarding", "productivity training", "ai adoption", "skill building"],
     relatedTools: ["chatgpt", "claude", "notion-ai"],
-    url: "https://www.trainedupai.com",
+    url: "https://trainedup.ai/",
     lastUpdated: "June 2026",
   },
   {
