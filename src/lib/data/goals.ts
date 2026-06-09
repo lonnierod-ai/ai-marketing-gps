@@ -25,6 +25,8 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "posts",
       "faster",
       "speed",
+      "presentations",
+      "productivity",
     ],
     difficulty: "beginner",
     estimatedTimeframe: "1-2 days per post",
@@ -36,6 +38,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "grammarly",
       "copy-ai",
       "gemini-3",
+      "microsoft-copilot-m365",
     ],
     workflow: {
       description:
@@ -170,6 +173,8 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "soralum-ai",
       "adobe-firefly",
       "imagen-4",
+      "openai-codex-creative",
+      "microsoft-copilot-m365",
     ],
     workflow: {
       description:
@@ -429,10 +434,12 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "linkedin",
       "social",
       "twitter",
+      "ads",
+      "campaign",
     ],
     difficulty: "beginner",
     estimatedTimeframe: "30 minutes for a week's content",
-    recommendedTools: ["chatgpt", "claude", "buffer", "canva-ai", "metricool", "buffer-ai", "hootsuite"],
+    recommendedTools: ["chatgpt", "claude", "buffer", "canva-ai", "metricool", "buffer-ai", "hootsuite", "openai-codex-creative", "instagram-edits"],
     workflow: {
       description:
         "Batch create and schedule social media content efficiently",
@@ -630,6 +637,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "leonardo-ai",
       "canva-ai",
       "soralum-ai",
+      "instagram-edits",
     ],
     workflow: {
       description: "AI-powered image creation workflow",
@@ -731,6 +739,17 @@ const TOPIC_KEYWORDS: Record<string, string[]> = {
   "seo": ["seo", "search", "optimization"],
   "search optimization": ["seo"],
   
+  // Microsoft/productivity-related searches
+  "microsoft copilot": ["productivity", "content", "writing", "email", "presentations"],
+  "copilot": ["productivity", "content", "writing", "email", "presentations"],
+  "microsoft 365": ["productivity", "content", "writing", "email", "presentations"],
+  // Codex/ad creative searches
+  "codex": ["ads", "campaign", "marketing", "content"],
+  "ad creative": ["ads", "campaign", "marketing", "social"],
+  "campaign assets": ["ads", "campaign", "marketing"],
+  // Instagram searches
+  "instagram edits": ["instagram", "video", "social", "editing"],
+  "reels": ["instagram", "video", "social", "editing"],
   // Email-related searches
   "email": ["email", "campaigns", "newsletters"],
   "email marketing": ["email", "campaigns"],
