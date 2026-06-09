@@ -854,7 +854,7 @@ export const AI_TOOLS: AITool[] = [
       "design",
     ],
     relatedTools: ["runway-gen-4", "luma-ray-3", "sora-2", "canva-ai", "midjourney"],
-    url: "https://www.listedai.co/ai/soralum-ai",
+    url: "https://soralum.com/?utm_source=listedai",
     lastUpdated: "June 2026",
   },
 ];
