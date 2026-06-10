@@ -276,7 +276,7 @@ export const AI_TOOLS: AITool[] = [
     proTip: "SoraLum's combined image + video workflow means you can go from a text idea to a finished social post or short clip in one session — no switching tools.",
     tags: ["video", "image", "ai-generation", "social media", "text-to-video", "visual-content"],
     relatedTools: ["latiai", "sora-2", "google-veo-3", "canva-ai"],
-    url: "https://www.listedai.co/ai/soralum-ai",
+    url: "https://soralum.com?ref=aimarketinggps",
     lastUpdated: "June 2026",
   },
   {
@@ -293,7 +293,7 @@ export const AI_TOOLS: AITool[] = [
     proTip: "Use reference photos to keep your brand visuals consistent — Latiai can match a style or product look across multiple generated assets.",
     tags: ["video", "image", "ai-generation", "text-to-video", "reference-photo", "visual-content"],
     relatedTools: ["soralum-ai", "sora-2", "midjourney", "dall-e-3"],
-    url: "https://www.listedai.co/ai/latiai",
+    url: "https://www.latiai.com?ref=aimarketinggps",
     lastUpdated: "June 2026",
   },
   {
@@ -311,7 +311,7 @@ export const AI_TOOLS: AITool[] = [
     proTip: "Selects handles the tedious parts of editing — sorting clips, syncing audio, rough cuts — so you can focus on the creative decisions. Plug it into your existing editing software.",
     tags: ["video", "video-editing", "automation", "long-form", "premiere-pro", "final-cut", "davinci"],
     relatedTools: ["descript", "opusclip", "riverside-fm"],
-    url: "https://www.listedai.co/ai/selects",
+    url: "https://cutback.video/selects?ref=aimarketinggps",
     lastUpdated: "June 2026",
   },
 
@@ -392,7 +392,7 @@ export const AI_TOOLS: AITool[] = [
     proTip: "Generate custom soundtrack music with prompts like 'upbeat corporate background music with subtle piano.' No royalty concerns, perfectly matched to your content.",
     tags: ["voice", "audio", "music", "soundtrack", "tts", "royalty-free"],
     relatedTools: ["elevenlabs", "descript"],
-    url: "https://www.adobe.com/products/firefly.html",
+    url: "https://firefly.adobe.com",
     lastUpdated: "November 2025",
   },
 
@@ -537,7 +537,7 @@ export const AI_TOOLS: AITool[] = [
     proTip: "Drawjo is optimized for speed — describe what you need and get a polished, professional result without a design background. Great for founders doing their own marketing.",
     tags: ["design", "image", "ai-generation", "visual-content", "solo-founder", "startup", "no-design-skills"],
     relatedTools: ["canva-ai", "midjourney", "latiai", "soralum-ai"],
-    url: "https://www.listedai.co/ai/drawjo",
+    url: "https://drawjo.ai?ref=aimarketinggps",
     lastUpdated: "June 2026",
   },
 
@@ -874,7 +874,7 @@ export const AI_TOOLS: AITool[] = [
     proTip: "Describe what you want to automate in plain English — Pendless figures out the browser actions. Great for tasks like scraping, form filling, or monitoring that you currently do manually.",
     tags: ["automation", "browser", "no-code", "productivity", "workflows", "web-tasks"],
     relatedTools: ["zapier", "notion-ai"],
-    url: "https://www.listedai.co/ai/pendless",
+    url: "https://www.pendless.com?ref=aimarketinggps",
     lastUpdated: "June 2026",
   },
 
