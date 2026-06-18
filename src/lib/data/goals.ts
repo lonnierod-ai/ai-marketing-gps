@@ -153,6 +153,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "content",
       "visual",
       "youtube",
+      "editing",
     ],
     difficulty: "intermediate",
     estimatedTimeframe: "Days instead of weeks",
@@ -168,6 +169,8 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "soralum-ai",
       "latiai",
       "selects",
+      "pika-labs",
+      "adobe-audio",
     ],
     workflow: {
       description:
@@ -424,6 +427,8 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "engagement",
       "instagram",
       "linkedin",
+      "social",
+      "twitter",
     ],
     difficulty: "beginner",
     estimatedTimeframe: "30 minutes for a week's content",
@@ -436,6 +441,9 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "soralum-ai",
       "latiai",
       "drawjo",
+      "buffer-ai",
+      "hootsuite",
+      "meta-edits",
     ],
     workflow: {
       description:
@@ -514,7 +522,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     ],
     difficulty: "intermediate",
     estimatedTimeframe: "5-10 hours saved per week",
-    recommendedTools: ["zapier", "notion-ai", "hubspot-ai", "pendless"],
+    recommendedTools: ["zapier", "notion-ai", "hubspot-ai", "pendless", "google-ai-studio"],
     workflow: {
       description:
         "Set up automated workflows that run 24/7",
@@ -624,6 +632,8 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "ai-generation",
       "social-media",
       "marketing",
+      "photo-restoration",
+      "image-editing",
     ],
     difficulty: "beginner",
     estimatedTimeframe: "Minutes per image",
@@ -636,6 +646,13 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "drawjo",
       "latiai",
       "soralum-ai",
+      "picx-studio",
+      "pixelweaver",
+      "z-image",
+      "nearerai",
+      "adobe-firefly",
+      "imagen-4",
+      "nano-banana-pro",
     ],
     workflow: {
       description: "AI-powered image creation workflow",
@@ -723,6 +740,13 @@ const TOPIC_KEYWORDS: Record<string, string[]> = {
   "create images": ["images", "graphics", "visual"],
   "ai images": ["images", "graphics", "visual"],
   "generate images": ["images", "graphics", "visual"],
+  "photo restoration": ["photo-restoration", "image-editing"],
+  "restore photo": ["photo-restoration", "image-editing"],
+  "restore old photo": ["photo-restoration", "image-editing"],
+  "fix old photo": ["photo-restoration", "image-editing"],
+  "image editing": ["image-editing", "images"],
+  "edit image": ["image-editing", "images"],
+  "edit photo": ["image-editing", "images"],
   
   // Social media-related searches
   "social media": ["social"],
