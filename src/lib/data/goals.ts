@@ -444,6 +444,8 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "buffer-ai",
       "hootsuite",
       "meta-edits",
+      "comicsai",
+      "commentions",
     ],
     workflow: {
       description:
@@ -522,7 +524,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     ],
     difficulty: "intermediate",
     estimatedTimeframe: "5-10 hours saved per week",
-    recommendedTools: ["zapier", "notion-ai", "hubspot-ai", "pendless", "google-ai-studio"],
+    recommendedTools: ["zapier", "notion-ai", "hubspot-ai", "pendless", "google-ai-studio", "commentions"],
     workflow: {
       description:
         "Set up automated workflows that run 24/7",
@@ -600,6 +602,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "claude",
       "heygen",
       "descript",
+      "comicsai",
     ],
     workflow: {
       description:
@@ -650,6 +653,9 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "pixelweaver",
       "z-image",
       "nearerai",
+      "pixexact",
+      "pixpretty",
+      "comicsai",
       "adobe-firefly",
       "imagen-4",
       "nano-banana-pro",
@@ -747,11 +753,18 @@ const TOPIC_KEYWORDS: Record<string, string[]> = {
   "image editing": ["image-editing", "images"],
   "edit image": ["image-editing", "images"],
   "edit photo": ["image-editing", "images"],
+  "comics": ["images", "graphics", "visual"],
+  "comic": ["images", "graphics", "visual"],
+  "manga": ["images", "graphics", "visual"],
+  "webtoon": ["images", "graphics", "visual"],
   
   // Social media-related searches
   "social media": ["social"],
   "social content": ["social"],
   "social": ["social", "instagram", "linkedin", "twitter"],
+  "lead generation": ["social-media", "automation", "marketing"],
+  "leads": ["social-media", "automation", "marketing"],
+  "generate leads": ["social-media", "automation", "marketing"],
   
   // SEO-related searches
   "seo": ["seo", "search", "optimization"],
