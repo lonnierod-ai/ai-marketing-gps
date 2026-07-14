@@ -153,7 +153,6 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "content",
       "visual",
       "youtube",
-      "editing",
     ],
     difficulty: "intermediate",
     estimatedTimeframe: "Days instead of weeks",
@@ -166,11 +165,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "google-veo-3",
       "luma-ray-3",
       "clipchamp",
-      "soralum-ai",
-      "latiai",
-      "selects",
-      "pika-labs",
-      "adobe-audio",
+      "gemini-omni-flash",
     ],
     workflow: {
       description:
@@ -180,7 +175,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
         "Choose approach: AI avatar (HeyGen/Synthesia) or AI-generated video (Sora 2/Runway)",
         "For avatar videos: Create video with HeyGen or Synthesia (no filming needed)",
         "For AI video: Generate scenes with Sora 2 or Runway Gen-4",
-        "Edit and refine with Descript or Selects (edit video by editing transcript)",
+        "Edit and refine with Descript (edit video by editing transcript)",
         "Add voiceover with ElevenLabs if needed",
       ],
     },
@@ -238,7 +233,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "video",
     ],
     difficulty: "beginner",
-    estimatedTimeframe: "1 hour -> 20+ clips",
+    estimatedTimeframe: "1 hour â†’ 20+ clips",
     recommendedTools: ["opusclip", "descript", "castmagic", "submagic", "captions"],
     workflow: {
       description:
@@ -306,14 +301,14 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "ads",
     ],
     difficulty: "beginner",
-    estimatedTimeframe: "30-90 minutes per script",
+    estimatedTimeframe: "30â€“90 minutes per script",
     recommendedTools: ["chatgpt", "claude", "jasper-ai"],
     workflow: {
       description:
         "AI-assisted workflow for drafting and refining video scripts",
       steps: [
         "Describe your target audience, goal, and video length to ChatGPT or Claude.",
-        "Ask AI to propose 2-3 different hooks and outlines.",
+        "Ask AI to propose 2â€“3 different hooks and outlines.",
         "Select the best outline and have AI draft a full script with scene-by-scene narration.",
         "Iterate on tone, length, and CTAs with Jasper AI or Claude.",
         "Adapt the script for different platforms (YouTube, Reels, TikTok).",
@@ -321,7 +316,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     },
     examplePrompts: [
       "Write a 60-second video script for [platform] about [topic] for [audience]. Include a strong hook, 3 key points, and a clear call to action.",
-      "Write a 2-minute product demo video script for [product] aimed at [audience]. Use a problem -> solution -> benefits -> CTA structure.",
+      "Write a 2-minute product demo video script for [product] aimed at [audience]. Use a problem â†’ solution â†’ benefits â†’ CTA structure.",
       "Give me 3 alternate hooks and openings for a 60-second vertical video about [topic] to use on [platform].",
     ],
   },
@@ -427,33 +422,17 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "engagement",
       "instagram",
       "linkedin",
-      "social",
-      "twitter",
     ],
     difficulty: "beginner",
     estimatedTimeframe: "30 minutes for a week's content",
-    recommendedTools: [
-      "chatgpt",
-      "claude",
-      "buffer",
-      "canva-ai",
-      "metricool",
-      "soralum-ai",
-      "latiai",
-      "drawjo",
-      "buffer-ai",
-      "hootsuite",
-      "meta-edits",
-      "comicsai",
-      "commentions",
-    ],
+    recommendedTools: ["chatgpt", "claude", "buffer", "canva-ai", "metricool"],
     workflow: {
       description:
         "Batch create and schedule social media content efficiently",
       steps: [
         "Brainstorm content themes with ChatGPT (one week at a time)",
         "Generate platform-specific posts (LinkedIn: professional insights, Instagram: visual + story, Twitter: quick takes)",
-        "Create graphics with Canva AI or Drawjo (on-brand, no designer needed)",
+        "Create graphics with Canva AI",
         "Write captions with Claude (maintains brand voice)",
         "Schedule with Buffer (optimal posting times)",
         "Track performance and iterate",
@@ -524,7 +503,7 @@ export const MARKETING_GOALS: MarketingGoal[] = [
     ],
     difficulty: "intermediate",
     estimatedTimeframe: "5-10 hours saved per week",
-    recommendedTools: ["zapier", "notion-ai", "hubspot-ai", "pendless", "google-ai-studio", "commentions"],
+    recommendedTools: ["zapier", "notion-ai", "hubspot-ai"],
     workflow: {
       description:
         "Set up automated workflows that run 24/7",
@@ -532,13 +511,13 @@ export const MARKETING_GOALS: MarketingGoal[] = [
         "Identify repetitive tasks (copy-pasting data, publishing content, sending notifications)",
         "Browse Zapier templates for your use case",
         "Connect your apps (ChatGPT, WordPress, Buffer, Slack, Google Sheets, etc.)",
-        "Use Pendless to automate browser-based tasks in plain English (no coding)",
         "Set up automation triggers and actions",
-        "Test workflow and let it run automatically",
+        "Test workflow",
+        "Let it run automatically",
       ],
     },
     examplePrompts: [
-      "Example workflow: 'When new blog post is published on WordPress -> Create social media posts with ChatGPT -> Schedule in Buffer -> Add to content calendar in Google Sheets -> Notify team in Slack'",
+      "Example workflow: 'When new blog post is published on WordPress â†’ Create social media posts with ChatGPT â†’ Schedule in Buffer â†’ Add to content calendar in Google Sheets â†’ Notify team in Slack'",
     ],
   },
 
@@ -595,14 +574,13 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "writing",
     ],
     difficulty: "beginner",
-    estimatedTimeframe: "One asset -> 10+ formats",
+    estimatedTimeframe: "One asset â†’ 10+ formats",
     recommendedTools: [
       "castmagic",
       "opusclip",
       "claude",
       "heygen",
       "descript",
-      "comicsai",
     ],
     workflow: {
       description:
@@ -635,8 +613,6 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "ai-generation",
       "social-media",
       "marketing",
-      "photo-restoration",
-      "image-editing",
     ],
     difficulty: "beginner",
     estimatedTimeframe: "Minutes per image",
@@ -646,26 +622,14 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "ideogram",
       "leonardo-ai",
       "canva-ai",
-      "drawjo",
-      "latiai",
-      "soralum-ai",
-      "picx-studio",
-      "pixelweaver",
-      "z-image",
-      "nearerai",
-      "pixexact",
-      "pixpretty",
-      "comicsai",
-      "adobe-firefly",
-      "imagen-4",
-      "nano-banana-pro",
+      "nano-banana-2-lite",
     ],
     workflow: {
       description: "AI-powered image creation workflow",
       steps: [
         "Define your image concept and style",
         "Write a detailed prompt describing the image",
-        "Generate with Midjourney (best quality), DALL-E 3 (fast), or Drawjo (fastest for SMBs)",
+        "Generate with Midjourney (best quality), DALL-E 3 (fast), or Leonardo AI (customizable)",
         "Refine with variations if needed",
         "Edit and add text with Canva AI",
         "Download and use in your marketing",
@@ -675,6 +639,58 @@ export const MARKETING_GOALS: MarketingGoal[] = [
       "Create a professional header image for a blog post about [topic]. Style: modern, clean, tech-focused. Size: 1200x630px.",
       "Generate a social media graphic showing [concept]. Make it eye-catching and Instagram-friendly.",
       "Design a product mockup showing [product] in a [setting]. Photorealistic style.",
+    ],
+  },
+
+  // ========================================
+  // ADVERTISING GOALS
+  // ========================================
+  {
+    id: "run-ai-ad-campaigns",
+    title: "Run AI-Powered Ad Campaigns",
+    description:
+      "Plan, create, and launch paid ad campaigns faster using AI-native tools built directly into the ad platforms themselves — from TikTok and LinkedIn to Google Ads. Go from campaign goal to ad creative to launch without starting from a blank page.",
+    category: "advertising",
+    tags: [
+      "ads",
+      "advertising",
+      "ad campaign",
+      "campaigns",
+      "paid ads",
+      "paid media",
+      "ppc",
+      "google ads",
+      "linkedin ads",
+      "tiktok ads",
+      "meta ads",
+      "ad creative",
+      "ad copy",
+      "roas",
+    ],
+    difficulty: "intermediate",
+    estimatedTimeframe: "A first campaign draft in an afternoon",
+    recommendedTools: [
+      "tiktok-symphony-agent",
+      "linkedin-campaign-manager-ai",
+      "activecampaign-google-ads",
+      "nano-banana-2-lite",
+      "canva-ai",
+    ],
+    workflow: {
+      description: "AI-assisted workflow from campaign goal to launched ad",
+      steps: [
+        "Define your offer, audience segment, and creative hypothesis yourself first — AI multiplies ideas, it doesn't invent a strategy",
+        "For TikTok: draft a campaign brief and find matching creator content with Symphony Agent",
+        "For LinkedIn: lock in your brand kit, then generate ad copy and variants with Draft with AI",
+        "For Google Ads: connect existing customer/email data through ActiveCampaign's Active Intelligence and propose a first Performance Max campaign",
+        "Rough out image variations fast with Nano Banana 2 Lite, then polish the winner in Canva AI or a higher-fidelity image tool",
+        "Set budget caps and conversion tracking before launch, then treat the first run as a controlled experiment",
+      ],
+    },
+    examplePrompts: [
+      "Write a campaign brief for a TikTok ad promoting [product] to [audience], including 3 creative angles and a call to action.",
+      "Draft 5 LinkedIn ad variants for [offer] targeting [job title/industry], following a problem → solution → CTA structure.",
+      "Propose ad copy for a Google Performance Max campaign retargeting [customer segment] with an offer of [offer].",
     ],
   },
 ];
@@ -746,25 +762,11 @@ const TOPIC_KEYWORDS: Record<string, string[]> = {
   "create images": ["images", "graphics", "visual"],
   "ai images": ["images", "graphics", "visual"],
   "generate images": ["images", "graphics", "visual"],
-  "photo restoration": ["photo-restoration", "image-editing"],
-  "restore photo": ["photo-restoration", "image-editing"],
-  "restore old photo": ["photo-restoration", "image-editing"],
-  "fix old photo": ["photo-restoration", "image-editing"],
-  "image editing": ["image-editing", "images"],
-  "edit image": ["image-editing", "images"],
-  "edit photo": ["image-editing", "images"],
-  "comics": ["images", "graphics", "visual"],
-  "comic": ["images", "graphics", "visual"],
-  "manga": ["images", "graphics", "visual"],
-  "webtoon": ["images", "graphics", "visual"],
   
   // Social media-related searches
   "social media": ["social"],
   "social content": ["social"],
   "social": ["social", "instagram", "linkedin", "twitter"],
-  "lead generation": ["social-media", "automation", "marketing"],
-  "leads": ["social-media", "automation", "marketing"],
-  "generate leads": ["social-media", "automation", "marketing"],
   
   // SEO-related searches
   "seo": ["seo", "search", "optimization"],
@@ -775,10 +777,19 @@ const TOPIC_KEYWORDS: Record<string, string[]> = {
   "email marketing": ["email", "campaigns"],
   "email campaigns": ["email", "campaigns"],
 
-  // Automation-related searches
-  "automation": ["automation", "workflows", "productivity"],
-  "workflow": ["automation", "workflows", "productivity"],
-  "automate": ["automation", "workflows", "productivity"],
+  // Advertising/ads-related searches
+  "ads": ["ads", "advertising", "campaign"],
+  "advertising": ["ads", "advertising", "campaign"],
+  "ad campaign": ["ads", "advertising", "campaign"],
+  "paid ads": ["ads", "paid", "advertising"],
+  "paid media": ["ads", "paid", "advertising"],
+  "ppc": ["ppc", "ads", "advertising"],
+  "google ads": ["google ads", "ads", "ppc"],
+  "linkedin ads": ["linkedin ads", "ads"],
+  "tiktok ads": ["tiktok ads", "ads"],
+  "meta ads": ["meta ads", "ads"],
+  "run ads": ["ads", "advertising", "campaign"],
+  "campaign": ["campaign", "ads", "advertising"],
 };
 
 export function searchGoals(keyword: string): MarketingGoal[] {

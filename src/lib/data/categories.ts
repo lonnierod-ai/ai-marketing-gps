@@ -106,4 +106,9 @@ export const GOAL_CATEGORIES: GoalCategory[] = [
     name: "Marketing Automation",
     description: "Workflow automation and efficiency goals",
   },
+  {
+    id: "advertising",
+    name: "Advertising & Ads",
+    description: "Paid ad campaign creation, ad creative, and AI-native ad platform tools (Google, LinkedIn, TikTok, Meta)",
+  },
 ];
