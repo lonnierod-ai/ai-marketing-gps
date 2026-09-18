@@ -120,9 +120,11 @@ orange text.
 - Contrast is carried by charcoal and cobalt type on near-white, not
   white type on dark. Charcoal's exact value matters more than it would
   on a dark ground.
-- #FF6E40 on near-white is legible at large sizes. As body or small UI
-  text it will fail contrast checks. Restrict orange text to display
-  sizes and to fills.
+- #FF6E40 on the light ground is roughly 2.6:1 and fails WCAG AA even
+  for large text. Orange is a fill color only, always with dark or white
+  text on top. It is never used as text on the page ground. The orange
+  tagline in the wordmark lockup is exempt as branding, but must not be
+  reproduced as live HTML text in that color.
 - Depth comes from spacing, rule lines, and type weight. Not glow,
   gradient, or atmospheric imagery. The reference sites' shadow and glow
   treatments do not port.
@@ -292,6 +294,8 @@ student content.
 8. **Fourth beat.** Whether a CTA beat follows the three, or the CTA
    lives inside beat three.
 9. **Hero copy.** Drafted separately in a lonnie-voice session.
+10. **Text orange.** Whether to define a darker orange variant for text
+    use, and its value.
 
 ---
 
