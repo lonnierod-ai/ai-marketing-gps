@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Quattrocento_Sans } from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
 import Script from "next/script";
 import MarketIntelChat from "@/components/MarketIntelChat";
+import SiteFooter from "@/components/SiteFooter";
+import SiteHeader from "@/components/SiteHeader";
 
 const GA_ID = "G-03GTB18VLH";
 
@@ -135,23 +136,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
       </head>
-      <body className="antialiased">
-        <header className="bg-white border-b border-brand-sand shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center h-16">
-              <Link
-                href="/"
-                className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity"
-              >
-                <h1 className="text-lg sm:text-xl font-bold">
-                  <span className="text-brand-dark">AI Marketing</span>{" "}
-                  <span className="text-brand-orange">GPS</span>
-                </h1>
-              </Link>
-            </div>
-          </div>
-        </header>
-        {children}
+      <body className="flex min-h-screen flex-col antialiased">
+        <SiteHeader />
+        <div id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
+          {children}
+        </div>
+        <SiteFooter />
         <MarketIntelChat />
       </body>
     </html>
