@@ -141,9 +141,16 @@ export default function SiteMenuPanel({
       {/* Same centered grid as the header bar, so the logo, tagline, links,
           and LinkedIn share a left edge and the Close button and circle
           share a right edge */}
-      <div className="site-menu-inner mx-auto flex min-h-[100dvh] w-full max-w-7xl flex-col justify-between gap-12 px-4 pb-10 pt-28 [container-type:inline-size] sm:px-6 lg:px-8 min-[990px]:pb-12">
-        <p className="site-menu-fade" style={delay("0.68s", "-12px")}>
-          AI, sorted.
+      <div className="site-menu-inner mx-auto flex min-h-[100dvh] w-full max-w-7xl flex-col justify-between gap-12 px-4 pb-10 pt-[54px] [container-type:inline-size] sm:px-6 lg:px-8 min-[990px]:pb-12 min-[990px]:pt-[56px]">
+        {/* Sits directly under the header wordmark as one lockup. The
+            period is an orange circle; screen readers get a real "." */}
+        <p
+          className="site-menu-fade site-menu-tagline"
+          style={delay("0.68s", "-12px")}
+        >
+          AI, sorted
+          <span aria-hidden="true" className="site-menu-period" />
+          <span className="sr-only">.</span>
         </p>
 
         <div className="flex flex-col gap-12 min-[990px]:flex-row min-[990px]:items-center min-[990px]:justify-between">
@@ -159,13 +166,14 @@ export default function SiteMenuPanel({
         <div>
           <a
             href={LINKEDIN_HREF}
-            className="site-menu-fade inline-flex items-center gap-2 text-base text-brand-white hover:text-brand-white hover:underline"
+            aria-label="LinkedIn"
+            className="site-menu-fade -ml-2 inline-flex h-11 w-11 items-center justify-center text-brand-white hover:text-brand-white [@media(hover:hover)]:hover:text-brand-white/80"
             style={delay("0.8s", "14px")}
           >
             <svg
               aria-hidden="true"
-              width="18"
-              height="18"
+              width="28"
+              height="28"
               viewBox="0 0 18 18"
               fill="currentColor"
               stroke="currentColor"
@@ -175,7 +183,6 @@ export default function SiteMenuPanel({
               <path d="M3.5175 6.104V16.9155H0.632736V6.104H3.5175Z" />
               <path d="M2.10547 0.345703C3.06224 0.373859 3.81413 1.15251 3.7959 2.08594C3.77729 3.07221 2.97987 3.83413 2.02539 3.80664H2.02246C1.10984 3.78839 0.327236 2.97556 0.345703 2.0332C0.364056 1.0972 1.16655 0.328815 2.10547 0.345703Z" />
             </svg>
-            LinkedIn
           </a>
         </div>
       </div>
