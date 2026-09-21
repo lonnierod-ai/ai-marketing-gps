@@ -3,6 +3,9 @@ export type NavItem = {
   href: string;
   // Other path prefixes that should mark this item as active
   matches?: string[];
+  // In the menu, an item with children expands in place instead of
+  // navigating
+  children?: NavItem[];
 };
 
 export const NAV_ITEMS: NavItem[] = [
@@ -10,7 +13,15 @@ export const NAV_ITEMS: NavItem[] = [
   {
     label: "Resources",
     href: "/resources",
-    matches: ["/tools", "/tool", "/goals", "/goal", "/search"],
+    matches: ["/tools", "/tool", "/goals", "/goal", "/search", "/learn"],
+    children: [
+      {
+        label: "For Business",
+        href: "/tools",
+        matches: ["/tool", "/goals", "/goal", "/search"],
+      },
+      { label: "For Students", href: "/learn" },
+    ],
   },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
@@ -22,8 +33,6 @@ export const BOOK_CALL_HREF = "/contact";
 
 // Placeholder until the real profile URL is supplied
 export const LINKEDIN_HREF = "#";
-
-export const LOCATION = "Chicago, IL";
 
 function matchesPath(pathname: string, prefix: string) {
   return pathname === prefix || pathname.startsWith(`${prefix}/`);

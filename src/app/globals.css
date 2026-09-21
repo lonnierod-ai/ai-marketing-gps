@@ -161,6 +161,11 @@
     transform: translateY(-7px) rotate(-45deg);
   }
 
+  /* No keyboard focus ring after a mouse or touch press (see SiteHeader) */
+  .site-menu-toggle[data-pointer]:focus-visible {
+    outline: none;
+  }
+
   .site-menu-toggle-label {
     opacity: 0;
     transition: opacity 0.2s ease-out;
@@ -171,16 +176,37 @@
     opacity: 1;
   }
 
-  /* Panel links */
-  .site-menu-link {
-    font-size: max(2.5rem, 7cqw);
+  /* Panel links, the Resources control, and its sub-links */
+  .site-menu-item {
+    display: inline-flex;
+    align-items: center;
+    color: var(--brand-white);
     font-weight: 400;
     line-height: 1.08;
     letter-spacing: -0.02em;
+    text-align: left;
+  }
+
+  .site-menu-item:hover {
+    color: var(--brand-white);
+  }
+
+  .site-menu-link {
+    font-size: max(2.5rem, 7cqw);
+  }
+
+  .site-menu-sublink {
+    font-size: max(1.25rem, 3.5cqw);
+  }
+
+  .site-menu-label {
+    position: relative;
+    display: inline-block;
   }
 
   /* Padding plus matching negative margin keeps descenders unclipped */
   .site-menu-mask {
+    position: relative;
     display: inline-block;
     overflow: hidden;
     padding-block: 0.15em;
@@ -188,16 +214,43 @@
     vertical-align: bottom;
   }
 
-  .site-menu-rise,
-  .site-menu-swap {
+  .site-menu-rise {
     display: inline-block;
   }
 
-  .site-menu-link:hover .site-menu-swap,
-  .site-menu-link:focus-visible .site-menu-swap {
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.1em;
+  .site-menu-word {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Hover and focus: an orange block behind the word, and a charcoal copy
+     of the word on top of it. Both share the same box and clip, so the
+     text is charcoal only where the block is. Never orange text. */
+  .site-menu-block,
+  .site-menu-ink {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -0.1em;
+    right: -0.1em;
+    clip-path: inset(0 0 0 100%);
+  }
+
+  .site-menu-block {
+    background-color: var(--brand-orange);
+  }
+
+  .site-menu-ink {
+    padding-inline: 0.1em;
+    color: var(--brand-charcoal);
+    white-space: nowrap;
+  }
+
+  .site-menu-item:hover .site-menu-block,
+  .site-menu-item:hover .site-menu-ink,
+  .site-menu-item:focus-visible .site-menu-block,
+  .site-menu-item:focus-visible .site-menu-ink {
+    clip-path: inset(0);
   }
 
   /* Current page: orange dot with a white ring for 3:1 contrast on cobalt */
@@ -212,9 +265,30 @@
     box-shadow: 0 0 0 2px var(--brand-white);
   }
 
+  /* Resources sub-links expand in place */
+  .site-menu-sub {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+  }
+
+  .site-menu-sub[data-expanded="true"] {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+
+  /* 60% keeps white on cobalt above 3:1 at these sizes */
+  .site-menu-dimmed {
+    opacity: 0.6;
+  }
+
   @media (min-width: 990px) {
     .site-menu-link {
       font-size: max(2.5rem, 6cqw);
+    }
+
+    .site-menu-sublink {
+      font-size: max(1.25rem, 3cqw);
     }
   }
 }
@@ -340,15 +414,65 @@
       opacity 0.7s cubic-bezier(0.55, 0, 1, 0.45);
   }
 
-  /* Hover: the word slides up and an identical copy slides in beneath */
-  .site-menu-swap {
-    text-shadow: 0 1.3em currentColor;
-    transition: transform 0.5s var(--ease-brand);
+  /* Hover: block and charcoal copy wipe in from the left, exit right.
+     Keyframes rather than transitions so the exit continues rightward. */
+  .site-menu-block,
+  .site-menu-ink {
+    animation: site-menu-wipe-out 0.35s var(--ease-brand) both;
   }
 
-  .site-menu-link:hover .site-menu-swap,
-  .site-menu-link:focus-visible .site-menu-swap {
-    transform: translateY(-1.3em);
-    text-decoration: none;
+  .site-menu-item:hover .site-menu-block,
+  .site-menu-item:hover .site-menu-ink,
+  .site-menu-item:focus-visible .site-menu-block,
+  .site-menu-item:focus-visible .site-menu-ink {
+    animation-name: site-menu-wipe-in;
   }
+
+  /* Sub-links: masked rise on expand, drop back on collapse */
+  .site-header .site-menu-sub .site-menu-rise {
+    transform: translateY(calc(100% + 0.15em));
+    transition: transform 0.3s var(--ease-brand);
+  }
+
+  .site-header .site-menu-sub[data-expanded="true"] .site-menu-rise {
+    transform: none;
+    transition: transform 0.8s var(--ease-brand)
+      calc(0.1s + var(--j, 0) * 70ms);
+  }
+
+  .site-menu-sub {
+    transition: grid-template-rows 0.4s var(--ease-brand),
+      visibility 0s linear 0.4s;
+  }
+
+  .site-menu-sub[data-expanded="true"] {
+    transition: grid-template-rows 0.4s var(--ease-brand), visibility 0s;
+  }
+
+  .site-menu-panel nav > ul > li {
+    transition: opacity 0.3s ease-out;
+  }
+}
+
+@keyframes site-menu-wipe-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0);
+  }
+}
+
+@keyframes site-menu-wipe-out {
+  from {
+    clip-path: inset(0);
+  }
+  to {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+/* The chat widget stays hidden while any part of the menu is on screen */
+html[data-site-menu="open"] .lonnie-widget {
+  visibility: hidden;
 }

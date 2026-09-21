@@ -26,19 +26,22 @@ type UseFocusTrapParams = {
   active: boolean;
   containerRef: RefObject<HTMLElement | null>;
   initialFocusRef?: RefObject<HTMLElement | null>;
+  // false leaves focus where it is on open; Tab from outside still enters
+  moveFocusOnOpen?: boolean;
   onEscape?: () => void;
 };
 
 /**
- * While `active`, keeps Tab and Shift+Tab inside `containerRef`, moves focus
- * to `initialFocusRef` (or the first focusable element), and calls
- * `onEscape` on Escape. When it deactivates, focus returns to whatever was
- * focused before it activated.
+ * While `active`, keeps Tab and Shift+Tab inside `containerRef`, optionally
+ * moves focus to `initialFocusRef` (or the first focusable element), and
+ * calls `onEscape` on Escape. When it deactivates, focus returns to the
+ * element that was focused before it activated, if there was one.
  */
 export function useFocusTrap({
   active,
   containerRef,
   initialFocusRef,
+  moveFocusOnOpen = true,
   onEscape,
 }: UseFocusTrapParams) {
   const onEscapeRef = useRef(onEscape);
@@ -52,16 +55,20 @@ export function useFocusTrap({
     const container = containerRef.current;
     if (!container) return;
 
+    // Safari does not focus buttons on click, so this can be <body>
     const previouslyFocused =
-      document.activeElement instanceof HTMLElement
+      document.activeElement instanceof HTMLElement &&
+      document.activeElement !== document.body
         ? document.activeElement
         : null;
 
-    const focusFrame = requestAnimationFrame(() => {
-      const target =
-        initialFocusRef?.current ?? getFocusableElements(container)[0];
-      target?.focus();
-    });
+    const focusFrame = moveFocusOnOpen
+      ? requestAnimationFrame(() => {
+          const target =
+            initialFocusRef?.current ?? getFocusableElements(container)[0];
+          target?.focus();
+        })
+      : 0;
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -100,5 +107,5 @@ export function useFocusTrap({
         previouslyFocused.focus();
       }
     };
-  }, [active, containerRef, initialFocusRef]);
+  }, [active, containerRef, initialFocusRef, moveFocusOnOpen]);
 }

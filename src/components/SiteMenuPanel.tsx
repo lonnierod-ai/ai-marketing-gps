@@ -1,18 +1,19 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import BookCallCircle from "@/components/BookCallCircle";
 import {
   LINKEDIN_HREF,
-  LOCATION,
   NAV_ITEMS,
   isNavItemActive,
+  type NavItem,
 } from "@/lib/navigation";
 
 type SiteMenuPanelProps = {
   id: string;
   interactive: boolean;
+  visible: boolean;
   pathname: string;
   onNavigate: () => void;
 };
@@ -22,50 +23,132 @@ type SiteMenuPanelProps = {
 const delay = (d: string, y?: string) =>
   ({ "--d": d, ...(y ? { "--y": y } : {}) }) as CSSProperties;
 
+// The orange block and the charcoal copy of the word wipe in together on
+// hover and focus, so the text turns charcoal exactly where the block is.
+function MenuLabel({ label }: { label: string }) {
+  return (
+    <span className="site-menu-label">
+      <span aria-hidden="true" className="site-menu-block" />
+      <span className="site-menu-mask">
+        <span className="site-menu-rise">
+          <span className="site-menu-word">
+            {label}
+            <span aria-hidden="true" className="site-menu-ink">
+              {label}
+            </span>
+          </span>
+        </span>
+      </span>
+    </span>
+  );
+}
+
+function CurrentDot() {
+  return <span aria-hidden="true" className="site-menu-dot" />;
+}
+
 export default function SiteMenuPanel({
   id,
   interactive,
+  visible,
   pathname,
   onNavigate,
 }: SiteMenuPanelProps) {
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  // Every time the menu opens, it starts collapsed
+  useEffect(() => {
+    if (!visible) setExpanded(null);
+  }, [visible]);
+
+  const renderItem = (item: NavItem, index: number) => {
+    const active = isNavItemActive(item, pathname);
+    const dimmed = expanded !== null && expanded !== item.href;
+    const itemStyle = { "--i": index } as CSSProperties;
+
+    if (item.children) {
+      const isExpanded = expanded === item.href;
+      const subId = `${id}-${item.label.toLowerCase()}`;
+      return (
+        <li key={item.href} className={dimmed ? "site-menu-dimmed" : undefined}>
+          <button
+            type="button"
+            onClick={() => setExpanded(isExpanded ? null : item.href)}
+            aria-expanded={isExpanded}
+            aria-controls={subId}
+            aria-current={active ? "true" : undefined}
+            className="site-menu-item site-menu-link"
+            style={itemStyle}
+          >
+            <MenuLabel label={item.label} />
+            {active && <CurrentDot />}
+          </button>
+          <div
+            id={subId}
+            data-expanded={isExpanded}
+            inert={!isExpanded}
+            className="site-menu-sub"
+          >
+            {/* Side padding leaves room for the orange block's overhang */}
+            <div className="-mx-2 min-h-0 overflow-hidden px-2">
+              <ul className="flex flex-col pb-2 pt-1">
+                {item.children.map((child, childIndex) => {
+                  const childActive = isNavItemActive(child, pathname);
+                  return (
+                    <li key={child.href}>
+                      <Link
+                        href={child.href}
+                        onClick={onNavigate}
+                        aria-current={childActive ? "page" : undefined}
+                        className="site-menu-item site-menu-sublink"
+                        style={{ "--j": childIndex } as CSSProperties}
+                      >
+                        <MenuLabel label={child.label} />
+                        {childActive && <CurrentDot />}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
+        </li>
+      );
+    }
+
+    return (
+      <li key={item.href} className={dimmed ? "site-menu-dimmed" : undefined}>
+        <Link
+          href={item.href}
+          onClick={onNavigate}
+          aria-current={active ? "page" : undefined}
+          className="site-menu-item site-menu-link"
+          style={itemStyle}
+        >
+          <MenuLabel label={item.label} />
+          {active && <CurrentDot />}
+        </Link>
+      </li>
+    );
+  };
+
   return (
     <div
       id={id}
       inert={!interactive}
       className="site-menu-panel fixed inset-0 z-[1] overflow-y-auto overscroll-contain bg-brand-cobalt text-brand-white"
     >
-      <div className="site-menu-inner flex min-h-[100dvh] flex-col justify-between gap-12 px-6 pb-10 pt-28 [container-type:inline-size] min-[990px]:px-28 min-[990px]:pb-12">
+      {/* Same centered grid as the header bar, so the logo, tagline, links,
+          and LinkedIn share a left edge and the Close button and circle
+          share a right edge */}
+      <div className="site-menu-inner mx-auto flex min-h-[100dvh] w-full max-w-7xl flex-col justify-between gap-12 px-4 pb-10 pt-28 [container-type:inline-size] sm:px-6 lg:px-8 min-[990px]:pb-12">
         <p className="site-menu-fade" style={delay("0.68s", "-12px")}>
           AI, sorted.
         </p>
 
         <div className="flex flex-col gap-12 min-[990px]:flex-row min-[990px]:items-center min-[990px]:justify-between">
           <nav aria-label="Main">
-            <ul className="flex flex-col">
-              {NAV_ITEMS.map((item, index) => {
-                const active = isNavItemActive(item, pathname);
-                return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      onClick={onNavigate}
-                      aria-current={active ? "page" : undefined}
-                      className="site-menu-link inline-flex items-center text-brand-white hover:text-brand-white"
-                      style={{ "--i": index } as CSSProperties}
-                    >
-                      <span className="site-menu-mask">
-                        <span className="site-menu-rise">
-                          <span className="site-menu-swap">{item.label}</span>
-                        </span>
-                      </span>
-                      {active && (
-                        <span aria-hidden="true" className="site-menu-dot" />
-                      )}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+            <ul className="flex flex-col">{NAV_ITEMS.map(renderItem)}</ul>
           </nav>
 
           <div className="site-menu-pop self-start min-[990px]:self-center">
@@ -73,7 +156,7 @@ export default function SiteMenuPanel({
           </div>
         </div>
 
-        <div className="flex items-end justify-between gap-6">
+        <div>
           <a
             href={LINKEDIN_HREF}
             className="site-menu-fade inline-flex items-center gap-2 text-base text-brand-white hover:text-brand-white hover:underline"
@@ -94,9 +177,6 @@ export default function SiteMenuPanel({
             </svg>
             LinkedIn
           </a>
-          <span className="site-menu-fade text-base" style={delay("0.85s", "10px")}>
-            {LOCATION}
-          </span>
         </div>
       </div>
     </div>

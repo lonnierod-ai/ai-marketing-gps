@@ -71,22 +71,46 @@ export default function SiteHeader() {
     closeMenu();
   }, [pathname, closeMenu]);
 
+  // Lock page scroll, and flag the page so globals.css can hide the chat
+  // widget while any part of the menu is on screen
   useEffect(() => {
     if (!isShown) return;
+    const root = document.documentElement;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    root.dataset.siteMenu = "open";
     return () => {
       document.body.style.overflow = previousOverflow;
+      delete root.dataset.siteMenu;
     };
   }, [isShown]);
 
+  const onEscape = useCallback(() => {
+    closeMenu();
+    buttonRef.current?.focus();
+  }, [closeMenu]);
+
   useEffect(() => () => window.clearTimeout(timerRef.current), []);
 
+  // A button focused by keyboard keeps its focus ring when later clicked.
+  // Mark pointer presses so globals.css can hide the ring until the next
+  // key press.
+  useEffect(() => {
+    const clearPointerMark = () => {
+      delete buttonRef.current?.dataset.pointer;
+    };
+    document.addEventListener("keydown", clearPointerMark, true);
+    return () => document.removeEventListener("keydown", clearPointerMark, true);
+  }, []);
+
+  // Focus is left on the button when the menu opens. Keyboard users are
+  // already there; moving it in code would make Safari draw the keyboard
+  // focus ring after a mouse click.
   useFocusTrap({
     active: isOpen,
     containerRef: headerRef,
-    initialFocusRef: buttonRef,
-    onEscape: closeMenu,
+    moveFocusOnOpen: false,
+    onEscape,
   });
 
   return (
@@ -137,6 +161,9 @@ export default function SiteHeader() {
           ref={buttonRef}
           type="button"
           onClick={onToggle}
+          onPointerDown={(event) => {
+            event.currentTarget.dataset.pointer = "true";
+          }}
           aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
           aria-controls={MENU_ID}
@@ -160,6 +187,7 @@ export default function SiteHeader() {
       <SiteMenuPanel
         id={MENU_ID}
         interactive={isOpen}
+        visible={isShown}
         pathname={pathname}
         onNavigate={closeMenu}
       />
