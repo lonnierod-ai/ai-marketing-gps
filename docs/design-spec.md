@@ -109,11 +109,14 @@ Cobalt carries identity. Orange is functional and does not appear in the
 wordmark.
 
 Orange usage: primary CTA fill, hover states, the tagline in the lockup,
-small marks and icons, interactive affordances.
+decorative marks only, interactive affordances. Icons carrying meaning
+use cobalt or charcoal.
 
 The primary action is distinguished by shape and fill. A filled circular
-CTA in orange. Secondary actions reverse it: ground fill, orange outline,
-orange text.
+CTA in orange. Secondary actions: ground fill, cobalt #2A52BE outline,
+cobalt text. Cobalt on the ground (#F7F9FC) is 6.53:1, which passes WCAG
+AA for normal text (4.5:1) and for non-text UI components such as the
+outline (3:1).
 
 ### Implications of the light ground
 
