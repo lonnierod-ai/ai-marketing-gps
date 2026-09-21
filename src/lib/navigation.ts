@@ -12,12 +12,18 @@ export const NAV_ITEMS: NavItem[] = [
     href: "/resources",
     matches: ["/tools", "/tool", "/goals", "/goal", "/search"],
   },
-  { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
-// Placeholder until the booking tool is chosen (spec section 10, item 14)
-export const BOOK_CALL_HREF = "#book";
+// Points at the contact page until the booking tool is chosen
+// (spec section 10, item 14)
+export const BOOK_CALL_HREF = "/contact";
+
+// Placeholder until the real profile URL is supplied
+export const LINKEDIN_HREF = "#";
+
+export const LOCATION = "Chicago, IL";
 
 function matchesPath(pathname: string, prefix: string) {
   return pathname === prefix || pathname.startsWith(`${prefix}/`);

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Quattrocento_Sans } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import ClosingCta from "@/components/ClosingCta";
 import MarketIntelChat from "@/components/MarketIntelChat";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
@@ -141,6 +142,7 @@ export default function RootLayout({
         <div id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
           {children}
         </div>
+        <ClosingCta />
         <SiteFooter />
         <MarketIntelChat />
       </body>

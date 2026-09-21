@@ -18,6 +18,9 @@
   --text-secondary: #3A4150;
   --rule: #D5DAE3;
   --card-border: #DDE2EA;
+
+  /* Spec section 7 shared easing token */
+  --ease-brand: cubic-bezier(0.65, 0.05, 0.36, 1);
 }
 
 @layer base {
@@ -51,5 +54,301 @@
   [contenteditable]:focus-visible {
     outline: 2px solid var(--brand-cobalt);
     outline-offset: 2px;
+  }
+}
+
+/* ------------------------------------------------------------------
+ * Site menu (SiteHeader + SiteMenuPanel)
+ *
+ * State lives on .site-header[data-state]: closed, opening, open, closing.
+ * The rules in this layer are the plain mode used below 990px and under
+ * prefers-reduced-motion: the panel fades in 0.2s and everything else
+ * renders in its final state. The media block after it adds the wipe,
+ * the masked link rise, and the hover slide on wide screens only
+ * (spec section 7, Gating).
+ * ------------------------------------------------------------------ */
+@layer components {
+  .site-menu-panel {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease-out, visibility 0s linear 0.2s;
+  }
+
+  .site-header[data-state="opening"] .site-menu-panel,
+  .site-header[data-state="open"] .site-menu-panel {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .site-header[data-state="closing"] .site-menu-panel {
+    visibility: visible;
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+  }
+
+  /* White focus ring wherever the bar or panel sits on cobalt */
+  .site-header[data-state="opening"] .site-header-bar :focus-visible,
+  .site-header[data-state="open"] .site-header-bar :focus-visible,
+  .site-menu-panel :focus-visible {
+    outline-color: var(--brand-white);
+  }
+
+  /* Logo swap: primary wordmark on the ground, inverse on cobalt */
+  .site-logo-primary,
+  .site-logo-inverse {
+    transition: opacity 0.2s ease-out;
+  }
+
+  .site-logo-inverse {
+    opacity: 0;
+  }
+
+  .site-header[data-state="opening"] .site-logo-primary,
+  .site-header[data-state="open"] .site-logo-primary {
+    opacity: 0;
+  }
+
+  .site-header[data-state="opening"] .site-logo-inverse,
+  .site-header[data-state="open"] .site-logo-inverse {
+    opacity: 1;
+  }
+
+  /* Menu button: three lines that become an X, plus a hover label */
+  .site-menu-toggle {
+    color: var(--brand-charcoal);
+    transition: color 0.2s ease-out;
+  }
+
+  .site-header[data-state="opening"] .site-menu-toggle,
+  .site-header[data-state="open"] .site-menu-toggle {
+    color: var(--brand-white);
+  }
+
+  .site-menu-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 1px;
+    background-color: currentColor;
+  }
+
+  .site-menu-line:nth-child(1) {
+    top: 0;
+  }
+
+  .site-menu-line:nth-child(2) {
+    top: 7px;
+  }
+
+  .site-menu-line:nth-child(3) {
+    top: 14px;
+  }
+
+  .site-header[data-state="opening"] .site-menu-line:nth-child(1),
+  .site-header[data-state="open"] .site-menu-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .site-header[data-state="opening"] .site-menu-line:nth-child(2),
+  .site-header[data-state="open"] .site-menu-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .site-header[data-state="opening"] .site-menu-line:nth-child(3),
+  .site-header[data-state="open"] .site-menu-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .site-menu-toggle-label {
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .site-menu-toggle:hover .site-menu-toggle-label,
+  .site-menu-toggle:focus-visible .site-menu-toggle-label {
+    opacity: 1;
+  }
+
+  /* Panel links */
+  .site-menu-link {
+    font-size: max(2.5rem, 7cqw);
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+
+  /* Padding plus matching negative margin keeps descenders unclipped */
+  .site-menu-mask {
+    display: inline-block;
+    overflow: hidden;
+    padding-block: 0.15em;
+    margin-block: -0.15em;
+    vertical-align: bottom;
+  }
+
+  .site-menu-rise,
+  .site-menu-swap {
+    display: inline-block;
+  }
+
+  .site-menu-link:hover .site-menu-swap,
+  .site-menu-link:focus-visible .site-menu-swap {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.1em;
+  }
+
+  /* Current page: orange dot with a white ring for 3:1 contrast on cobalt */
+  .site-menu-dot {
+    display: inline-block;
+    flex-shrink: 0;
+    width: 0.875rem;
+    height: 0.875rem;
+    margin-left: 0.4em;
+    border-radius: 9999px;
+    background-color: var(--brand-orange);
+    box-shadow: 0 0 0 2px var(--brand-white);
+  }
+
+  @media (min-width: 990px) {
+    .site-menu-link {
+      font-size: max(2.5rem, 6cqw);
+    }
+  }
+}
+
+@media (min-width: 990px) and (prefers-reduced-motion: no-preference) {
+  /* Wipe in from the right, exit off the left edge */
+  .site-menu-panel {
+    opacity: 1;
+    clip-path: polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%);
+    transition: none;
+  }
+
+  .site-header[data-state="opening"] .site-menu-panel,
+  .site-header[data-state="open"] .site-menu-panel {
+    opacity: 1;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+    transition: clip-path 0.8s var(--ease-brand) 0.2s;
+  }
+
+  .site-header[data-state="closing"] .site-menu-panel {
+    opacity: 1;
+    clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+    transition: clip-path 0.8s var(--ease-brand);
+  }
+
+  /* Swap the logo and button color as the wipe passes them */
+  .site-header[data-state="opening"] .site-logo-primary,
+  .site-header[data-state="opening"] .site-logo-inverse,
+  .site-header[data-state="open"] .site-logo-primary,
+  .site-header[data-state="open"] .site-logo-inverse {
+    transition: opacity 0.3s ease-out 0.7s;
+  }
+
+  .site-header[data-state="closing"] .site-logo-primary,
+  .site-header[data-state="closing"] .site-logo-inverse {
+    transition: opacity 0.3s ease-out 0.5s;
+  }
+
+  .site-header[data-state="opening"] .site-menu-toggle,
+  .site-header[data-state="open"] .site-menu-toggle {
+    transition: color 0.2s ease-out 0.3s;
+  }
+
+  /* Menu button hover: lines shift, label slides in */
+  .site-menu-line {
+    transition: transform 0.5s var(--ease-brand), opacity 0.3s ease-out;
+  }
+
+  .site-header[data-state="closed"] .site-menu-toggle:hover .site-menu-line:nth-child(1),
+  .site-header[data-state="closed"] .site-menu-toggle:focus-visible .site-menu-line:nth-child(1) {
+    transform: translateX(-3px);
+  }
+
+  .site-header[data-state="closed"] .site-menu-toggle:hover .site-menu-line:nth-child(3),
+  .site-header[data-state="closed"] .site-menu-toggle:focus-visible .site-menu-line:nth-child(3) {
+    transform: translateX(3px);
+  }
+
+  .site-menu-toggle-label {
+    transform: translateX(6px);
+    transition: opacity 0.3s ease-out, transform 0.3s var(--ease-brand);
+  }
+
+  .site-menu-toggle:hover .site-menu-toggle-label,
+  .site-menu-toggle:focus-visible .site-menu-toggle-label {
+    transform: none;
+  }
+
+  /* Masked rise, 70ms stagger, starting as the wipe finishes */
+  .site-menu-rise {
+    transform: translateY(calc(100% + 0.15em));
+  }
+
+  .site-header[data-state="opening"] .site-menu-rise,
+  .site-header[data-state="open"] .site-menu-rise {
+    transform: none;
+    transition: transform 0.8s var(--ease-brand)
+      calc(0.6s + var(--i, 0) * 70ms);
+  }
+
+  .site-header[data-state="closing"] .site-menu-rise {
+    transform: none;
+  }
+
+  /* Supporting items fade and settle in after the links */
+  .site-menu-fade {
+    opacity: 0;
+    transform: translateY(var(--y, 12px));
+  }
+
+  .site-menu-pop {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  .site-header[data-state="opening"] .site-menu-fade,
+  .site-header[data-state="open"] .site-menu-fade {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.6s ease-out var(--d, 0.6s),
+      transform 0.6s ease-out var(--d, 0.6s);
+  }
+
+  .site-header[data-state="opening"] .site-menu-pop,
+  .site-header[data-state="open"] .site-menu-pop {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.9s ease-out 0.7s,
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.7s;
+  }
+
+  .site-header[data-state="closing"] .site-menu-fade,
+  .site-header[data-state="closing"] .site-menu-pop {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* On close, the content shrinks and dims while the panel wipes away */
+  .site-header[data-state="closing"] .site-menu-inner {
+    transform: scale(0.9);
+    opacity: 0.5;
+    transition: transform 0.7s cubic-bezier(0.55, 0, 1, 0.45),
+      opacity 0.7s cubic-bezier(0.55, 0, 1, 0.45);
+  }
+
+  /* Hover: the word slides up and an identical copy slides in beneath */
+  .site-menu-swap {
+    text-shadow: 0 1.3em currentColor;
+    transition: transform 0.5s var(--ease-brand);
+  }
+
+  .site-menu-link:hover .site-menu-swap,
+  .site-menu-link:focus-visible .site-menu-swap {
+    transform: translateY(-1.3em);
+    text-decoration: none;
   }
 }

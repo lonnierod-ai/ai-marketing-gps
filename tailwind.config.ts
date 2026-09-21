@@ -46,6 +46,15 @@ export default {
           "sans-serif",
         ],
       },
+      // Spec section 7 shared easing token
+      transitionTimingFunction: {
+        brand: "var(--ease-brand)",
+      },
+      zIndex: {
+        header: "40",
+        // Open menu sits above the chat widget (z-index 9999)
+        "menu-open": "10001",
+      },
     },
   },
   plugins: [],

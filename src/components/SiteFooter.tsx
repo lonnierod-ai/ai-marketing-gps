@@ -15,12 +15,12 @@ const FOOTER_GROUPS = [
     ],
   },
   {
-    heading: "Blog",
-    links: [{ label: "Blog", href: "/blog" }],
-  },
-  {
     heading: "About",
     links: [{ label: "About Lonnie", href: "/about" }],
+  },
+  {
+    heading: "Contact",
+    links: [{ label: "Contact", href: "/contact" }],
   },
 ];
 
