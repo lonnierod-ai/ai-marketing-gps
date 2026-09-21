@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-AI Marketing GPS is a Next.js 16 application that uses Anthropic's Claude API to provide AI-powered marketing guidance. The project uses the App Router architecture with TypeScript and Tailwind CSS.
+Aithello (formerly AI Marketing GPS) is Lonnie Rodriguez's AI consulting site, with a curated AI tool directory for small business owners and creators. It is a Next.js 16 application using the App Router, TypeScript, and Tailwind CSS. A front-end redesign is in progress on the redesign branch; see the Aithello redesign section below.
 
 ## Development Commands
 
@@ -41,7 +41,7 @@ This project uses Next.js 16 App Router (not Pages Router). All routes are defin
 - The Anthropic client is initialized in `src/lib/anthropic.ts`
 - API calls to Claude are made through Next.js API routes (e.g., `src/app/api/chat/route.ts`)
 - Never expose the API key to the client - all Claude API calls must happen server-side
-- Current model: `claude-3-5-sonnet-20241022` (defined in `src/lib/anthropic.ts`)
+- The current model is defined in src/lib/anthropic.ts. Check that file rather than relying on a model name written here.
 
 ### Environment Variables
 - Store in `.env.local` (never commit this file)
@@ -53,7 +53,7 @@ This project uses Next.js 16 App Router (not Pages Router). All routes are defin
 ### Styling
 - Uses Tailwind CSS with configuration in `tailwind.config.ts`
 - Global styles in `src/app/globals.css`
-- CSS variables for theming defined in `:root` and supports dark mode via `prefers-color-scheme`
+- The redesign uses a single light theme (spec section 5). Do not add dark-mode styles. The existing dark-mode block in globals.css will be removed during the foundation step.
 
 ### TypeScript Configuration
 - Strict mode enabled
@@ -104,3 +104,14 @@ const response = await anthropic.messages.create({
 - API routes run on the server and can safely use secrets
 - The Anthropic SDK should only be imported in server-side code (API routes or Server Components)
 - When adding new features that use Claude, create a dedicated API route rather than calling the Anthropic API directly from components
+
+## Aithello redesign
+- The design source of truth is docs/Aithello_Site_Design_Spec.md. Read the relevant section before any design or front-end work. If a request conflicts with the spec, say so before building.
+- Work only on the redesign branch. Never commit to or push to main.
+- Do not modify src/lib/data/tools.ts, src/lib/data/goals.ts, or src/lib/data/categories.ts.
+- Run npx tsc --noEmit before every commit. It must pass clean.
+- Ask before deleting files or rewriting git history.
+- Plan first. Wait for my approval before editing files.
+- Colors and type come only from spec sections 5 and 6. Never use #F37021 or #5B9BD5. Never use orange for text. Quattrocento Sans at weights 400 and 700 only.
+- No em dashes anywhere in site copy. Keep all user-facing language plain, friendly, and non-technical.
+- The Market Intel chat widget (src/components/MarketIntelChat.tsx and src/app/api/chat/route.ts) is being replaced by the prompt builder described in spec section 9. Do not extend or restyle it.

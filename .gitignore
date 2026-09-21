@@ -39,3 +39,6 @@ next-env.d.ts
 *.rtf
 .env.local
 *.rtf
+
+# Claude Code local settings
+.claude/settings.local.json
