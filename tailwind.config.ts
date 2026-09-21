@@ -1,5 +1,10 @@
 import type { Config } from "tailwindcss";
 
+// Maps a CSS variable from globals.css to a Tailwind color that still
+// supports opacity modifiers like text-brand-charcoal/80.
+const token = (name: string) =>
+  `color-mix(in srgb, var(${name}) calc(<alpha-value> * 100%), transparent)`;
+
 export default {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,14 +14,37 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        // Spec section 5 palette
         brand: {
-          dark: '#52575b',      // Primary text, dark elements
-          blue: '#3b658a',      // Secondary accent, links
-          orange: '#f37021',    // Primary CTA, emphasis
-          sand: '#cdb39b',      // Subtle borders, warm accents
+          cobalt: token("--brand-cobalt"),
+          "cobalt-hover": token("--brand-cobalt-hover"),
+          orange: token("--brand-orange"),
+          "orange-hover": token("--brand-orange-hover"),
+          "orange-soft": token("--brand-orange-soft"),
+          "orange-tint": token("--brand-orange-tint"),
+          ground: token("--brand-ground"),
+          charcoal: token("--brand-charcoal"),
+          white: token("--brand-white"),
+
+          // TEMPORARY aliases for the pre-redesign color names, pointed at
+          // the new tokens. Remove each one during the page redesigns.
+          dark: token("--brand-charcoal"),
+          blue: token("--brand-cobalt"),
+          sand: token("--card-border"),
         },
+        // Approved brand guide values not yet in the spec
+        "text-secondary": token("--text-secondary"),
+        rule: token("--rule"),
+        "card-border": token("--card-border"),
+      },
+      fontFamily: {
+        sans: [
+          "var(--font-quattrocento-sans)",
+          "'Quattrocento Sans'",
+          "'Gill Sans'",
+          "'Segoe UI'",
+          "sans-serif",
+        ],
       },
     },
   },

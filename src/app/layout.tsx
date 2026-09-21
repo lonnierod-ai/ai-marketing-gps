@@ -1,10 +1,19 @@
 import type { Metadata } from "next";
+import { Quattrocento_Sans } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import Script from "next/script";
 import MarketIntelChat from "@/components/MarketIntelChat";
 
 const GA_ID = "G-03GTB18VLH";
+
+const quattrocentoSans = Quattrocento_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-quattrocento-sans",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -102,7 +111,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en">
+    <html lang="en" className={quattrocentoSans.variable}>
       <head>
         {/* Google Analytics 4 */}
         <Script
