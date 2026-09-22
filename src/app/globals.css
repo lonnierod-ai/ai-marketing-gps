@@ -673,23 +673,18 @@ html[data-site-menu="open"] .lonnie-widget {
 }
 
 /* ------------------------------------------------------------------
- * Home hero (HomeHero.tsx)
+ * Home hero (HomeHero.tsx, HeroSearchMock.tsx, ThArc.tsx)
  *
- * Default: the three beats stack (below 990px and with reduced motion).
- * From 990px without reduced motion: beat 1 pins under the 72px header
- * while an orange circle rises and expands to reveal beat 2 (driven by
- * HomeHero's scroll handler), then beat 3 reveals on scroll entry.
- * This hero is the one approved exception to spec section 4's "no
- * pinning, no scroll scrub".
+ * Default: one stacked, left-aligned column in its finished state (below
+ * 990px and with reduced motion). From 990px without reduced motion: an
+ * editorial layout; beat 1 pins under the 72px header while an orange
+ * circle rises and expands to reveal beat 2 (driven by HomeHero's scroll
+ * handler), then beat 3 reveals on scroll entry. This hero is the one
+ * approved exception to spec section 4's "no pinning, no scroll scrub".
  * ------------------------------------------------------------------ */
 .home-hero-beat {
   container-type: inline-size;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 5rem 1rem;
-  text-align: center;
+  padding: 4.5rem 1rem;
 }
 
 .home-hero-beat-1,
@@ -703,8 +698,26 @@ html[data-site-menu="open"] .lonnie-widget {
   color: var(--brand-charcoal);
 }
 
+.home-hero-copy {
+  max-width: 44rem;
+}
+
+/* Spec section 6 small label */
+.home-hero-label {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+  color: var(--brand-cobalt);
+}
+
+.home-hero-beat-2 .home-hero-label {
+  color: var(--brand-charcoal);
+}
+
 .home-hero-headline {
-  max-width: 18ch;
   font-size: clamp(2.25rem, 9cqw, 4rem);
   font-weight: 700;
   line-height: 1.05;
@@ -713,24 +726,123 @@ html[data-site-menu="open"] .lonnie-widget {
 }
 
 .home-hero-beat-2 .home-hero-headline {
-  max-width: 22ch;
   color: var(--brand-charcoal);
 }
 
+/* Hand-set lines: each starts a new line; if one cannot fit, balancing
+   keeps a single word from ending up alone */
+.home-hero-hl {
+  display: block;
+  text-wrap: balance;
+}
+
 .home-hero-line {
-  max-width: 40ch;
+  max-width: 32ch;
   margin-top: 1.5rem;
   font-size: 1.25rem;
   line-height: 1.5;
   color: var(--brand-charcoal);
+  text-wrap: pretty;
 }
 
-.home-hero-cta {
+.home-hero-aside {
   margin-top: 2.5rem;
 }
 
+/* Beat 1: orange underline under "search bar" (a stroke, not text) */
+.home-hero-marked {
+  position: relative;
+  white-space: nowrap;
+}
+
+.home-hero-underline {
+  position: absolute;
+  left: -0.02em;
+  right: -0.02em;
+  bottom: -0.12em;
+  height: 0.2em;
+  overflow: visible;
+  stroke: var(--brand-orange);
+  /* viewBox units: 3.5 of the box's 10 is about 0.07em */
+  stroke-width: 3.5;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* Beat 3: the "th" arc between the two headline lines */
+.home-hero-arc {
+  display: block;
+  width: 62%;
+  height: 0.45em;
+  margin-block: 0.06em 0.1em;
+  overflow: visible;
+  stroke: var(--brand-orange);
+  /* viewBox units: about 0.035em of a 0.45em-tall box of 100 units */
+  stroke-width: 7.5;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.home-hero-chips,
 .home-hero-circle {
   display: none;
+}
+
+/* Beat 1's decorative search bar */
+.hero-search {
+  width: 100%;
+  max-width: 30rem;
+}
+
+.hero-search-field {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.125rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.875rem;
+  background-color: var(--brand-white);
+}
+
+.hero-search-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--brand-charcoal);
+}
+
+/* While typing, a long query scrolls sideways inside the field */
+.hero-search-query {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 1.125rem;
+  line-height: 1.4;
+  color: var(--brand-charcoal);
+}
+
+.hero-search[data-mode="final"] .hero-search-query {
+  white-space: normal;
+}
+
+.hero-search-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 1px;
+  vertical-align: -0.15em;
+  background-color: var(--brand-cobalt);
+  animation: hero-search-caret 1s steps(1) infinite;
+}
+
+.hero-search-answer {
+  margin-top: 1rem;
+  padding-inline: 0.25rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-wrap: pretty;
 }
 
 @media (min-width: 990px) and (prefers-reduced-motion: no-preference) {
@@ -750,12 +862,39 @@ html[data-site-menu="open"] .lonnie-widget {
     background-color: var(--brand-ground);
   }
 
+  /* Editorial layout: copy on the left, an aside on the right */
+  .home-hero-stage .home-hero-beat,
+  .home-hero-beat-3 {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding-inline: 4rem;
+  }
+
   .home-hero-stage .home-hero-beat {
     position: absolute;
     inset: 0;
-    padding: 0 4rem;
+    padding-block: 0;
     background-color: transparent;
     container-type: normal;
+  }
+
+  /* The copy block shrinks to its widest headline line, capped at 66% of
+     the stage (85% for beat 2, which has no aside) */
+  .home-hero-copy {
+    display: flex;
+    flex: 0 1 auto;
+    flex-direction: column;
+    width: fit-content;
+    max-width: 66cqw;
+  }
+
+  .home-hero-beat-2 .home-hero-copy {
+    max-width: 85cqw;
+  }
+
+  .home-hero-label {
+    margin-bottom: 1.5rem;
   }
 
   .home-hero-headline {
@@ -766,9 +905,58 @@ html[data-site-menu="open"] .lonnie-widget {
     font-size: clamp(2.75rem, 5.5cqw, 5.5rem);
   }
 
+  /* Beat 3 is its own container with 4rem side padding; measure it
+     against the full width, like the pinned stage */
+  .home-hero-beat-3 .home-hero-copy {
+    max-width: calc((100cqw + 8rem) * 0.66);
+  }
+
+  .home-hero-beat-3 .home-hero-headline {
+    font-size: clamp(3rem, calc((100cqw + 8rem) * 0.065), 6.5rem);
+  }
+
+  .home-hero-beat-3 .home-hero-line {
+    font-size: clamp(1.25rem, calc((100cqw + 8rem) * 0.016), 1.625rem);
+  }
+
+  /* The supporting line: a 32ch column under the headline, right edges
+     aligned */
   .home-hero-line {
+    align-self: flex-end;
+    width: min(32ch, 100%);
     margin-top: 2rem;
     font-size: clamp(1.25rem, 1.6cqw, 1.625rem);
+  }
+
+  .home-hero-aside {
+    display: flex;
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+    margin-top: 0;
+  }
+
+  /* Noise chips: above beat 1, under the circle */
+  .home-hero-chips {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .home-hero-chip {
+    position: absolute;
+    padding: 0.4rem 0.9rem;
+    border-radius: 9999px;
+    background-color: var(--brand-orange-soft);
+    color: var(--brand-charcoal);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
+    opacity: 0;
+    will-change: transform, opacity;
   }
 
   /* Drawn at the cover size and scaled down, so its edge stays crisp;
@@ -778,7 +966,7 @@ html[data-site-menu="open"] .lonnie-widget {
     position: absolute;
     top: 50%;
     left: 50%;
-    z-index: 1;
+    z-index: 2;
     width: var(--hero-cover, 200vmax);
     height: var(--hero-cover, 200vmax);
     margin-top: calc(var(--hero-cover, 200vmax) / -2);
@@ -791,15 +979,41 @@ html[data-site-menu="open"] .lonnie-widget {
 
   /* Beat 2 shows only inside the circle */
   .home-hero-stage .home-hero-beat-2 {
-    z-index: 2;
+    z-index: 3;
     clip-path: circle(0 at 50% 150%);
     will-change: clip-path;
+  }
+
+  /* Beat 1: the underline draws in 0.4s after the intro lifts */
+  .home-hero-underline {
+    stroke-dashoffset: 1;
+  }
+
+  .home-hero[data-beat1-ready] .home-hero-underline {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.6s var(--ease-brand) 0.4s;
+  }
+
+  /* Search bar: hidden until HomeHero switches it to animate, so the
+     finished text never flashes before typing starts */
+  .hero-search[data-mode="final"] .hero-search-query,
+  .hero-search[data-mode="final"] .hero-search-answer {
+    visibility: hidden;
+  }
+
+  .hero-search-answer {
+    transition: opacity 0.5s ease-out, transform 0.5s var(--ease-brand);
+  }
+
+  .hero-search:not([data-answered]) .hero-search-answer {
+    opacity: 0;
+    transform: translateY(6px);
   }
 
   /* Beat 3 continues the orange, then turns to the ground */
   .home-hero-beat-3 {
     min-height: calc(100vh - 72px);
-    padding: 6rem 4rem;
+    padding-block: 6rem;
     background-color: var(--brand-orange);
     transition: background-color 0.6s var(--ease-brand);
   }
@@ -825,6 +1039,10 @@ html[data-site-menu="open"] .lonnie-widget {
     transform: translateY(calc(100% + 0.15em));
   }
 
+  .home-hero-arc {
+    stroke-dashoffset: 1;
+  }
+
   .home-hero-lede,
   .home-hero-beat-3 .home-hero-cta {
     opacity: 0;
@@ -845,16 +1063,27 @@ html[data-site-menu="open"] .lonnie-widget {
       calc(0.6s + var(--w, 0) * 35ms);
   }
 
-  /* Then the line (lede reveal), then the circle */
+  /* Then the line (lede reveal), the arc, and the circle */
   .home-hero-beat-3[data-revealed] .home-hero-lede {
     animation: home-hero-lede 1s var(--ease-brand) 1.1s both;
+  }
+
+  .home-hero-beat-3[data-revealed] .home-hero-arc {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.8s var(--ease-brand) 1.4s;
   }
 
   .home-hero-beat-3[data-revealed] .home-hero-cta {
     opacity: 1;
     transform: none;
-    transition: opacity 0.6s ease-out 1.6s,
-      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.6s;
+    transition: opacity 0.6s ease-out 1.8s,
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.8s;
+  }
+}
+
+@keyframes hero-search-caret {
+  50% {
+    opacity: 0;
   }
 }
 

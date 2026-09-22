@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import {
+  INTRO_END_EVENT,
   INTRO_PLAY_QUERY,
   INTRO_SKIP_ATTR,
   INTRO_STORAGE_KEY,
@@ -99,6 +100,7 @@ export default function HomeIntro() {
       root.setAttribute(INTRO_SKIP_ATTR, "");
       phaseRef.current = "done";
       setPhase("done");
+      window.dispatchEvent(new Event(INTRO_END_EVENT));
     };
 
     // Any reason not to play (narrow screen, reduced motion, slow load)

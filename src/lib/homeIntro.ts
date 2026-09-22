@@ -6,6 +6,10 @@ export const INTRO_STORAGE_KEY = "aithello-intro";
 // overlay while it is present, so skipped visits never see a flash of it.
 export const INTRO_SKIP_ATTR = "data-intro-skip";
 
+// Fired on window when the intro has finished or decided not to play, so
+// the homepage hero can start beat 1's animations
+export const INTRO_END_EVENT = "aithello:intro-end";
+
 // Matches the gate in globals.css ("Home intro")
 export const INTRO_PLAY_QUERY =
   "(min-width: 990px) and (prefers-reduced-motion: no-preference)";
