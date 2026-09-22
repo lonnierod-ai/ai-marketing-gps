@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import HomeHero from "@/components/HomeHero";
 import SearchBar from "@/components/search/SearchBar";
 
 export default function HomePage() {
@@ -28,6 +29,7 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
+      <HomeHero />
 
      {/* HERO + SEARCH */}
 <section className="relative overflow-hidden border-b border-slate-200 bg-white">
@@ -57,12 +59,13 @@ export default function HomePage() {
         Neutral hub for AI content tools
       </p>
 
-      <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
+      {/* h2: the hero's beat 1 headline is the page's single h1 */}
+      <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl">
         Your GPS for{" "}
         <span className="bg-gradient-to-r from-[#f37021] to-[#3b658a] bg-clip-text text-transparent">
           AI content tools
         </span>
-      </h1>
+      </h2>
 
       <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base">
         Discover AI tools for content creation, repurposing, and distribution —

@@ -671,3 +671,204 @@ html[data-site-menu="open"] .lonnie-widget {
     visibility: hidden;
   }
 }
+
+/* ------------------------------------------------------------------
+ * Home hero (HomeHero.tsx)
+ *
+ * Default: the three beats stack (below 990px and with reduced motion).
+ * From 990px without reduced motion: beat 1 pins under the 72px header
+ * while an orange circle rises and expands to reveal beat 2 (driven by
+ * HomeHero's scroll handler), then beat 3 reveals on scroll entry.
+ * This hero is the one approved exception to spec section 4's "no
+ * pinning, no scroll scrub".
+ * ------------------------------------------------------------------ */
+.home-hero-beat {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 1rem;
+  text-align: center;
+}
+
+.home-hero-beat-1,
+.home-hero-beat-3 {
+  background-color: var(--brand-ground);
+}
+
+/* Charcoal on orange; never orange text */
+.home-hero-beat-2 {
+  background-color: var(--brand-orange);
+  color: var(--brand-charcoal);
+}
+
+.home-hero-headline {
+  max-width: 18ch;
+  font-size: clamp(2.25rem, 9cqw, 4rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--brand-cobalt);
+}
+
+.home-hero-beat-2 .home-hero-headline {
+  max-width: 22ch;
+  color: var(--brand-charcoal);
+}
+
+.home-hero-line {
+  max-width: 40ch;
+  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--brand-charcoal);
+}
+
+.home-hero-cta {
+  margin-top: 2.5rem;
+}
+
+.home-hero-circle {
+  display: none;
+}
+
+@media (min-width: 990px) and (prefers-reduced-motion: no-preference) {
+  /* Pinned part: the stage sticks for (track height - stage height) of
+     scroll */
+  .home-hero-track {
+    position: relative;
+    height: 260vh;
+  }
+
+  .home-hero-stage {
+    container-type: inline-size;
+    position: sticky;
+    top: 72px;
+    height: calc(100vh - 72px);
+    overflow: hidden;
+    background-color: var(--brand-ground);
+  }
+
+  .home-hero-stage .home-hero-beat {
+    position: absolute;
+    inset: 0;
+    padding: 0 4rem;
+    background-color: transparent;
+    container-type: normal;
+  }
+
+  .home-hero-headline {
+    font-size: clamp(3rem, 6.5cqw, 6.5rem);
+  }
+
+  .home-hero-beat-2 .home-hero-headline {
+    font-size: clamp(2.75rem, 5.5cqw, 5.5rem);
+  }
+
+  .home-hero-line {
+    margin-top: 2rem;
+    font-size: clamp(1.25rem, 1.6cqw, 1.625rem);
+  }
+
+  /* Drawn at the cover size and scaled down, so its edge stays crisp;
+     HomeHero sets --hero-cover and the transform */
+  .home-hero-circle {
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    width: var(--hero-cover, 200vmax);
+    height: var(--hero-cover, 200vmax);
+    margin-top: calc(var(--hero-cover, 200vmax) / -2);
+    margin-left: calc(var(--hero-cover, 200vmax) / -2);
+    border-radius: 9999px;
+    background-color: var(--brand-orange);
+    transform: translateY(100vh) scale(0);
+    will-change: transform;
+  }
+
+  /* Beat 2 shows only inside the circle */
+  .home-hero-stage .home-hero-beat-2 {
+    z-index: 2;
+    clip-path: circle(0 at 50% 150%);
+    will-change: clip-path;
+  }
+
+  /* Beat 3 continues the orange, then turns to the ground */
+  .home-hero-beat-3 {
+    min-height: calc(100vh - 72px);
+    padding: 6rem 4rem;
+    background-color: var(--brand-orange);
+    transition: background-color 0.6s var(--ease-brand);
+  }
+
+  .home-hero-beat-3[data-revealed] {
+    background-color: var(--brand-ground);
+  }
+
+  /* Spec section 7 masked rise. The mask takes the section's color, so it
+     changes with it: orange before the reveal, ground after. */
+  .home-hero-mask {
+    display: inline-block;
+    overflow: hidden;
+    padding-block: 0.15em;
+    margin-block: -0.15em;
+    vertical-align: bottom;
+    background-color: var(--brand-orange);
+    transition: background-color 0.6s var(--ease-brand);
+  }
+
+  .home-hero-word {
+    display: inline-block;
+    transform: translateY(calc(100% + 0.15em));
+  }
+
+  .home-hero-lede,
+  .home-hero-beat-3 .home-hero-cta {
+    opacity: 0;
+  }
+
+  .home-hero-beat-3 .home-hero-cta {
+    transform: scale(0.8);
+  }
+
+  .home-hero-beat-3[data-revealed] .home-hero-mask {
+    background-color: var(--brand-ground);
+  }
+
+  /* After the ground change: words rise 35ms apart */
+  .home-hero-beat-3[data-revealed] .home-hero-word {
+    transform: none;
+    transition: transform 0.8s var(--ease-brand)
+      calc(0.6s + var(--w, 0) * 35ms);
+  }
+
+  /* Then the line (lede reveal), then the circle */
+  .home-hero-beat-3[data-revealed] .home-hero-lede {
+    animation: home-hero-lede 1s var(--ease-brand) 1.1s both;
+  }
+
+  .home-hero-beat-3[data-revealed] .home-hero-cta {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.6s ease-out 1.6s,
+      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.6s;
+  }
+}
+
+/* Spec section 7 lede reveal: opacity done 60% through, 10px rise */
+@keyframes home-hero-lede {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
