@@ -273,9 +273,11 @@
     line-height: 1.1;
   }
 
-  /* Spacing and baseline measured from Quattrocento Sans's own period
-     glyph; the circle is drawn larger than the glyph so the orange reads */
-  .site-menu-period {
+  /* Orange circle drawn in place of a final period, used by the menu
+     tagline and the home intro. Spacing and baseline measured from
+     Quattrocento Sans's own period glyph; the circle is drawn larger than
+     the glyph so the orange reads. */
+  .brand-period {
     display: inline-block;
     width: 0.16em;
     height: 0.16em;
@@ -589,4 +591,83 @@
 /* The chat widget stays hidden while any part of the menu is on screen */
 html[data-site-menu="open"] .lonnie-widget {
   visibility: hidden;
+}
+
+/* ------------------------------------------------------------------
+ * Home intro (HomeIntro.tsx)
+ *
+ * Hidden unless the screen is 990px or wider, motion is allowed, and the
+ * <head> script left the session "pending" (no [data-intro-skip]). If
+ * JavaScript never takes over, the overlay fades itself out after 4.5s.
+ * ------------------------------------------------------------------ */
+.home-intro {
+  display: none;
+}
+
+@media (min-width: 990px) and (prefers-reduced-motion: no-preference) {
+  html:not([data-intro-skip]) .home-intro {
+    display: block;
+    animation: home-intro-failsafe 0.3s ease-out 4.5s forwards;
+  }
+
+  html:not([data-intro-skip]) .home-intro[data-running] {
+    animation: none;
+  }
+}
+
+.home-intro[data-leaving] {
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+
+.home-intro-word {
+  display: inline-block;
+  padding-inline: 1.5rem;
+  text-align: center;
+  color: var(--brand-cobalt);
+  font-size: clamp(5rem, 8cqw, 8rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  /* Rise in, hold, lift out within each 450ms slot */
+  animation: home-intro-word 450ms linear both;
+}
+
+/* "Sorted." rises in and holds until the curtain covers it */
+.home-intro-word-last {
+  animation: home-intro-word-in 150ms ease-out both;
+}
+
+@keyframes home-intro-word {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  33%,
+  73% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes home-intro-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes home-intro-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }

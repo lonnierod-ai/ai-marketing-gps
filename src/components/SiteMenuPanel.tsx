@@ -150,7 +150,7 @@ export default function SiteMenuPanel({
           style={delay("0.68s", "-12px")}
         >
           AI, sorted
-          <span aria-hidden="true" className="site-menu-period" />
+          <span aria-hidden="true" className="brand-period" />
           <span className="sr-only">.</span>
         </p>
 

@@ -3,9 +3,11 @@ import { Quattrocento_Sans } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import ClosingCta from "@/components/ClosingCta";
+import HomeIntro from "@/components/HomeIntro";
 import MarketIntelChat from "@/components/MarketIntelChat";
 import SiteFooter from "@/components/SiteFooter";
 import SiteHeader from "@/components/SiteHeader";
+import { INTRO_HEAD_SCRIPT } from "@/lib/homeIntro";
 
 const GA_ID = "G-03GTB18VLH";
 
@@ -113,8 +115,20 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className={quattrocentoSans.variable}>
+    // suppressHydrationWarning: the intro's head script may add
+    // data-intro-skip to <html> before React hydrates
+    <html
+      lang="en"
+      className={quattrocentoSans.variable}
+      suppressHydrationWarning
+    >
       <head>
+        {/* Decides before first paint whether the homepage intro may play */}
+        <script dangerouslySetInnerHTML={{ __html: INTRO_HEAD_SCRIPT }} />
+        <noscript>
+          <style>{`.home-intro{display:none!important}`}</style>
+        </noscript>
+
         {/* Google Analytics 4 */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
@@ -145,6 +159,7 @@ export default function RootLayout({
         <ClosingCta />
         <SiteFooter />
         <MarketIntelChat />
+        <HomeIntro />
       </body>
     </html>
   );

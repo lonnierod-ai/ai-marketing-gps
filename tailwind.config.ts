@@ -54,6 +54,8 @@ export default {
         header: "40",
         // Open menu sits above the chat widget (z-index 9999)
         "menu-open": "10001",
+        // Home intro covers everything, including the open menu
+        intro: "10002",
       },
     },
   },
