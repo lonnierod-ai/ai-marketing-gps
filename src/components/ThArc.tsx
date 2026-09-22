@@ -24,22 +24,30 @@ type ThArcProps = {
   // stretched to it here, so the SVG scales almost uniformly and the
   // stroke stays even (no vector-effect, which breaks dash-based drawing).
   aspect?: number;
+  // Draw from the upper right down to the lower left
+  reverse?: boolean;
   className?: string;
 };
 
 /**
- * Decorative. pathLength="1" lets CSS draw it in with stroke-dasharray: 1
- * and stroke-dashoffset from 1 to 0.
+ * Decorative. pathLength="1" lets CSS draw it in with
+ * stroke-dasharray: 1 2 and stroke-dashoffset from 1.02 to 0 (starting
+ * just past 1 keeps the round cap from leaving a dot before it draws).
  */
-export default function ThArc({ aspect = ARC.width / ARC.height, className = "" }: ThArcProps) {
+export default function ThArc({
+  aspect = ARC.width / ARC.height,
+  reverse = false,
+  className = "",
+}: ThArcProps) {
   const height = 100;
   const width = height * aspect;
   const sx = width / ARC.width;
   const sy = height / ARC.height;
-  const [p0, p1, p2, p3] = ARC.points.map(([x, y]) => [
+  const scaled = ARC.points.map(([x, y]) => [
     +(x * sx).toFixed(2),
     +(y * sy).toFixed(2),
   ]);
+  const [p0, p1, p2, p3] = reverse ? [...scaled].reverse() : scaled;
   const d = `M ${p0[0]} ${p0[1]} C ${p1[0]} ${p1[1]} ${p2[0]} ${p2[1]} ${p3[0]} ${p3[1]}`;
 
   return (

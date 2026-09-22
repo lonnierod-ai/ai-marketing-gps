@@ -16,11 +16,24 @@ const HEADER_PX = 72;
 // Circle diameter while it rises (the reference's 380px)
 const BALL_PX = 380;
 
-// Share of the pinned scroll given to each phase
-const HOLD_BEAT_1 = 0.15;
-const RISE = 0.35;
-const EXPAND = 0.35;
-// The rest (0.15) holds on full orange with beat 2
+// The pinned sequence, as shares of the pinned scroll:
+//   0.00-0.15  hold on beat 1 (the search bar types, on a timer)
+//   0.15-0.40  noise chips pile up, one at a time
+//   0.40-0.50  hold on the full pile
+//   0.50-0.66  the circle rises
+//   0.66-0.90  the circle expands and covers the pile
+//   0.90-0.95  beat 2 finishes its reveal (starts once the circle covers
+//              its headline block)
+//   0.95-1.00  hold on full orange with beat 2
+const CHIPS_START = 0.15;
+const CHIPS_END = 0.4;
+const CHIP_ARRIVE = 0.03;
+const RISE_START = 0.5;
+const RISE_END = 0.66;
+const EXPAND_END = 0.9;
+const CHIPS_FADE_START = 0.86;
+const CHIPS_FADE_END = 0.895;
+const BEAT_2_REVEALED = 0.95;
 
 // If the intro never reports back, start beat 1 anyway
 const INTRO_FALLBACK_MS = 6000;
@@ -34,40 +47,52 @@ const power4InOut = (p: number) =>
 // The reference's ease-in squared, for the expansion
 const easeInSquared = (p: number) => p * p;
 
-// Outside marketing noise that the orange circle covers. Positions are
-// percentages of the stage, kept clear of the headline block; drift is in
-// pixels over the pinned scroll.
+const easeOutCubic = (p: number) => 1 - (1 - p) ** 3;
+
+// Outside marketing noise, piled over the search bar. Tilts and sideways
+// offsets are fixed, so the pile looks hand-stacked and never reshuffles.
 const CHIPS = [
-  { label: "New AI app", x: 71, y: 16, dx: -40, dy: 26, r: -3 },
-  { label: "Free webinar", x: 85, y: 27, dx: 34, dy: 30, r: 2 },
-  { label: "10x your output", x: 49, y: 9, dx: 30, dy: -18, r: 1.5 },
-  { label: "Top 50 tools", x: 69, y: 76, dx: -30, dy: -34, r: 2.5 },
-  { label: "Prompt pack", x: 86, y: 82, dx: 26, dy: -24, r: -2 },
-  { label: "Book a demo", x: 41, y: 86, dx: 38, dy: -20, r: -1.5 },
-  { label: "Must-try plugin", x: 8, y: 88, dx: -24, dy: -30, r: 2 },
+  { label: "New AI app", tilt: -2, shift: 0 },
+  { label: "Free webinar", tilt: 1.5, shift: 10 },
+  { label: "Top 50 tools", tilt: -3, shift: -6 },
+  { label: "Prompt pack", tilt: 2.5, shift: 12 },
+  { label: "Book a demo", tilt: -1, shift: -10 },
+  { label: "Must-try plugin", tilt: 3, shift: 4 },
+  { label: "10x your output", tilt: -2.5, shift: -12 },
 ];
 
-// Chips fade in over the first part of the rise, and are gone by the time
-// the circle covers the stage
-const CHIP_IN_START = HOLD_BEAT_1;
-const CHIP_IN_END = HOLD_BEAT_1 + 0.15;
-const CHIP_GONE = HOLD_BEAT_1 + RISE + EXPAND;
+// Each chip sits this far above the one before it (chips are about 40px
+// tall, so they overlap slightly)
+const CHIP_STEP_PX = 30;
+// How far each chip slides in from the right
+const CHIP_SLIDE_PX = 120;
+
+// Chip i arrives over [start, start + CHIP_ARRIVE], evenly spaced so the
+// last one lands at CHIPS_END
+const chipStart = (index: number) =>
+  CHIPS_START +
+  (index * (CHIPS_END - CHIPS_START - CHIP_ARRIVE)) / (CHIPS.length - 1);
+
+// Beat 2 rises into place by this much as it fades in
+const BEAT_2_RISE_PX = 24;
 
 /**
  * Homepage hero, three beats in an editorial layout. From 990px without
- * reduced motion, beat 1 is pinned while an orange circle rises and
- * expands to reveal beat 2, then beat 3 reveals on scroll entry.
- * Otherwise the beats stack in one column in their finished state.
- * The page's single h1 is beat 1's headline.
+ * reduced motion, beat 1 is pinned while noise piles up over its search
+ * bar, then an orange circle rises and expands to cover it and reveal
+ * beat 2; beat 3 reveals on scroll entry. Otherwise the beats stack in
+ * one column in their finished state. Beat 1's headline is the page's
+ * single h1.
  */
 export default function HomeHero() {
-  const rootRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const circleRef = useRef<HTMLDivElement>(null);
   const beat2Ref = useRef<HTMLElement>(null);
+  const beat2CopyRef = useRef<HTMLDivElement>(null);
   const beat3Ref = useRef<HTMLElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
+  const pileRef = useRef<HTMLDivElement>(null);
   const chipRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   // Motion mode (990px and wider, no reduced motion)
@@ -102,7 +127,7 @@ export default function HomeHero() {
     };
   }, [motion, beat1Ready]);
 
-  // Typing waits until the search bar is actually on screen
+  // Typing is time-based and waits until the search bar is on screen
   useEffect(() => {
     const search = searchRef.current;
     if (!motion || !beat1Ready || typing || !search) return;
@@ -116,14 +141,29 @@ export default function HomeHero() {
     return () => observer.disconnect();
   }, [motion, beat1Ready, typing]);
 
-  // Scroll-driven pin: circle, beat 2 clip, and noise chips
+  // Scroll-driven pin: chip pile, circle, beat 2 clip and reveal
   useEffect(() => {
     const track = trackRef.current;
     const stage = stageRef.current;
     const circle = circleRef.current;
     const beat2 = beat2Ref.current;
+    const beat2Copy = beat2CopyRef.current;
     const beat3 = beat3Ref.current;
-    if (!motion || !track || !stage || !circle || !beat2 || !beat3) return;
+    const search = searchRef.current?.querySelector<HTMLElement>(".hero-search");
+    const pile = pileRef.current;
+    if (
+      !motion ||
+      !track ||
+      !stage ||
+      !circle ||
+      !beat2 ||
+      !beat2Copy ||
+      !beat3 ||
+      !search ||
+      !pile
+    ) {
+      return;
+    }
 
     const chips = chipRefs.current.filter(
       (chip): chip is HTMLSpanElement => chip !== null
@@ -131,6 +171,7 @@ export default function HomeHero() {
     let width = 0;
     let height = 0;
     let cover = 0;
+    let beat2From = EXPAND_END;
     let frame = 0;
 
     const measure = () => {
@@ -139,6 +180,39 @@ export default function HomeHero() {
       // Diameter that covers the stage from its center, corner to corner
       cover = Math.ceil(Math.hypot(width, height)) + 2;
       stage.style.setProperty("--hero-cover", `${cover}px`);
+
+      const stageBox = stage.getBoundingClientRect();
+
+      // Pile: right-aligned to the search bar, its bottom over the lower
+      // part of the search bar and answer
+      const searchBox = search.getBoundingClientRect();
+      pile.style.right = `${stageBox.right - searchBox.right}px`;
+      pile.style.top = `${searchBox.bottom - stageBox.top - 20}px`;
+      pile.style.width = `${searchBox.width}px`;
+
+      // Beat 2 starts revealing once the circle (centered by then) covers
+      // its whole headline block. Measure without the reveal's offset.
+      const previous = beat2Copy.style.transform;
+      beat2Copy.style.transform = "none";
+      const headline = beat2Copy
+        .querySelector(".home-hero-headline")!
+        .getBoundingClientRect();
+      beat2Copy.style.transform = previous;
+      const cx = stageBox.left + width / 2;
+      const cy = stageBox.top + height / 2;
+      const needed =
+        2 *
+        Math.max(
+          ...[
+            [headline.left, headline.top],
+            [headline.right, headline.top],
+            [headline.left, headline.bottom],
+            [headline.right, headline.bottom],
+          ].map(([x, y]) => Math.hypot(x - cx, y - cy))
+        );
+      const grow = clamp((needed - BALL_PX) / (cover - BALL_PX));
+      // Invert ease-in squared to find where in the expansion that happens
+      beat2From = RISE_END + Math.sqrt(grow) * (EXPAND_END - RISE_END);
     };
 
     const update = () => {
@@ -148,27 +222,28 @@ export default function HomeHero() {
 
       const distance = track.offsetHeight - height;
       const p = clamp((HEADER_PX - rect.top) / distance);
-      const rise = power4InOut(clamp((p - HOLD_BEAT_1) / RISE));
-      const grow = easeInSquared(clamp((p - HOLD_BEAT_1 - RISE) / EXPAND));
 
+      // Circle and beat 2's clip
+      const rise = power4InOut(clamp((p - RISE_START) / (RISE_END - RISE_START)));
+      const grow = easeInSquared(clamp((p - RISE_END) / (EXPAND_END - RISE_END)));
       const yOffset = (1 - rise) * (height / 2 + BALL_PX / 2);
       const diameter = BALL_PX + grow * (cover - BALL_PX);
-
       circle.style.transform = `translateY(${yOffset}px) scale(${diameter / cover})`;
       beat2.style.clipPath = `circle(${diameter / 2}px at ${width / 2}px ${height / 2 + yOffset}px)`;
 
-      const drift = clamp((p - CHIP_IN_START) / (CHIP_GONE - CHIP_IN_START));
+      // Beat 2's text: hidden until the circle covers its headline block
+      const reveal = clamp((p - beat2From) / (BEAT_2_REVEALED - beat2From));
+      beat2Copy.style.opacity = String(reveal);
+      beat2Copy.style.transform = `translateY(${(1 - easeOutCubic(reveal)) * BEAT_2_RISE_PX}px)`;
+
+      // Chips: slide in one at a time (in reverse on the way back up), and
+      // fade out before the screen is fully orange
+      const fadeOut = 1 - clamp((p - CHIPS_FADE_START) / (CHIPS_FADE_END - CHIPS_FADE_START));
       chips.forEach((chip, index) => {
-        const c = CHIPS[index];
-        const stagger = index * 0.012;
-        const shown =
-          p >= CHIP_GONE
-            ? 0
-            : clamp(
-                (p - CHIP_IN_START - stagger) / (CHIP_IN_END - CHIP_IN_START)
-              );
-        chip.style.opacity = String(shown);
-        chip.style.transform = `translate(${c.dx * drift}px, ${c.dy * drift}px) rotate(${c.r}deg)`;
+        const arrived = clamp((p - chipStart(index)) / CHIP_ARRIVE);
+        const slide = (1 - easeOutCubic(arrived)) * CHIP_SLIDE_PX;
+        chip.style.opacity = String(arrived * fadeOut);
+        chip.style.transform = `translateX(${slide + CHIPS[index].shift}px) rotate(${CHIPS[index].tilt}deg)`;
       });
     };
 
@@ -184,6 +259,8 @@ export default function HomeHero() {
     update();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", onResize);
+    // Web font swaps change text boxes; remeasure once they settle
+    document.fonts?.ready.then(onResize);
 
     // Beat 3: once about 35% is on screen, CSS runs the reveal
     const observer = new IntersectionObserver(
@@ -204,7 +281,10 @@ export default function HomeHero() {
       observer.disconnect();
       circle.style.removeProperty("transform");
       beat2.style.removeProperty("clip-path");
+      beat2Copy.style.removeProperty("opacity");
+      beat2Copy.style.removeProperty("transform");
       stage.style.removeProperty("--hero-cover");
+      ["right", "top", "width"].forEach((prop) => pile.style.removeProperty(prop));
       chips.forEach((chip) => {
         chip.style.removeProperty("opacity");
         chip.style.removeProperty("transform");
@@ -214,7 +294,6 @@ export default function HomeHero() {
 
   return (
     <div
-      ref={rootRef}
       className="home-hero"
       data-beat1-ready={beat1Ready ? "" : undefined}
     >
@@ -222,7 +301,6 @@ export default function HomeHero() {
         <div ref={stageRef} className="home-hero-stage">
           <section className="home-hero-beat home-hero-beat-1">
             <div className="home-hero-copy">
-              <p className="home-hero-label">01 · The situation</p>
               <h1 className="home-hero-headline">
                 <span className="home-hero-hl">You&apos;re using AI </span>
                 <span className="home-hero-hl">
@@ -260,7 +338,7 @@ export default function HomeHero() {
             </div>
           </section>
 
-          <div aria-hidden="true" className="home-hero-chips">
+          <div ref={pileRef} aria-hidden="true" className="home-hero-pile">
             {CHIPS.map((chip, index) => (
               <span
                 key={chip.label}
@@ -268,7 +346,7 @@ export default function HomeHero() {
                   chipRefs.current[index] = element;
                 }}
                 className="home-hero-chip"
-                style={{ left: `${chip.x}%`, top: `${chip.y}%` }}
+                style={{ bottom: `${index * CHIP_STEP_PX}px` }}
               >
                 {chip.label}
               </span>
@@ -278,8 +356,7 @@ export default function HomeHero() {
           <div ref={circleRef} aria-hidden="true" className="home-hero-circle" />
 
           <section ref={beat2Ref} className="home-hero-beat home-hero-beat-2">
-            <div className="home-hero-copy">
-              <p className="home-hero-label">02 · The flip</p>
+            <div ref={beat2CopyRef} className="home-hero-copy">
               <h2 className="home-hero-headline">
                 <span className="home-hero-hl">
                   Everyone&apos;s selling you a tool.{" "}
@@ -299,11 +376,12 @@ export default function HomeHero() {
 
       <section ref={beat3Ref} className="home-hero-beat home-hero-beat-3">
         <div className="home-hero-copy">
-          <p className="home-hero-label">03 · The answer</p>
           <h2 className="home-hero-headline">
             <RisingLine text="Your business first." start={0} trailingSpace />
-            <ThArc aspect={13} className="home-hero-arc" />
             <RisingLine text="Then the AI." start={3} />
+            {/* Overlaid, so it adds no space: sweeps from just past
+                "first." down to just before "Then" */}
+            <ThArc aspect={33} reverse className="home-hero-arc" />
           </h2>
           <p className="home-hero-line home-hero-lede">
             I learn how your business actually runs, get you fluent on your

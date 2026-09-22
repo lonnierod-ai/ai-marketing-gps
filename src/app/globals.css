@@ -702,21 +702,6 @@ html[data-site-menu="open"] .lonnie-widget {
   max-width: 44rem;
 }
 
-/* Spec section 6 small label */
-.home-hero-label {
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  font-weight: 700;
-  line-height: 1.4;
-  letter-spacing: 0.05rem;
-  text-transform: uppercase;
-  color: var(--brand-cobalt);
-}
-
-.home-hero-beat-2 .home-hero-label {
-  color: var(--brand-charcoal);
-}
-
 .home-hero-headline {
   font-size: clamp(2.25rem, 9cqw, 4rem);
   font-weight: 700;
@@ -765,25 +750,37 @@ html[data-site-menu="open"] .lonnie-widget {
   stroke: var(--brand-orange);
   /* viewBox units: 3.5 of the box's 10 is about 0.07em */
   stroke-width: 3.5;
-  stroke-dasharray: 1;
+  stroke-dasharray: 1 2;
   stroke-dashoffset: 0;
 }
 
-/* Beat 3: the "th" arc between the two headline lines */
+/* Beat 3: the "th" arc, overlaid between the two headline lines so it
+   adds no space. The headline block is as wide as its first line, so
+   the arc runs from just past "first." down to just before "Then". Its
+   band (0.855em to 1.095em) sits in the clear gap measured in Quattrocento
+   Sans at line-height 1.05: line 1 ends at 0.834em, and line 2's tallest
+   letter (the h) starts at 1.132em. */
+.home-hero-beat-3 .home-hero-headline {
+  position: relative;
+  width: fit-content;
+}
+
 .home-hero-arc {
-  display: block;
-  width: 62%;
-  height: 0.45em;
-  margin-block: 0.06em 0.1em;
+  position: absolute;
+  top: 0.855em;
+  left: -0.16em;
+  right: -0.14em;
+  height: 0.24em;
   overflow: visible;
+  pointer-events: none;
   stroke: var(--brand-orange);
-  /* viewBox units: about 0.035em of a 0.45em-tall box of 100 units */
-  stroke-width: 7.5;
-  stroke-dasharray: 1;
+  /* viewBox units: about 0.035em of a 0.24em-tall box of 100 units */
+  stroke-width: 14;
+  stroke-dasharray: 1 2;
   stroke-dashoffset: 0;
 }
 
-.home-hero-chips,
+.home-hero-pile,
 .home-hero-circle {
   display: none;
 }
@@ -850,7 +847,7 @@ html[data-site-menu="open"] .lonnie-widget {
      scroll */
   .home-hero-track {
     position: relative;
-    height: 260vh;
+    height: 320vh;
   }
 
   .home-hero-stage {
@@ -893,8 +890,17 @@ html[data-site-menu="open"] .lonnie-widget {
     max-width: 85cqw;
   }
 
-  .home-hero-label {
-    margin-bottom: 1.5rem;
+  /* Optical centering: the text block sits about 3% of the stage height
+     above true center (a bottom margin shifts it up by half its size) */
+  .home-hero-stage .home-hero-copy,
+  .home-hero-beat-3 .home-hero-copy {
+    margin-bottom: calc((100vh - 72px) * 0.06);
+  }
+
+  /* Beat 2's text stays hidden until the circle covers its headline;
+     HomeHero drives it from there */
+  .home-hero-stage .home-hero-beat-2 .home-hero-copy {
+    opacity: 0;
   }
 
   .home-hero-headline {
@@ -936,17 +942,19 @@ html[data-site-menu="open"] .lonnie-widget {
     margin-top: 0;
   }
 
-  /* Noise chips: above beat 1, under the circle */
-  .home-hero-chips {
+  /* Noise chips: a pile over the search bar, above beat 1 and under the
+     circle. HomeHero positions the pile from the search bar's box. */
+  .home-hero-pile {
     display: block;
     position: absolute;
-    inset: 0;
     z-index: 1;
+    height: 0;
     pointer-events: none;
   }
 
   .home-hero-chip {
     position: absolute;
+    right: 0;
     padding: 0.4rem 0.9rem;
     border-radius: 9999px;
     background-color: var(--brand-orange-soft);
@@ -986,7 +994,7 @@ html[data-site-menu="open"] .lonnie-widget {
 
   /* Beat 1: the underline draws in 0.4s after the intro lifts */
   .home-hero-underline {
-    stroke-dashoffset: 1;
+    stroke-dashoffset: 1.02;
   }
 
   .home-hero[data-beat1-ready] .home-hero-underline {
@@ -1040,7 +1048,7 @@ html[data-site-menu="open"] .lonnie-widget {
   }
 
   .home-hero-arc {
-    stroke-dashoffset: 1;
+    stroke-dashoffset: 1.02;
   }
 
   .home-hero-lede,
