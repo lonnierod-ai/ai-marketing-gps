@@ -1,9 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react";
 import BookCallCircle from "@/components/BookCallCircle";
 import HeroSearchMock from "@/components/HeroSearchMock";
-import ThArc from "@/components/ThArc";
+import ScrollCue from "@/components/ScrollCue";
+import TypedLine from "@/components/TypedLine";
 import { INTRO_END_EVENT, INTRO_SKIP_ATTR } from "@/lib/homeIntro";
 
 // Must match the "Home hero" gate in globals.css
@@ -76,6 +84,22 @@ const chipStart = (index: number) =>
 // Beat 2 rises into place by this much as it fades in
 const BEAT_2_RISE_PX = 24;
 
+// Beat 3's line starts typing at this point in its reveal (where the
+// fade-up used to start)
+const BEAT_3_LINE_DELAY_MS = 1100;
+
+// Scroll cue: appears this long after the search bar's answer (or after
+// load where the search bar is already finished), and leaves for good
+// after this much scrolling
+const CUE_AFTER_SEARCH_MS = 400;
+const CUE_AFTER_LOAD_MS = 1500;
+const CUE_GONE_PX = 40;
+
+const BEAT_2_LINE =
+  "More apps, more courses, more demos. All of it starts with the software and hopes it fits your business. That's backwards.";
+const BEAT_3_LINE =
+  "I learn how your business actually runs, get you fluent on your own work, and build what's missing. That's Aithello.";
+
 /**
  * Homepage hero, three beats in an editorial layout. From 990px without
  * reduced motion, beat 1 is pinned while noise piles up over its search
@@ -101,6 +125,38 @@ export default function HomeHero() {
   const [beat1Ready, setBeat1Ready] = useState(false);
   // The search bar is on screen and beat 1 is revealed
   const [typing, setTyping] = useState(false);
+  const [searchDone, setSearchDone] = useState(false);
+  // Supporting lines type once, when their beat gets to them
+  const [beat2Typing, setBeat2Typing] = useState(false);
+  const [beat3Typing, setBeat3Typing] = useState(false);
+  // Scroll cue
+  const [cueShown, setCueShown] = useState(false);
+  const [cueGone, setCueGone] = useState(false);
+
+  const onSearchDone = useCallback(() => setSearchDone(true), []);
+
+  // Scroll cue in: after the search bar's answer, or after load where the
+  // search bar is already finished (phones, reduced motion)
+  useEffect(() => {
+    if (cueShown) return;
+    if (motion && !searchDone) return;
+    const timer = window.setTimeout(
+      () => setCueShown(true),
+      motion ? CUE_AFTER_SEARCH_MS : CUE_AFTER_LOAD_MS
+    );
+    return () => window.clearTimeout(timer);
+  }, [motion, searchDone, cueShown]);
+
+  // Scroll cue out, for the rest of the visit, once the page has scrolled
+  useEffect(() => {
+    if (cueGone) return;
+    const startY = window.scrollY;
+    const onScroll = () => {
+      if (Math.abs(window.scrollY - startY) > CUE_GONE_PX) setCueGone(true);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [cueGone]);
 
   useEffect(() => {
     const mq = window.matchMedia(MOTION_QUERY);
@@ -172,6 +228,7 @@ export default function HomeHero() {
     let height = 0;
     let cover = 0;
     let beat2From = EXPAND_END;
+    let beat2Typed = false;
     let frame = 0;
 
     const measure = () => {
@@ -235,6 +292,11 @@ export default function HomeHero() {
       const reveal = clamp((p - beat2From) / (BEAT_2_REVEALED - beat2From));
       beat2Copy.style.opacity = String(reveal);
       beat2Copy.style.transform = `translateY(${(1 - easeOutCubic(reveal)) * BEAT_2_RISE_PX}px)`;
+      // Its line types once the reveal is complete, and only once
+      if (!beat2Typed && p >= BEAT_2_REVEALED) {
+        beat2Typed = true;
+        setBeat2Typing(true);
+      }
 
       // Chips: slide in one at a time (in reverse on the way back up), and
       // fade out before the screen is fully orange
@@ -250,35 +312,58 @@ export default function HomeHero() {
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(update);
     };
+    // Beat 3 reveals when its top reaches the header, i.e. once the
+    // orange stage has scrolled fully behind the header. Until then beat 3
+    // stays orange, continuous with the stage, so no orange band is left
+    // above it. The observer watches a 2px line just under the header.
+    let observer: IntersectionObserver | null = null;
+    let lineTimer = 0;
+    const watchBeat3 = () => {
+      observer?.disconnect();
+      if (beat3.hasAttribute("data-revealed")) return;
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          beat3.setAttribute("data-revealed", "");
+          observer?.disconnect();
+          lineTimer = window.setTimeout(
+            () => setBeat3Typing(true),
+            BEAT_3_LINE_DELAY_MS
+          );
+        },
+        {
+          rootMargin: `-${HEADER_PX}px 0px -${Math.max(
+            0,
+            window.innerHeight - HEADER_PX - 2
+          )}px 0px`,
+        }
+      );
+      observer.observe(beat3);
+    };
+
     const onResize = () => {
       measure();
       schedule();
+      watchBeat3();
     };
 
     measure();
     update();
+    watchBeat3();
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", onResize);
     // Web font swaps change text boxes; remeasure once they settle
-    document.fonts?.ready.then(onResize);
-
-    // Beat 3: once about 35% is on screen, CSS runs the reveal
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          beat3.setAttribute("data-revealed", "");
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.35 }
-    );
-    observer.observe(beat3);
+    document.fonts?.ready.then(() => {
+      measure();
+      schedule();
+    });
 
     return () => {
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", onResize);
-      observer.disconnect();
+      observer?.disconnect();
+      window.clearTimeout(lineTimer);
       circle.style.removeProperty("transform");
       beat2.style.removeProperty("clip-path");
       beat2Copy.style.removeProperty("opacity");
@@ -334,8 +419,13 @@ export default function HomeHero() {
               </p>
             </div>
             <div ref={searchRef} className="home-hero-aside">
-              <HeroSearchMock animate={motion} play={typing} />
+              <HeroSearchMock
+                animate={motion}
+                play={typing}
+                onDone={onSearchDone}
+              />
             </div>
+            <ScrollCue shown={cueShown} gone={cueGone} />
           </section>
 
           <div ref={pileRef} aria-hidden="true" className="home-hero-pile">
@@ -364,11 +454,12 @@ export default function HomeHero() {
                 <span className="home-hero-hl">Nobody&apos;s asked about </span>
                 <span className="home-hero-hl">your business.</span>
               </h2>
-              <p className="home-hero-line">
-                More apps, more courses, more demos. All of it starts with
-                the software and hopes it fits your business. That&apos;s
-                backwards.
-              </p>
+              <TypedLine
+                text={BEAT_2_LINE}
+                animate={motion}
+                play={beat2Typing}
+                className="home-hero-line"
+              />
             </div>
           </section>
         </div>
@@ -377,16 +468,17 @@ export default function HomeHero() {
       <section ref={beat3Ref} className="home-hero-beat home-hero-beat-3">
         <div className="home-hero-copy">
           <h2 className="home-hero-headline">
-            <RisingLine text="Your business first." start={0} trailingSpace />
+            <RisingLine text="Your business first." start={0} trailingSpace>
+              <BeatThreeArc />
+            </RisingLine>
             <RisingLine text="Then the AI." start={3} />
-            {/* Overlaid, so it adds no space: sweeps from just past
-                "first." down to just before "Then" */}
-            <ThArc aspect={33} reverse className="home-hero-arc" />
           </h2>
-          <p className="home-hero-line home-hero-lede">
-            I learn how your business actually runs, get you fluent on your
-            own work, and build what&apos;s missing. That&apos;s Aithello.
-          </p>
+          <TypedLine
+            text={BEAT_3_LINE}
+            animate={motion}
+            play={beat3Typing}
+            className="home-hero-line home-hero-lede"
+          />
         </div>
         <div className="home-hero-aside home-hero-cta">
           <BookCallCircle />
@@ -396,16 +488,56 @@ export default function HomeHero() {
   );
 }
 
+// Beat 3's connector arc, overlaid on the headline so it adds no space.
+// It sits inside line 1, whose box ends where "first." ends, so it can
+// start just past the period. Coordinates are in hundredths of an em from
+// line 1's top left, so the SVG scales uniformly with the headline.
+//  - From 990px (line 2 indented 2.5em): through the gap between the
+//    lines, then hooking down into the space left of "Then", ending just
+//    before the T.
+//  - Phones (lines aligned): through the gap, ending at the T's top-left
+//    corner, never past the text block's left edge.
+// Clear gap in Quattrocento Sans at line-height 1.05: line 1 ends 0.834em
+// down; line 2's tallest letter starts 1.132em down, its capitals 1.212em.
+function BeatThreeArc() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      className="home-hero-arc"
+      viewBox="0 0 785 70"
+      preserveAspectRatio="none"
+    >
+      <path
+        className="home-hero-arc-indented"
+        d="M 783 9 C 560 11, 380 14, 300 22 C 258 26, 236 38, 233 62"
+        pathLength={1}
+        fill="none"
+        strokeLinecap="round"
+      />
+      <path
+        className="home-hero-arc-aligned"
+        d="M 784 11 C 520 14, 260 21, 150 25 C 80 28, 30 30, 4 30"
+        pathLength={1}
+        fill="none"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 // One hand-set headline line, split into words for the masked rise.
 // `start` continues the 35ms stagger across lines.
 function RisingLine({
   text,
   start,
   trailingSpace = false,
+  children,
 }: {
   text: string;
   start: number;
   trailingSpace?: boolean;
+  children?: ReactNode;
 }) {
   const words = text.split(" ");
   return (
@@ -423,6 +555,7 @@ function RisingLine({
           {index < words.length - 1 || trailingSpace ? " " : null}
         </span>
       ))}
+      {children}
     </span>
   );
 }

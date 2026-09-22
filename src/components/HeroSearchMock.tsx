@@ -17,13 +17,19 @@ type HeroSearchMockProps = {
   animate: boolean;
   // Start typing (after the intro, once the bar is on screen)
   play: boolean;
+  // Called once the answer has appeared
+  onDone?: () => void;
 };
 
 /**
  * Beat 1's decorative search bar. Types a question, pauses, then shows a
  * bland answer. Not a real input: aria-hidden, nothing focusable.
  */
-export default function HeroSearchMock({ animate, play }: HeroSearchMockProps) {
+export default function HeroSearchMock({
+  animate,
+  play,
+  onDone,
+}: HeroSearchMockProps) {
   const [typed, setTyped] = useState(0);
   const [answered, setAnswered] = useState(false);
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -47,6 +53,10 @@ export default function HeroSearchMock({ animate, play }: HeroSearchMockProps) {
   }, [typed]);
 
   const done = !animate || answered;
+
+  useEffect(() => {
+    if (animate && answered) onDone?.();
+  }, [animate, answered, onDone]);
   const query = animate ? QUERY.slice(0, typed) : QUERY;
 
   return (

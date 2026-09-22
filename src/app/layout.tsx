@@ -151,7 +151,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
       </head>
-      <body className="flex min-h-screen flex-col antialiased">
+      {/* pt-[72px]: room for the fixed site header */}
+      <body className="flex min-h-screen flex-col pt-[72px] antialiased">
         <SiteHeader />
         <div id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
           {children}

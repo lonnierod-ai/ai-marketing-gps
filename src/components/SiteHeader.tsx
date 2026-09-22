@@ -117,7 +117,9 @@ export default function SiteHeader() {
     <header
       ref={headerRef}
       data-state={state}
-      className={`site-header sticky top-0 ${isShown ? "z-menu-open" : "z-header"}`}
+      // Fixed, not sticky: WebKit could shift a sticky header inside the
+      // flex page body; the layout offsets the page by the header's 72px
+      className={`site-header fixed inset-x-0 top-0 ${isShown ? "z-menu-open" : "z-header"}`}
     >
       {/* The ground bar sits under the panel so the wipe covers it */}
       <div

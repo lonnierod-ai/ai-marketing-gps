@@ -754,30 +754,112 @@ html[data-site-menu="open"] .lonnie-widget {
   stroke-dashoffset: 0;
 }
 
-/* Beat 3: the "th" arc, overlaid between the two headline lines so it
-   adds no space. The headline block is as wide as its first line, so
-   the arc runs from just past "first." down to just before "Then". Its
-   band (0.855em to 1.095em) sits in the clear gap measured in Quattrocento
-   Sans at line-height 1.05: line 1 ends at 0.834em, and line 2's tallest
-   letter (the h) starts at 1.132em. */
-.home-hero-beat-3 .home-hero-headline {
+/* Beat 3: the connector arc (see BeatThreeArc in HomeHero). Line 1's
+   box ends where "first." ends, so the arc is anchored to it: its box runs
+   from line 1's left edge to 0.14em past its end, and from 0.8em to 1.5em
+   down. The viewBox is 100 units per em, so it scales uniformly. */
+.home-hero-beat-3 .home-hero-hl:first-child {
   position: relative;
   width: fit-content;
 }
 
 .home-hero-arc {
   position: absolute;
-  top: 0.855em;
-  left: -0.16em;
+  top: 0.8em;
+  left: 0;
   right: -0.14em;
-  height: 0.24em;
+  height: 0.7em;
   overflow: visible;
   pointer-events: none;
   stroke: var(--brand-orange);
-  /* viewBox units: about 0.035em of a 0.24em-tall box of 100 units */
-  stroke-width: 14;
+  /* viewBox units: 3.5 is 0.035em */
+  stroke-width: 3.5;
   stroke-dasharray: 1 2;
   stroke-dashoffset: 0;
+}
+
+/* Phones: lines aligned, so the arc ends at the T's top-left corner */
+.home-hero-arc-indented {
+  display: none;
+}
+
+@media (min-width: 990px) {
+  /* Desktop: "Then the AI." is indented so the arc can hook down into
+     the space before it */
+  .home-hero-beat-3 .home-hero-hl + .home-hero-hl {
+    padding-left: 2.5em;
+  }
+
+  .home-hero-arc-indented {
+    display: inline;
+  }
+
+  .home-hero-arc-aligned {
+    display: none;
+  }
+}
+
+/* Supporting lines that type themselves out (TypedLine) */
+.typed-line {
+  position: relative;
+}
+
+.typed-line-real[data-hidden] {
+  opacity: 0;
+}
+
+.typed-line-copy {
+  position: absolute;
+  inset: 0;
+}
+
+.typed-line-rest {
+  color: transparent;
+}
+
+/* Beat 1's scroll cue */
+.home-hero-beat-1 {
+  position: relative;
+  padding-bottom: 7rem;
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--brand-cobalt);
+  opacity: 0;
+  transform: translateX(-50%);
+  transition: opacity 0.6s ease-out;
+  pointer-events: none;
+}
+
+.scroll-cue[data-shown] {
+  opacity: 1;
+}
+
+/* Spec section 6 small label */
+.scroll-cue-label {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+}
+
+.scroll-cue-chevron {
+  width: 1.5rem;
+  height: 0.75rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-cue[data-shown] .scroll-cue-chevron {
+    animation: scroll-cue-bounce 1.6s ease-in-out infinite;
+  }
 }
 
 .home-hero-pile,
@@ -857,6 +939,9 @@ html[data-site-menu="open"] .lonnie-widget {
     height: calc(100vh - 72px);
     overflow: hidden;
     background-color: var(--brand-ground);
+    /* Keeps the circle's and beat 2's z-index inside the stage, so beat 3
+       can sit above it at the hand-off */
+    isolation: isolate;
   }
 
   /* Editorial layout: copy on the left, an aside on the right */
@@ -1020,6 +1105,10 @@ html[data-site-menu="open"] .lonnie-widget {
 
   /* Beat 3 continues the orange, then turns to the ground */
   .home-hero-beat-3 {
+    /* Overlap the stage by 1px so no sub-pixel seam shows */
+    position: relative;
+    z-index: 1;
+    margin-top: -1px;
     min-height: calc(100vh - 72px);
     padding-block: 6rem;
     background-color: var(--brand-orange);
@@ -1051,6 +1140,10 @@ html[data-site-menu="open"] .lonnie-widget {
     stroke-dashoffset: 1.02;
   }
 
+  .home-hero-arc path {
+    stroke-dashoffset: inherit;
+  }
+
   .home-hero-lede,
   .home-hero-beat-3 .home-hero-cta {
     opacity: 0;
@@ -1071,9 +1164,10 @@ html[data-site-menu="open"] .lonnie-widget {
       calc(0.6s + var(--w, 0) * 35ms);
   }
 
-  /* Then the line (lede reveal), the arc, and the circle */
+  /* The line shows at reveal as an empty reserved block; HomeHero
+     starts typing it 1.1s in. Then the arc and the circle. */
   .home-hero-beat-3[data-revealed] .home-hero-lede {
-    animation: home-hero-lede 1s var(--ease-brand) 1.1s both;
+    opacity: 1;
   }
 
   .home-hero-beat-3[data-revealed] .home-hero-arc {
@@ -1089,23 +1183,19 @@ html[data-site-menu="open"] .lonnie-widget {
   }
 }
 
+@keyframes scroll-cue-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
 @keyframes hero-search-caret {
   50% {
     opacity: 0;
   }
 }
 
-/* Spec section 7 lede reveal: opacity done 60% through, 10px rise */
-@keyframes home-hero-lede {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  60% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-    transform: none;
-  }
-}
