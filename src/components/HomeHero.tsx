@@ -28,17 +28,20 @@ const HEADER_PX = 72;
 const BALL_PX = 380;
 
 // The pinned sequence, as shares of the pinned scroll:
-//   0.00-0.20  hold on beat 1 (the search bar types, on a timer)
-//   0.20-0.45  the circle rises
-//   0.45-0.85  the circle expands; beat 2 starts revealing once the
+//   0.00-0.16  hold on beat 1 (the search bar types, on a timer)
+//   0.16-0.36  the circle rises
+//   0.36-0.68  the circle expands; beat 2 starts revealing once the
 //              circle covers its headline block
-//   0.85-0.90  beat 2 finishes its reveal
-//   0.90-1.00  hold on orange; beat 2's line types and its chips drop in
-//              (both on a timer)
-const RISE_START = 0.2;
-const RISE_END = 0.45;
-const EXPAND_END = 0.85;
-const BEAT_2_REVEALED = 0.9;
+//   0.68-0.72  beat 2 finishes its reveal; its line then types (on a
+//              timer)
+//   0.72-0.92  beat 2's 8 notifications arrive, one every 2.5%
+//   0.92-1.00  hold on the full list
+const RISE_START = 0.16;
+const RISE_END = 0.36;
+const EXPAND_END = 0.68;
+const BEAT_2_REVEALED = 0.72;
+const NOTES_START = 0.72;
+const NOTES_STEP = 0.025;
 
 // If the intro never reports back, start beat 1 anyway
 const INTRO_FALLBACK_MS = 6000;
@@ -54,8 +57,18 @@ const easeInSquared = (p: number) => p * p;
 
 const easeOutCubic = (p: number) => 1 - (1 - p) ** 3;
 
-// Beat 2's notifications land at least this far apart, in order
-const NOTE_GAP_MS = 150;
+// Beat 2's notification list, fitted to the stage (see fitNotes)
+const NOTE_WIDTH_PX = 320;
+const NOTES_EDGE_PX = 64; // the stage's 4rem side padding
+const NOTES_CLEAR_PX = 32; // clear space beside the copy
+const NOTES_MARGIN_PX = 24; // clear space above and below the list
+const NOTES_BELOW_PX = 24; // clear space under the headline line above it
+const NOTES_COUNTER_PX = 32; // counter label plus its margin
+const NOTES_ROOMY = { gap: 10, padY: 12 };
+const NOTES_TIGHT = { gap: 6, padY: 8 };
+// If tighter spacing is not enough: the newest 6, then fewer
+const NOTES_FALLBACK = 6;
+const NOTES_FEWEST = 3;
 
 // Beat 2 rises into place by this much as it fades in
 const BEAT_2_RISE_PX = 24;
@@ -73,17 +86,6 @@ const CUE_GONE_PX = 40;
 
 const BEAT_2_LINE =
   "More apps, more courses, more demos. All of it starts with the software and hopes it fits your business. That's backwards.";
-
-// Notification pairs are cued as these points of beat 2's line are typed:
-// when "apps", "courses", and "demos" finish, and as "That's backwards."
-// begins. Values are typed-character counts.
-const wordEnd = (word: string) => BEAT_2_LINE.indexOf(word) + word.length;
-const NOTE_CUES = [
-  wordEnd("apps"),
-  wordEnd("courses"),
-  wordEnd("demos"),
-  BEAT_2_LINE.indexOf("That's") + 1,
-];
 const BEAT_3_LINE =
   "I learn how your business actually runs, get you fluent on your own work, and build what's missing. That's Aithello.";
 
@@ -91,8 +93,8 @@ const BEAT_3_LINE =
  * Homepage hero, three beats in an editorial layout. From 990px without
  * reduced motion, beat 1 is pinned while an orange circle rises and
  * expands to reveal beat 2, whose line types while outside-marketing
- * notifications stack up beside it; beat 3 reveals when it reaches the
- * header.
+ * notifications arrive beside it as the visitor scrolls; beat 3 reveals
+ * when it reaches the header.
  * Otherwise the beats stack in one column in their finished state.
  * Beat 1's headline is the page's single h1.
  */
@@ -121,48 +123,10 @@ export default function HomeHero() {
 
   const onSearchDone = useCallback(() => setSearchDone(true), []);
 
-  // Beat 2's notifications: how many have landed. Each typing cue queues
-  // a pair; a queue releases them one at a time, at least NOTE_GAP_MS
-  // apart, so they always arrive in order. Plays once; they stay.
+  // Beat 2's notifications: how many have arrived (driven by scroll), and
+  // how many fit on the stage
   const [notesIn, setNotesIn] = useState(0);
-  const cuesFired = useRef(0);
-  const noteQueue = useRef({ queued: 0, released: 0, lastAt: -Infinity, timer: 0 });
-  const releaseNotes = useCallback(() => {
-    const q = noteQueue.current;
-    if (q.timer || q.released >= q.queued) return;
-    const wait = q.lastAt + NOTE_GAP_MS - performance.now();
-    if (wait > 0) {
-      q.timer = window.setTimeout(() => {
-        q.timer = 0;
-        releaseNotes();
-      }, wait);
-      return;
-    }
-    q.released += 1;
-    q.lastAt = performance.now();
-    setNotesIn(q.released);
-    releaseNotes();
-  }, []);
-  const onBeat2Typed = useCallback(
-    (typed: number) => {
-      while (
-        cuesFired.current < NOTE_CUES.length &&
-        typed >= NOTE_CUES[cuesFired.current]
-      ) {
-        cuesFired.current += 1;
-        noteQueue.current.queued = Math.min(
-          cuesFired.current * 2,
-          NOTIFICATIONS.length
-        );
-      }
-      releaseNotes();
-    },
-    [releaseNotes]
-  );
-  useEffect(() => {
-    const q = noteQueue.current;
-    return () => window.clearTimeout(q.timer);
-  }, []);
+  const [notesMax, setNotesMax] = useState(NOTIFICATIONS.length);
 
   // Scroll cue in: after the search bar's answer, or after load where the
   // search bar is already finished (phones, reduced motion)
@@ -234,7 +198,9 @@ export default function HomeHero() {
     const beat2 = beat2Ref.current;
     const beat2Copy = beat2CopyRef.current;
     const beat3 = beat3Ref.current;
+    const notes = beat2?.querySelector<HTMLElement>(".hero-notes");
     if (
+      !notes ||
       !motion ||
       !track ||
       !stage ||
@@ -251,7 +217,69 @@ export default function HomeHero() {
     let cover = 0;
     let beat2From = EXPAND_END;
     let beat2Typed = false;
+    let notesCount = -1;
     let frame = 0;
+
+    // Places beat 2's notification list and decides how many cards fit.
+    // Where the column clears the copy beside it, the list is centered
+    // on the stage; otherwise it starts under the headline's second line,
+    // or under the lowest line it would overlap if that is lower. To fit, spacing tightens first, then fewer cards show.
+    const fitNotes = (stageBox: DOMRect) => {
+      const listLeft = width - NOTES_EDGE_PX - NOTE_WIDTH_PX;
+      // The text itself, line by line (the headline lines are blocks as
+      // wide as the copy, so measure their contents)
+      const range = document.createRange();
+      const boxes = [
+        ...beat2Copy.querySelectorAll(".home-hero-hl, .typed-line-real"),
+      ].flatMap((el) => {
+        range.selectNodeContents(el);
+        return Array.from(range.getClientRects());
+      });
+      let floor = 0;
+      for (const box of boxes) {
+        if (box.right - stageBox.left > listLeft - NOTES_CLEAR_PX) {
+          floor = Math.max(floor, box.bottom - stageBox.top + NOTES_BELOW_PX);
+        }
+      }
+      const centered = floor === 0;
+      // Beside the copy, the list never starts above the headline's
+      // second line's bottom
+      if (!centered) {
+        const second = beat2Copy.querySelectorAll(".home-hero-hl")[1];
+        range.selectNodeContents(second);
+        const lines = Array.from(range.getClientRects());
+        const bottom = Math.max(...lines.map((line) => line.bottom));
+        floor = Math.max(floor, bottom - stageBox.top + NOTES_BELOW_PX);
+      }
+      const top = centered ? NOTES_MARGIN_PX : floor;
+      const room = height - NOTES_MARGIN_PX - top - NOTES_COUNTER_PX;
+
+      const card = notes.querySelector<HTMLElement>(".hero-note")!;
+      const cardHeight = (padY: number) => {
+        notes.style.setProperty("--notes-pad-y", `${padY}px`);
+        return card.offsetHeight;
+      };
+      const listHeight = (n: number, h: number, gap: number) =>
+        n * h + (n - 1) * gap;
+
+      let spacing = NOTES_ROOMY;
+      let h = cardHeight(spacing.padY);
+      let max = NOTIFICATIONS.length;
+      if (listHeight(max, h, spacing.gap) > room) {
+        spacing = NOTES_TIGHT;
+        h = cardHeight(spacing.padY);
+        if (listHeight(max, h, spacing.gap) > room) max = NOTES_FALLBACK;
+        while (max > NOTES_FEWEST && listHeight(max, h, spacing.gap) > room) {
+          max -= 1;
+        }
+      }
+      const block = NOTES_COUNTER_PX + listHeight(max, h, spacing.gap);
+      const listTop =
+        (centered ? (height - block) / 2 : top) + NOTES_COUNTER_PX;
+      notes.style.setProperty("--notes-top", `${listTop}px`);
+      notes.style.setProperty("--notes-pitch", `${h + spacing.gap}px`);
+      setNotesMax(max);
+    };
 
     const measure = () => {
       width = stage.clientWidth;
@@ -269,11 +297,7 @@ export default function HomeHero() {
       const headline = beat2Copy
         .querySelector(".home-hero-headline")!
         .getBoundingClientRect();
-      // The notification stack's front card lines up with the line's top
-      const lineTop = beat2Copy
-        .querySelector(".home-hero-line")!
-        .getBoundingClientRect().top;
-      stage.style.setProperty("--notes-top", `${lineTop - stageBox.top}px`);
+      fitNotes(stageBox);
       beat2Copy.style.transform = previous;
       const cx = stageBox.left + width / 2;
       const cy = stageBox.top + height / 2;
@@ -318,6 +342,16 @@ export default function HomeHero() {
         setBeat2Typing(true);
       }
 
+      // Beat 2's notifications: one more every NOTES_STEP of scroll, and
+      // back off in reverse when scrolling up
+      const count = Math.min(
+        NOTIFICATIONS.length,
+        Math.max(0, Math.floor((p - NOTES_START) / NOTES_STEP + 1e-6))
+      );
+      if (count !== notesCount) {
+        notesCount = count;
+        setNotesIn(count);
+      }
     };
 
     const schedule = () => {
@@ -380,7 +414,9 @@ export default function HomeHero() {
       beat2Copy.style.removeProperty("opacity");
       beat2Copy.style.removeProperty("transform");
       stage.style.removeProperty("--hero-cover");
-      stage.style.removeProperty("--notes-top");
+      for (const name of ["--notes-top", "--notes-pad-y", "--notes-pitch"]) {
+        notes.style.removeProperty(name);
+      }
     };
   }, [motion]);
 
@@ -450,11 +486,10 @@ export default function HomeHero() {
                 text={BEAT_2_LINE}
                 animate={motion}
                 play={beat2Typing}
-                onProgress={onBeat2Typed}
                 className="home-hero-line"
               />
             </div>
-            <HeroNotificationStack count={notesIn} />
+            <HeroNotificationStack count={notesIn} max={notesMax} />
           </section>
         </div>
       </div>

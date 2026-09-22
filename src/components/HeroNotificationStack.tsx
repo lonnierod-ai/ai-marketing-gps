@@ -52,51 +52,37 @@ export const NOTIFICATIONS = [
   { icon: "trending", title: "10x your output", pitch: "Sponsored." },
 ];
 
-// Opacity by how far back a card sits; deeper than this is hidden
-const DEPTH_OPACITY = [1, 0.9, 0.75, 0.45, 0.25];
-const MAX_VISIBLE_DEPTH = DEPTH_OPACITY.length - 1;
-// Each step back moves a card up this much
-const DEPTH_STEP_PX = 12;
-
 type HeroNotificationStackProps = {
   // How many notifications have arrived, in order
   count: number;
+  // How many fit on screen; older ones beyond this fade out
+  max: number;
 };
 
 /**
- * Beat 2's decorative notification stack: frosted cards that slide in on
- * top, pushing older ones back like phone notifications, with a "N new"
- * counter above. Styles and motion live in globals.css ("Home hero").
+ * Beat 2's decorative notification list: frosted cards in one column,
+ * newest on top. Each arrival slides into the top slot and pushes the
+ * others down; a "N new" counter sits above. HomeHero drives the count
+ * from scroll and sets the position and spacing. Styles and motion live
+ * in globals.css ("Home hero").
  */
-export default function HeroNotificationStack({ count }: HeroNotificationStackProps) {
-  const backmost = Math.min(Math.max(count - 1, 0), MAX_VISIBLE_DEPTH);
-
+export default function HeroNotificationStack({ count, max }: HeroNotificationStackProps) {
   return (
     <div aria-hidden="true" className="hero-notes">
-      <p
-        className="hero-notes-count"
-        data-shown={count > 0 ? "" : undefined}
-        style={{ transform: `translateY(${-backmost * DEPTH_STEP_PX}px)` }}
-      >
+      <p className="hero-notes-count" data-shown={count > 0 ? "" : undefined}>
         {count} new
       </p>
       {NOTIFICATIONS.map((note, index) => {
         const arrived = index < count;
-        const depth = count - 1 - index;
-        const state = !arrived ? "waiting" : depth > MAX_VISIBLE_DEPTH ? "buried" : "in";
+        // 0 is the top slot, the newest card
+        const slot = count - 1 - index;
+        const state = !arrived ? "waiting" : slot >= max ? "out" : "in";
         return (
           <div
             key={note.title}
             className="hero-note"
             data-state={state}
-            data-front={arrived && depth === 0 ? "" : undefined}
-            style={
-              {
-                zIndex: 10 + index,
-                "--depth": arrived ? Math.min(depth, MAX_VISIBLE_DEPTH + 1) : 0,
-                "--note-opacity": state === "in" ? DEPTH_OPACITY[depth] : 0,
-              } as CSSProperties
-            }
+            style={{ "--slot": arrived ? slot : 0 } as CSSProperties}
           >
             <span className="hero-note-icon">
               <svg

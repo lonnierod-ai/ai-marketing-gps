@@ -68,6 +68,14 @@
  * (spec section 7, Gating).
  * ------------------------------------------------------------------ */
 @layer components {
+  /* Its own compositing layer, so WebKit keeps the fixed header in place
+     while the hero's large transformed layers move under it. Only while
+     closed: a transform would make the header the containing block for
+     the fixed panel and backdrop. */
+  .site-header[data-state="closed"] {
+    transform: translateZ(0);
+  }
+
   .site-menu-panel {
     visibility: hidden;
     opacity: 0;
@@ -929,7 +937,7 @@ html[data-site-menu="open"] .lonnie-widget {
      scroll */
   .home-hero-track {
     position: relative;
-    height: 260vh;
+    height: 300vh;
   }
 
   .home-hero-stage {
@@ -1033,20 +1041,21 @@ html[data-site-menu="open"] .lonnie-widget {
     align-self: flex-start;
   }
 
-  /* Beat 2's notification stack (HeroNotificationStack): a 320px column
-     at the stage's right padding, its front card level with the
-     supporting line's top (HomeHero sets --notes-top). Inside beat 2's
-     layer, so the circle's clip reveals it and it scrolls away with it. */
+  /* Beat 2's notification list (HeroNotificationStack): a 320px column
+     at the stage's right padding. HomeHero fits it to the stage and sets
+     --notes-top (the top card's top), --notes-pad-y, and
+     --notes-pitch (card height plus gap). Inside beat 2's layer, so the
+     circle's clip reveals it and it scrolls away with it. */
   .home-hero-stage .hero-notes {
     display: block;
     position: absolute;
-    top: var(--notes-top, 60%);
+    top: var(--notes-top, 20%);
     right: 4rem;
     width: 320px;
     pointer-events: none;
   }
 
-  /* Counter, in the spec's small label style, above the back edge */
+  /* Counter, in the spec's small label style, just above the top card */
   .hero-notes-count {
     position: absolute;
     bottom: 100%;
@@ -1059,15 +1068,14 @@ html[data-site-menu="open"] .lonnie-widget {
     text-transform: uppercase;
     color: var(--brand-charcoal);
     opacity: 0;
-    transition: opacity 0.3s ease-out, transform 0.3s var(--ease-brand);
+    transition: opacity 0.3s ease-out;
   }
 
   .hero-notes-count[data-shown] {
     opacity: 1;
   }
 
-  /* Frosted glass card. Each step back moves up 12px and shrinks 5%,
-     scaling from the top so older cards peek out above. */
+  /* Frosted glass card, placed by its slot (0 is the top, the newest) */
   .hero-note {
     position: absolute;
     top: 0;
@@ -1076,46 +1084,35 @@ html[data-site-menu="open"] .lonnie-widget {
     align-items: center;
     gap: 12px;
     width: 320px;
-    padding: 12px 14px;
+    padding: var(--notes-pad-y, 12px) 14px;
     border: 1px solid rgb(255 255 255 / 0.7);
     border-radius: 14px;
     background-color: rgb(255 255 255 / 0.55);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     box-shadow: 0 8px 24px rgb(31 36 48 / 0.12);
-    transform-origin: top center;
-    transform: translateY(calc(var(--depth, 0) * -12px))
-      scale(calc(1 - var(--depth, 0) * 0.05));
-    opacity: var(--note-opacity, 1);
+    transform: translateY(calc(var(--slot, 0) * var(--notes-pitch, 77px)));
     transition: transform 0.3s var(--ease-brand), opacity 0.3s ease-out,
       visibility 0s;
   }
 
-  /* Not arrived yet: waiting just above, invisible; it slides down */
+  /* Not arrived (or taken back by scrolling up): 24px above the top slot,
+     faded out. Arriving slides it down into place; leaving slides it back
+     up. */
   .hero-note[data-state="waiting"] {
     visibility: hidden;
     opacity: 0;
     transform: translateY(-24px);
-    transition: none;
-  }
-
-  /* More than 4 back: gone (and no blur cost) */
-  .hero-note[data-state="buried"] {
-    visibility: hidden;
     transition: transform 0.3s var(--ease-brand), opacity 0.3s ease-out,
       visibility 0s linear 0.3s;
   }
 
-  /* Only the front card shows its content; cards behind read as glass
-     edges, so their text never ghosts through the front card */
-  .hero-note-icon,
-  .hero-note-text {
-    transition: opacity 0.3s ease-out;
-  }
-
-  .hero-note:not([data-front]) .hero-note-icon,
-  .hero-note:not([data-front]) .hero-note-text {
+  /* Past the slots that fit the stage: fades out as it moves down */
+  .hero-note[data-state="out"] {
+    visibility: hidden;
     opacity: 0;
+    transition: transform 0.3s var(--ease-brand), opacity 0.3s ease-out,
+      visibility 0s linear 0.3s;
   }
 
   .hero-note-icon {
