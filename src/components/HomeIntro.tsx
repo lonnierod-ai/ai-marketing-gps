@@ -12,7 +12,7 @@ const WORDS = ["Noise.", "Hype.", "Confusion.", "Clarity.", "Sorted."];
 const LAST = WORDS.length - 1;
 
 const WORD_MS = 450;
-const LAST_WORD_MS = 500;
+const LAST_WORD_MS = 1000;
 const CURTAIN_MS = 1200;
 const FADE_MS = 150;
 const CURTAIN_AT = WORD_MS * LAST + LAST_WORD_MS;
