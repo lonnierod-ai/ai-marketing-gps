@@ -183,6 +183,15 @@ export default function SiteHeader() {
         </button>
       </div>
 
+      {/* From 990px the page stays visible beside the half panel; this
+          invisible layer over it closes the menu on click. Shown only by
+          globals.css ("Site menu"). */}
+      <div
+        aria-hidden="true"
+        onClick={closeMenu}
+        className="site-menu-backdrop fixed inset-0 z-[1]"
+      />
+
       {/* After the bar in tab order; z-[1] keeps it under the bar */}
       <SiteMenuPanel
         id={MENU_ID}

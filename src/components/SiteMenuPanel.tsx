@@ -136,12 +136,13 @@ export default function SiteMenuPanel({
     <div
       id={id}
       inert={!interactive}
-      className="site-menu-panel fixed inset-0 z-[1] overflow-y-auto overscroll-contain bg-brand-cobalt text-brand-white"
+      className="site-menu-panel fixed inset-y-0 right-0 z-[1] w-full overflow-y-auto overscroll-contain bg-brand-cobalt text-brand-white min-[990px]:w-[min(50vw,760px)]"
     >
-      {/* Same centered grid as the header bar, so the logo, tagline, links,
-          and LinkedIn share a left edge and the Close button and circle
-          share a right edge */}
-      <div className="site-menu-inner mx-auto flex min-h-[100dvh] w-full max-w-7xl flex-col justify-between gap-12 px-4 pb-10 pt-[54px] [container-type:inline-size] sm:px-6 lg:px-8 min-[990px]:pb-12 min-[990px]:pt-[56px]">
+      {/* Below 990px the panel is full screen and shares the header bar's
+          side padding, so the tagline sits under the wordmark as a lockup.
+          From 990px it is a right-hand half panel with its own padding;
+          the tagline lines up with the Close button, centered 36px down. */}
+      <div className="site-menu-inner flex min-h-[100dvh] w-full flex-col justify-between gap-12 px-4 pb-10 pt-[54px] [container-type:inline-size] sm:px-6 min-[990px]:px-16 min-[990px]:pb-12 min-[990px]:pt-[23px]">
         {/* Sits directly under the header wordmark as one lockup. The
             period is an orange circle; screen readers get a real "." */}
         <p
@@ -153,12 +154,12 @@ export default function SiteMenuPanel({
           <span className="sr-only">.</span>
         </p>
 
-        <div className="flex flex-col gap-12 min-[990px]:flex-row min-[990px]:items-center min-[990px]:justify-between">
+        <div className="flex flex-col gap-12">
           <nav aria-label="Main">
             <ul className="flex flex-col">{NAV_ITEMS.map(renderItem)}</ul>
           </nav>
 
-          <div className="site-menu-pop self-start min-[990px]:self-center">
+          <div className="site-menu-pop self-start">
             <BookCallCircle onClick={onNavigate} />
           </div>
         </div>
