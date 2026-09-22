@@ -862,7 +862,7 @@ html[data-site-menu="open"] .lonnie-widget {
   }
 }
 
-.home-hero-pile,
+.hero-notes,
 .home-hero-circle {
   display: none;
 }
@@ -1027,42 +1027,137 @@ html[data-site-menu="open"] .lonnie-widget {
     margin-top: 0;
   }
 
-  /* Beat 2's noise chips: a pile in the stage's lower right, inside beat
-     2's layer (so the circle's clip reveals it). Chips drop in on a timer
-     as beat 2's line types; HomeHero sets data-in. White on orange is
-     decorative here. */
-  .home-hero-stage .home-hero-pile {
+  /* Beat 2: the supporting line sits under the headline's left edge,
+     leaving the right-hand column for the notification stack */
+  .home-hero-stage .home-hero-beat-2 .home-hero-line {
+    align-self: flex-start;
+  }
+
+  /* Beat 2's notification stack (HeroNotificationStack): a 320px column
+     at the stage's right padding, its front card level with the
+     supporting line's top (HomeHero sets --notes-top). Inside beat 2's
+     layer, so the circle's clip reveals it and it scrolls away with it. */
+  .home-hero-stage .hero-notes {
     display: block;
     position: absolute;
+    top: var(--notes-top, 60%);
     right: 4rem;
-    /* Clear of the floating button in the bottom-right corner (the chat
-       widget now, the prompt builder later) */
-    bottom: max(20%, 10rem);
-    width: 0;
-    height: 0;
+    width: 320px;
     pointer-events: none;
   }
 
-  .home-hero-chip {
+  /* Counter, in the spec's small label style, above the back edge */
+  .hero-notes-count {
     position: absolute;
-    right: 0;
-    padding: 0.4rem 0.9rem;
-    border-radius: 9999px;
-    background-color: var(--brand-white);
-    color: var(--brand-charcoal);
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 0.625rem;
     font-size: 1rem;
     font-weight: 700;
     line-height: 1.4;
-    white-space: nowrap;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
+    color: var(--brand-charcoal);
     opacity: 0;
-    transform: translate(var(--chip-shift, 0), -16px)
-      rotate(var(--chip-tilt, 0));
-    transition: opacity 0.25s ease-out, transform 0.25s var(--ease-brand);
+    transition: opacity 0.3s ease-out, transform 0.3s var(--ease-brand);
   }
 
-  .home-hero-chip[data-in] {
+  .hero-notes-count[data-shown] {
     opacity: 1;
-    transform: translate(var(--chip-shift, 0), 0) rotate(var(--chip-tilt, 0));
+  }
+
+  /* Frosted glass card. Each step back moves up 12px and shrinks 5%,
+     scaling from the top so older cards peek out above. */
+  .hero-note {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 320px;
+    padding: 12px 14px;
+    border: 1px solid rgb(255 255 255 / 0.7);
+    border-radius: 14px;
+    background-color: rgb(255 255 255 / 0.55);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 8px 24px rgb(31 36 48 / 0.12);
+    transform-origin: top center;
+    transform: translateY(calc(var(--depth, 0) * -12px))
+      scale(calc(1 - var(--depth, 0) * 0.05));
+    opacity: var(--note-opacity, 1);
+    transition: transform 0.3s var(--ease-brand), opacity 0.3s ease-out,
+      visibility 0s;
+  }
+
+  /* Not arrived yet: waiting just above, invisible; it slides down */
+  .hero-note[data-state="waiting"] {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-24px);
+    transition: none;
+  }
+
+  /* More than 4 back: gone (and no blur cost) */
+  .hero-note[data-state="buried"] {
+    visibility: hidden;
+    transition: transform 0.3s var(--ease-brand), opacity 0.3s ease-out,
+      visibility 0s linear 0.3s;
+  }
+
+  /* Only the front card shows its content; cards behind read as glass
+     edges, so their text never ghosts through the front card */
+  .hero-note-icon,
+  .hero-note-text {
+    transition: opacity 0.3s ease-out;
+  }
+
+  .hero-note:not([data-front]) .hero-note-icon,
+  .hero-note:not([data-front]) .hero-note-text {
+    opacity: 0;
+  }
+
+  .hero-note-icon {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background-color: var(--brand-cobalt);
+    color: var(--brand-white);
+  }
+
+  .hero-note-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero-note-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    color: var(--brand-charcoal);
+  }
+
+  .hero-note-title {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .hero-note-pitch {
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .hero-note {
+      background-color: var(--brand-orange-tint);
+    }
   }
 
   /* Drawn at the cover size and scaled down, so its edge stays crisp;

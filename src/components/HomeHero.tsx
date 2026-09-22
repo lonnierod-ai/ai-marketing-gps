@@ -9,6 +9,9 @@ import {
   type ReactNode,
 } from "react";
 import BookCallCircle from "@/components/BookCallCircle";
+import HeroNotificationStack, {
+  NOTIFICATIONS,
+} from "@/components/HeroNotificationStack";
 import HeroSearchMock from "@/components/HeroSearchMock";
 import ScrollCue from "@/components/ScrollCue";
 import TypedLine from "@/components/TypedLine";
@@ -51,25 +54,8 @@ const easeInSquared = (p: number) => p * p;
 
 const easeOutCubic = (p: number) => 1 - (1 - p) ** 3;
 
-// Outside marketing noise, piled in beat 2's lower right. Tilts and
-// sideways offsets are fixed, so the pile looks hand-stacked and never
-// reshuffles. Later chips stack higher and land on top.
-const CHIPS = [
-  { label: "New AI app", tilt: -2, shift: 0 },
-  { label: "Must-try plugin", tilt: 1.5, shift: -10 },
-  { label: "AI masterclass", tilt: -3, shift: 6 },
-  { label: "Free webinar", tilt: 2.5, shift: -12 },
-  { label: "Book a demo", tilt: -1, shift: 10 },
-  { label: "Free trial", tilt: 3, shift: -4 },
-  { label: "Top 50 tools", tilt: -2.5, shift: 12 },
-  { label: "10x your output", tilt: 1, shift: -8 },
-];
-
-// Each chip sits this far above the one before it (chips are about 40px
-// tall, so they overlap slightly)
-const CHIP_STEP_PX = 30;
-// The second chip of each pair lands this long after the first
-const CHIP_PAIR_GAP_MS = 150;
+// Beat 2's notifications land at least this far apart, in order
+const NOTE_GAP_MS = 150;
 
 // Beat 2 rises into place by this much as it fades in
 const BEAT_2_RISE_PX = 24;
@@ -88,11 +74,11 @@ const CUE_GONE_PX = 40;
 const BEAT_2_LINE =
   "More apps, more courses, more demos. All of it starts with the software and hopes it fits your business. That's backwards.";
 
-// Chip pairs drop in as these points of beat 2's line are typed: when
-// "apps", "courses", and "demos" finish, and as "That's backwards." begins.
-// Values are typed-character counts.
+// Notification pairs are cued as these points of beat 2's line are typed:
+// when "apps", "courses", and "demos" finish, and as "That's backwards."
+// begins. Values are typed-character counts.
 const wordEnd = (word: string) => BEAT_2_LINE.indexOf(word) + word.length;
-const CHIP_CUES = [
+const NOTE_CUES = [
   wordEnd("apps"),
   wordEnd("courses"),
   wordEnd("demos"),
@@ -105,7 +91,8 @@ const BEAT_3_LINE =
  * Homepage hero, three beats in an editorial layout. From 990px without
  * reduced motion, beat 1 is pinned while an orange circle rises and
  * expands to reveal beat 2, whose line types while outside-marketing
- * chips pile up beside it; beat 3 reveals when it reaches the header.
+ * notifications stack up beside it; beat 3 reveals when it reaches the
+ * header.
  * Otherwise the beats stack in one column in their finished state.
  * Beat 1's headline is the page's single h1.
  */
@@ -134,37 +121,47 @@ export default function HomeHero() {
 
   const onSearchDone = useCallback(() => setSearchDone(true), []);
 
-  // Beat 2's chips: which have landed. Pairs are cued by the typing and
-  // play once; they stay put afterwards.
-  const [chipsIn, setChipsIn] = useState<boolean[]>(() =>
-    CHIPS.map(() => false)
-  );
+  // Beat 2's notifications: how many have landed. Each typing cue queues
+  // a pair; a queue releases them one at a time, at least NOTE_GAP_MS
+  // apart, so they always arrive in order. Plays once; they stay.
+  const [notesIn, setNotesIn] = useState(0);
   const cuesFired = useRef(0);
-  const chipTimers = useRef<number[]>([]);
-  const dropChip = useCallback((index: number) => {
-    setChipsIn((current) =>
-      current[index] ? current : current.map((v, i) => v || i === index)
-    );
+  const noteQueue = useRef({ queued: 0, released: 0, lastAt: -Infinity, timer: 0 });
+  const releaseNotes = useCallback(() => {
+    const q = noteQueue.current;
+    if (q.timer || q.released >= q.queued) return;
+    const wait = q.lastAt + NOTE_GAP_MS - performance.now();
+    if (wait > 0) {
+      q.timer = window.setTimeout(() => {
+        q.timer = 0;
+        releaseNotes();
+      }, wait);
+      return;
+    }
+    q.released += 1;
+    q.lastAt = performance.now();
+    setNotesIn(q.released);
+    releaseNotes();
   }, []);
   const onBeat2Typed = useCallback(
     (typed: number) => {
       while (
-        cuesFired.current < CHIP_CUES.length &&
-        typed >= CHIP_CUES[cuesFired.current]
+        cuesFired.current < NOTE_CUES.length &&
+        typed >= NOTE_CUES[cuesFired.current]
       ) {
-        const first = cuesFired.current * 2;
-        dropChip(first);
-        chipTimers.current.push(
-          window.setTimeout(() => dropChip(first + 1), CHIP_PAIR_GAP_MS)
-        );
         cuesFired.current += 1;
+        noteQueue.current.queued = Math.min(
+          cuesFired.current * 2,
+          NOTIFICATIONS.length
+        );
       }
+      releaseNotes();
     },
-    [dropChip]
+    [releaseNotes]
   );
   useEffect(() => {
-    const timers = chipTimers.current;
-    return () => timers.forEach((timer) => window.clearTimeout(timer));
+    const q = noteQueue.current;
+    return () => window.clearTimeout(q.timer);
   }, []);
 
   // Scroll cue in: after the search bar's answer, or after load where the
@@ -272,6 +269,11 @@ export default function HomeHero() {
       const headline = beat2Copy
         .querySelector(".home-hero-headline")!
         .getBoundingClientRect();
+      // The notification stack's front card lines up with the line's top
+      const lineTop = beat2Copy
+        .querySelector(".home-hero-line")!
+        .getBoundingClientRect().top;
+      stage.style.setProperty("--notes-top", `${lineTop - stageBox.top}px`);
       beat2Copy.style.transform = previous;
       const cx = stageBox.left + width / 2;
       const cy = stageBox.top + height / 2;
@@ -378,6 +380,7 @@ export default function HomeHero() {
       beat2Copy.style.removeProperty("opacity");
       beat2Copy.style.removeProperty("transform");
       stage.style.removeProperty("--hero-cover");
+      stage.style.removeProperty("--notes-top");
     };
   }, [motion]);
 
@@ -451,24 +454,7 @@ export default function HomeHero() {
                 className="home-hero-line"
               />
             </div>
-            <div aria-hidden="true" className="home-hero-pile">
-              {CHIPS.map((chip, index) => (
-                <span
-                  key={chip.label}
-                  className="home-hero-chip"
-                  data-in={chipsIn[index] ? "" : undefined}
-                  style={
-                    {
-                      bottom: `${index * CHIP_STEP_PX}px`,
-                      "--chip-shift": `${chip.shift}px`,
-                      "--chip-tilt": `${chip.tilt}deg`,
-                    } as CSSProperties
-                  }
-                >
-                  {chip.label}
-                </span>
-              ))}
-            </div>
+            <HeroNotificationStack count={notesIn} />
           </section>
         </div>
       </div>
