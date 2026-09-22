@@ -929,7 +929,7 @@ html[data-site-menu="open"] .lonnie-widget {
      scroll */
   .home-hero-track {
     position: relative;
-    height: 320vh;
+    height: 260vh;
   }
 
   .home-hero-stage {
@@ -1027,12 +1027,18 @@ html[data-site-menu="open"] .lonnie-widget {
     margin-top: 0;
   }
 
-  /* Noise chips: a pile over the search bar, above beat 1 and under the
-     circle. HomeHero positions the pile from the search bar's box. */
-  .home-hero-pile {
+  /* Beat 2's noise chips: a pile in the stage's lower right, inside beat
+     2's layer (so the circle's clip reveals it). Chips drop in on a timer
+     as beat 2's line types; HomeHero sets data-in. White on orange is
+     decorative here. */
+  .home-hero-stage .home-hero-pile {
     display: block;
     position: absolute;
-    z-index: 1;
+    right: 4rem;
+    /* Clear of the floating button in the bottom-right corner (the chat
+       widget now, the prompt builder later) */
+    bottom: max(20%, 10rem);
+    width: 0;
     height: 0;
     pointer-events: none;
   }
@@ -1042,14 +1048,21 @@ html[data-site-menu="open"] .lonnie-widget {
     right: 0;
     padding: 0.4rem 0.9rem;
     border-radius: 9999px;
-    background-color: var(--brand-orange-soft);
+    background-color: var(--brand-white);
     color: var(--brand-charcoal);
     font-size: 1rem;
     font-weight: 700;
     line-height: 1.4;
     white-space: nowrap;
     opacity: 0;
-    will-change: transform, opacity;
+    transform: translate(var(--chip-shift, 0), -16px)
+      rotate(var(--chip-tilt, 0));
+    transition: opacity 0.25s ease-out, transform 0.25s var(--ease-brand);
+  }
+
+  .home-hero-chip[data-in] {
+    opacity: 1;
+    transform: translate(var(--chip-shift, 0), 0) rotate(var(--chip-tilt, 0));
   }
 
   /* Drawn at the cover size and scaled down, so its edge stays crisp;

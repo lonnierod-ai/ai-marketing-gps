@@ -25,23 +25,17 @@ const HEADER_PX = 72;
 const BALL_PX = 380;
 
 // The pinned sequence, as shares of the pinned scroll:
-//   0.00-0.15  hold on beat 1 (the search bar types, on a timer)
-//   0.15-0.40  noise chips pile up, one at a time
-//   0.40-0.50  hold on the full pile
-//   0.50-0.66  the circle rises
-//   0.66-0.90  the circle expands and covers the pile
-//   0.90-0.95  beat 2 finishes its reveal (starts once the circle covers
-//              its headline block)
-//   0.95-1.00  hold on full orange with beat 2
-const CHIPS_START = 0.15;
-const CHIPS_END = 0.4;
-const CHIP_ARRIVE = 0.03;
-const RISE_START = 0.5;
-const RISE_END = 0.66;
-const EXPAND_END = 0.9;
-const CHIPS_FADE_START = 0.86;
-const CHIPS_FADE_END = 0.895;
-const BEAT_2_REVEALED = 0.95;
+//   0.00-0.20  hold on beat 1 (the search bar types, on a timer)
+//   0.20-0.45  the circle rises
+//   0.45-0.85  the circle expands; beat 2 starts revealing once the
+//              circle covers its headline block
+//   0.85-0.90  beat 2 finishes its reveal
+//   0.90-1.00  hold on orange; beat 2's line types and its chips drop in
+//              (both on a timer)
+const RISE_START = 0.2;
+const RISE_END = 0.45;
+const EXPAND_END = 0.85;
+const BEAT_2_REVEALED = 0.9;
 
 // If the intro never reports back, start beat 1 anyway
 const INTRO_FALLBACK_MS = 6000;
@@ -57,29 +51,25 @@ const easeInSquared = (p: number) => p * p;
 
 const easeOutCubic = (p: number) => 1 - (1 - p) ** 3;
 
-// Outside marketing noise, piled over the search bar. Tilts and sideways
-// offsets are fixed, so the pile looks hand-stacked and never reshuffles.
+// Outside marketing noise, piled in beat 2's lower right. Tilts and
+// sideways offsets are fixed, so the pile looks hand-stacked and never
+// reshuffles. Later chips stack higher and land on top.
 const CHIPS = [
   { label: "New AI app", tilt: -2, shift: 0 },
-  { label: "Free webinar", tilt: 1.5, shift: 10 },
-  { label: "Top 50 tools", tilt: -3, shift: -6 },
-  { label: "Prompt pack", tilt: 2.5, shift: 12 },
-  { label: "Book a demo", tilt: -1, shift: -10 },
-  { label: "Must-try plugin", tilt: 3, shift: 4 },
-  { label: "10x your output", tilt: -2.5, shift: -12 },
+  { label: "Must-try plugin", tilt: 1.5, shift: -10 },
+  { label: "AI masterclass", tilt: -3, shift: 6 },
+  { label: "Free webinar", tilt: 2.5, shift: -12 },
+  { label: "Book a demo", tilt: -1, shift: 10 },
+  { label: "Free trial", tilt: 3, shift: -4 },
+  { label: "Top 50 tools", tilt: -2.5, shift: 12 },
+  { label: "10x your output", tilt: 1, shift: -8 },
 ];
 
 // Each chip sits this far above the one before it (chips are about 40px
 // tall, so they overlap slightly)
 const CHIP_STEP_PX = 30;
-// How far each chip slides in from the right
-const CHIP_SLIDE_PX = 120;
-
-// Chip i arrives over [start, start + CHIP_ARRIVE], evenly spaced so the
-// last one lands at CHIPS_END
-const chipStart = (index: number) =>
-  CHIPS_START +
-  (index * (CHIPS_END - CHIPS_START - CHIP_ARRIVE)) / (CHIPS.length - 1);
+// The second chip of each pair lands this long after the first
+const CHIP_PAIR_GAP_MS = 150;
 
 // Beat 2 rises into place by this much as it fades in
 const BEAT_2_RISE_PX = 24;
@@ -97,16 +87,27 @@ const CUE_GONE_PX = 40;
 
 const BEAT_2_LINE =
   "More apps, more courses, more demos. All of it starts with the software and hopes it fits your business. That's backwards.";
+
+// Chip pairs drop in as these points of beat 2's line are typed: when
+// "apps", "courses", and "demos" finish, and as "That's backwards." begins.
+// Values are typed-character counts.
+const wordEnd = (word: string) => BEAT_2_LINE.indexOf(word) + word.length;
+const CHIP_CUES = [
+  wordEnd("apps"),
+  wordEnd("courses"),
+  wordEnd("demos"),
+  BEAT_2_LINE.indexOf("That's") + 1,
+];
 const BEAT_3_LINE =
   "I learn how your business actually runs, get you fluent on your own work, and build what's missing. That's Aithello.";
 
 /**
  * Homepage hero, three beats in an editorial layout. From 990px without
- * reduced motion, beat 1 is pinned while noise piles up over its search
- * bar, then an orange circle rises and expands to cover it and reveal
- * beat 2; beat 3 reveals on scroll entry. Otherwise the beats stack in
- * one column in their finished state. Beat 1's headline is the page's
- * single h1.
+ * reduced motion, beat 1 is pinned while an orange circle rises and
+ * expands to reveal beat 2, whose line types while outside-marketing
+ * chips pile up beside it; beat 3 reveals when it reaches the header.
+ * Otherwise the beats stack in one column in their finished state.
+ * Beat 1's headline is the page's single h1.
  */
 export default function HomeHero() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -116,8 +117,6 @@ export default function HomeHero() {
   const beat2CopyRef = useRef<HTMLDivElement>(null);
   const beat3Ref = useRef<HTMLElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
-  const pileRef = useRef<HTMLDivElement>(null);
-  const chipRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   // Motion mode (990px and wider, no reduced motion)
   const [motion, setMotion] = useState(false);
@@ -134,6 +133,39 @@ export default function HomeHero() {
   const [cueGone, setCueGone] = useState(false);
 
   const onSearchDone = useCallback(() => setSearchDone(true), []);
+
+  // Beat 2's chips: which have landed. Pairs are cued by the typing and
+  // play once; they stay put afterwards.
+  const [chipsIn, setChipsIn] = useState<boolean[]>(() =>
+    CHIPS.map(() => false)
+  );
+  const cuesFired = useRef(0);
+  const chipTimers = useRef<number[]>([]);
+  const dropChip = useCallback((index: number) => {
+    setChipsIn((current) =>
+      current[index] ? current : current.map((v, i) => v || i === index)
+    );
+  }, []);
+  const onBeat2Typed = useCallback(
+    (typed: number) => {
+      while (
+        cuesFired.current < CHIP_CUES.length &&
+        typed >= CHIP_CUES[cuesFired.current]
+      ) {
+        const first = cuesFired.current * 2;
+        dropChip(first);
+        chipTimers.current.push(
+          window.setTimeout(() => dropChip(first + 1), CHIP_PAIR_GAP_MS)
+        );
+        cuesFired.current += 1;
+      }
+    },
+    [dropChip]
+  );
+  useEffect(() => {
+    const timers = chipTimers.current;
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, []);
 
   // Scroll cue in: after the search bar's answer, or after load where the
   // search bar is already finished (phones, reduced motion)
@@ -197,7 +229,7 @@ export default function HomeHero() {
     return () => observer.disconnect();
   }, [motion, beat1Ready, typing]);
 
-  // Scroll-driven pin: chip pile, circle, beat 2 clip and reveal
+  // Scroll-driven pin: circle, beat 2 clip and reveal
   useEffect(() => {
     const track = trackRef.current;
     const stage = stageRef.current;
@@ -205,8 +237,6 @@ export default function HomeHero() {
     const beat2 = beat2Ref.current;
     const beat2Copy = beat2CopyRef.current;
     const beat3 = beat3Ref.current;
-    const search = searchRef.current?.querySelector<HTMLElement>(".hero-search");
-    const pile = pileRef.current;
     if (
       !motion ||
       !track ||
@@ -214,16 +244,11 @@ export default function HomeHero() {
       !circle ||
       !beat2 ||
       !beat2Copy ||
-      !beat3 ||
-      !search ||
-      !pile
+      !beat3
     ) {
       return;
     }
 
-    const chips = chipRefs.current.filter(
-      (chip): chip is HTMLSpanElement => chip !== null
-    );
     let width = 0;
     let height = 0;
     let cover = 0;
@@ -239,13 +264,6 @@ export default function HomeHero() {
       stage.style.setProperty("--hero-cover", `${cover}px`);
 
       const stageBox = stage.getBoundingClientRect();
-
-      // Pile: right-aligned to the search bar, its bottom over the lower
-      // part of the search bar and answer
-      const searchBox = search.getBoundingClientRect();
-      pile.style.right = `${stageBox.right - searchBox.right}px`;
-      pile.style.top = `${searchBox.bottom - stageBox.top - 20}px`;
-      pile.style.width = `${searchBox.width}px`;
 
       // Beat 2 starts revealing once the circle (centered by then) covers
       // its whole headline block. Measure without the reveal's offset.
@@ -298,15 +316,6 @@ export default function HomeHero() {
         setBeat2Typing(true);
       }
 
-      // Chips: slide in one at a time (in reverse on the way back up), and
-      // fade out before the screen is fully orange
-      const fadeOut = 1 - clamp((p - CHIPS_FADE_START) / (CHIPS_FADE_END - CHIPS_FADE_START));
-      chips.forEach((chip, index) => {
-        const arrived = clamp((p - chipStart(index)) / CHIP_ARRIVE);
-        const slide = (1 - easeOutCubic(arrived)) * CHIP_SLIDE_PX;
-        chip.style.opacity = String(arrived * fadeOut);
-        chip.style.transform = `translateX(${slide + CHIPS[index].shift}px) rotate(${CHIPS[index].tilt}deg)`;
-      });
     };
 
     const schedule = () => {
@@ -369,11 +378,6 @@ export default function HomeHero() {
       beat2Copy.style.removeProperty("opacity");
       beat2Copy.style.removeProperty("transform");
       stage.style.removeProperty("--hero-cover");
-      ["right", "top", "width"].forEach((prop) => pile.style.removeProperty(prop));
-      chips.forEach((chip) => {
-        chip.style.removeProperty("opacity");
-        chip.style.removeProperty("transform");
-      });
     };
   }, [motion]);
 
@@ -428,21 +432,6 @@ export default function HomeHero() {
             <ScrollCue shown={cueShown} gone={cueGone} />
           </section>
 
-          <div ref={pileRef} aria-hidden="true" className="home-hero-pile">
-            {CHIPS.map((chip, index) => (
-              <span
-                key={chip.label}
-                ref={(element) => {
-                  chipRefs.current[index] = element;
-                }}
-                className="home-hero-chip"
-                style={{ bottom: `${index * CHIP_STEP_PX}px` }}
-              >
-                {chip.label}
-              </span>
-            ))}
-          </div>
-
           <div ref={circleRef} aria-hidden="true" className="home-hero-circle" />
 
           <section ref={beat2Ref} className="home-hero-beat home-hero-beat-2">
@@ -458,8 +447,27 @@ export default function HomeHero() {
                 text={BEAT_2_LINE}
                 animate={motion}
                 play={beat2Typing}
+                onProgress={onBeat2Typed}
                 className="home-hero-line"
               />
+            </div>
+            <div aria-hidden="true" className="home-hero-pile">
+              {CHIPS.map((chip, index) => (
+                <span
+                  key={chip.label}
+                  className="home-hero-chip"
+                  data-in={chipsIn[index] ? "" : undefined}
+                  style={
+                    {
+                      bottom: `${index * CHIP_STEP_PX}px`,
+                      "--chip-shift": `${chip.shift}px`,
+                      "--chip-tilt": `${chip.tilt}deg`,
+                    } as CSSProperties
+                  }
+                >
+                  {chip.label}
+                </span>
+              ))}
             </div>
           </section>
         </div>

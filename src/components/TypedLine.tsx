@@ -11,6 +11,8 @@ type TypedLineProps = {
   animate: boolean;
   // Start typing; once started it runs to the end and never retypes
   play: boolean;
+  // Called with the number of characters typed so far
+  onProgress?: (typed: number) => void;
   className?: string;
 };
 
@@ -25,10 +27,15 @@ export default function TypedLine({
   text,
   animate,
   play,
+  onProgress,
   className = "",
 }: TypedLineProps) {
   const [typed, setTyped] = useState(0);
   const done = typed >= text.length;
+
+  useEffect(() => {
+    if (typed > 0) onProgress?.(typed);
+  }, [typed, onProgress]);
 
   useEffect(() => {
     if (!animate || !play) return;
