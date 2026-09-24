@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-// About 12ms a character with a little unevenness, the same every time
-const charDelay = (index: number) => 12 + ((index * 37) % 9) - 4;
+// About `base` ms a character with a little unevenness, the same every time
+const charDelay = (index: number, base: number) =>
+  base + ((index * 37) % 9) - 4;
 
 type TypedLineProps = {
   text: string;
@@ -11,8 +12,13 @@ type TypedLineProps = {
   animate: boolean;
   // Start typing; once started it runs to the end and never retypes
   play: boolean;
+  // Average milliseconds per character
+  charMs?: number;
   // Called with the number of characters typed so far
   onProgress?: (typed: number) => void;
+  // Called once the whole line has typed
+  onDone?: () => void;
+  id?: string;
   className?: string;
 };
 
@@ -27,10 +33,15 @@ export default function TypedLine({
   text,
   animate,
   play,
+  charMs = 12,
   onProgress,
+  onDone,
+  id,
   className = "",
 }: TypedLineProps) {
   const [typed, setTyped] = useState(0);
+  const typedRef = useRef(0);
+  typedRef.current = typed;
   const done = typed >= text.length;
 
   useEffect(() => {
@@ -38,20 +49,25 @@ export default function TypedLine({
   }, [typed, onProgress]);
 
   useEffect(() => {
-    if (!animate || !play) return;
+    if (done) onDone?.();
+  }, [done, onDone]);
+
+  useEffect(() => {
+    // Never retype a finished line (for example after a resize)
+    if (!animate || !play || typedRef.current >= text.length) return;
     const timers: number[] = [];
     let at = 0;
     for (let i = 1; i <= text.length; i++) {
-      at += charDelay(i);
+      at += charDelay(i, charMs);
       timers.push(window.setTimeout(() => setTyped(i), at));
     }
     return () => timers.forEach((timer) => window.clearTimeout(timer));
-  }, [animate, play, text]);
+  }, [animate, play, text, charMs]);
 
   const typing = animate && !done;
 
   return (
-    <p className={`typed-line ${className}`}>
+    <p id={id} className={`typed-line ${className}`}>
       <span className="typed-line-real" data-hidden={typing ? "" : undefined}>
         {text}
       </span>

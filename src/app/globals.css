@@ -1269,13 +1269,17 @@ html[data-site-menu="open"] .lonnie-widget {
  *
  * Default: one column in its finished state (below 990px and with
  * reduced motion). From 990px: the Audit card at two thirds of the
- * content width and each group's cards side by side. Cards are single
- * links; hover (hover devices) and keyboard focus turn the border orange
- * (spec section 5), and from 990px without reduced motion also lift the
- * card with a soft shadow and slide the arrow. The shadow is an approved
- * exception to section 5's "no shadow" rule, for card hover and focus
- * only. The scroll reveal (section 7) runs only from 990px without
- * reduced motion, once HowICanHelp sets data-reveal.
+ * content width and each group's cards side by side. The scroll reveal
+ * (section 7) runs only from 990px without reduced motion, once
+ * HowICanHelp sets data-reveal.
+ *
+ * Cards are single links with two faces. By default (phones, touch
+ * screens, reduced motion without hover) a card is one solid cobalt card
+ * showing everything. From 990px on a device that can hover, the front
+ * shows the name on the ground and hover or keyboard focus flips it to a
+ * cobalt back face; with reduced motion the faces cross-fade instead.
+ * These cards depart from section 5's white card fill and orange card
+ * hover by design.
  * ------------------------------------------------------------------ */
 .help {
   container-type: inline-size;
@@ -1336,35 +1340,29 @@ html[data-site-menu="open"] .lonnie-widget {
   display: flex;
 }
 
-/* One card, one link. The 2px orange border on hover and focus is the
-   1px border turning orange plus a 1px inset ring, so nothing shifts. */
+/* One card, one link. By default the two faces stack in one solid
+   cobalt card, with the back's small repeated name hidden. */
 .help-card {
+  display: flex;
+  flex: 1;
+  border-radius: 14px;
+}
+
+.help-card-inner {
   display: flex;
   flex: 1;
   flex-direction: column;
   padding: 1.75rem;
-  border: 1px solid var(--card-border);
+  border: 1px solid var(--brand-cobalt);
   border-radius: 14px;
-  background-color: var(--brand-white);
-  color: var(--brand-charcoal);
-  transition: border-color 0.25s var(--ease-brand),
-    box-shadow 0.25s var(--ease-brand), transform 0.25s var(--ease-brand);
+  background-color: var(--brand-cobalt);
+  color: var(--brand-white);
 }
 
-.help-card:hover {
-  color: var(--brand-charcoal);
-}
-
-.help-card:focus-visible {
-  border-color: var(--brand-orange);
-  box-shadow: inset 0 0 0 1px var(--brand-orange);
-}
-
-@media (hover: hover) {
-  .help-card:hover {
-    border-color: var(--brand-orange);
-    box-shadow: inset 0 0 0 1px var(--brand-orange);
-  }
+.help-card-back {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 /* Tag style (section 5): orange-soft fill, charcoal uppercase label */
@@ -1386,14 +1384,18 @@ html[data-site-menu="open"] .lonnie-widget {
   font-size: 1.75rem;
   font-weight: 700;
   line-height: 1.2;
-  color: var(--brand-cobalt);
+  color: var(--brand-white);
+}
+
+.help-card-name {
+  display: none;
 }
 
 .help-card-body {
   margin-top: 0.75rem;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   line-height: 1.6;
-  color: var(--text-secondary);
+  color: var(--brand-white);
 }
 
 /* Pinned to the card's bottom so cards in a row line up */
@@ -1406,13 +1408,12 @@ html[data-site-menu="open"] .lonnie-widget {
   font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.4;
-  color: var(--brand-cobalt);
+  color: var(--brand-white);
 }
 
 .help-card-arrow {
   width: 1rem;
   height: 1rem;
-  transition: transform 0.25s var(--ease-brand);
 }
 
 .help-closing {
@@ -1453,7 +1454,7 @@ html[data-site-menu="open"] .lonnie-widget {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .help-card {
+  .help-card-inner {
     padding: 2rem;
   }
 
@@ -1466,29 +1467,6 @@ html[data-site-menu="open"] .lonnie-widget {
 }
 
 @media (min-width: 990px) and (prefers-reduced-motion: no-preference) {
-  /* Lift, soft shadow, and arrow slide on hover and focus */
-  .help-card:focus-visible {
-    transform: translateY(-4px);
-    box-shadow: inset 0 0 0 1px var(--brand-orange),
-      0 12px 28px rgb(31 36 48 / 0.1);
-  }
-
-  .help-card:focus-visible .help-card-arrow {
-    transform: translateX(6px);
-  }
-
-  @media (hover: hover) {
-    .help-card:hover {
-      transform: translateY(-4px);
-      box-shadow: inset 0 0 0 1px var(--brand-orange),
-        0 12px 28px rgb(31 36 48 / 0.1);
-    }
-
-    .help-card:hover .help-card-arrow {
-      transform: translateX(6px);
-    }
-  }
-
   /* Scroll reveal. Heading: masked word rise, 0.8s, 35ms a word. Cards
      and group labels: the lede reveal (fade complete at 60%, 10px rise,
      1s). HowICanHelp sets each --reveal-delay; nothing animates out. */
@@ -1509,5 +1487,119 @@ html[data-site-menu="open"] .lonnie-widget {
   .help[data-reveal] [data-reveal-block]:not([data-revealed]) .help-reveal {
     opacity: 0;
     transform: translateY(10px);
+  }
+}
+
+/* Two faces in one place, from 990px on a device that can hover. The
+   faces share one grid cell, so the card is as tall as its taller face
+   (never cut off) and at least 260px (300px for the Audit); cards in a
+   row stay equal height. */
+@media (min-width: 990px) and (hover: hover) {
+  .help-card-inner {
+    display: grid;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+  }
+
+  .help-card-face {
+    display: flex;
+    flex-direction: column;
+    grid-area: 1 / 1;
+    min-height: 260px;
+    padding: 2rem 2.5rem;
+    border: 1px solid var(--brand-cobalt);
+    border-radius: 14px;
+  }
+
+  .help-audit .help-card-face {
+    min-height: 300px;
+  }
+
+  /* Front: the name only, on the ground, vertically centered */
+  .help-card-front {
+    justify-content: center;
+    background-color: transparent;
+  }
+
+  .help-card-title {
+    font-size: 2.5rem;
+    line-height: 1.1;
+    color: var(--brand-cobalt);
+  }
+
+  .help-audit .help-card-title {
+    font-size: 3rem;
+  }
+
+  /* Back: cobalt, white text, the name small at the top */
+  .help-card-back {
+    background-color: var(--brand-cobalt);
+    color: var(--brand-white);
+  }
+
+  .help-card-name {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
+    color: var(--brand-white);
+  }
+}
+
+/* The flip: the link holds the perspective (and the focus ring); the
+   layer inside turns on its Y axis. "See how it works" waits for the
+   description to finish typing (data-typed). */
+@media (min-width: 990px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .help-card {
+    perspective: 1400px;
+  }
+
+  .help-card-inner {
+    transform-style: preserve-3d;
+    transition: transform 0.5s var(--ease-brand);
+  }
+
+  .help-card-face {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+
+  .help-card-back {
+    transform: rotateY(180deg);
+  }
+
+  .help-card:hover .help-card-inner,
+  .help-card:focus-visible .help-card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .help-card-more {
+    transition: opacity 0.3s ease-out;
+  }
+
+  .help-card:not([data-typed]) .help-card-more {
+    opacity: 0;
+  }
+}
+
+/* Reduced motion: the faces cross-fade over 200ms instead of flipping */
+@media (min-width: 990px) and (hover: hover) and (prefers-reduced-motion: reduce) {
+  .help-card-face {
+    transition: opacity 0.2s ease-out;
+  }
+
+  .help-card-back,
+  .help-card:hover .help-card-front,
+  .help-card:focus-visible .help-card-front {
+    opacity: 0;
+  }
+
+  .help-card:hover .help-card-back,
+  .help-card:focus-visible .help-card-back {
+    opacity: 1;
   }
 }

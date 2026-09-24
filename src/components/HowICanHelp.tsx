@@ -1,8 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, type CSSProperties } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import SecondaryButton from "@/components/SecondaryButton";
+import TypedLine from "@/components/TypedLine";
 import { BOOK_CALL_HREF } from "@/lib/navigation";
 import { AUDIT, OFFER_GROUPS, offerHref, type Offer } from "@/lib/offers";
 
@@ -10,8 +17,18 @@ import { AUDIT, OFFER_GROUPS, offerHref, type Offer } from "@/lib/offers";
 const MOTION_QUERY =
   "(min-width: 990px) and (prefers-reduced-motion: no-preference)";
 
+// Must match the card flip gate in globals.css: a wide screen that can
+// hover, with reduced motion off
+const FLIP_QUERY =
+  "(min-width: 990px) and (hover: hover) and (prefers-reduced-motion: no-preference)";
+
 // Revealed blocks and cards play this far apart
 const REVEAL_STEP_MS = 80;
+
+// The back face's description starts typing this far into the 500ms flip
+// (about 60% through), at about this many ms a character
+const TYPE_AFTER_MS = 300;
+const TYPE_CHAR_MS = 10;
 
 const HEADING = "How I can help.";
 
@@ -20,10 +37,23 @@ const HEADING = "How I can help.";
  * point, then the four offers in two groups, each card linking to its
  * section on /services. From 990px without reduced motion, the heading,
  * the Audit card, and each group reveal once as they come into view.
- * Styles in globals.css ("How I can help").
+ * Where the cards can flip (see FLIP_QUERY), each shows its name and
+ * flips on hover or keyboard focus to a cobalt back face whose
+ * description types out once. Elsewhere each card is a solid cobalt card
+ * with everything shown. Styles in globals.css ("How I can help").
  */
 export default function HowICanHelp() {
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Whether the cards flip (and type) here
+  const [flip, setFlip] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(FLIP_QUERY);
+    const sync = () => setFlip(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -103,7 +133,7 @@ export default function HowICanHelp() {
 
         <div className="help-audit" data-reveal-block="">
           <div className="help-reveal">
-            <OfferCard offer={AUDIT} tag="Start here" />
+            <OfferCard offer={AUDIT} tag="Start here" flip={flip} />
           </div>
         </div>
 
@@ -113,7 +143,7 @@ export default function HowICanHelp() {
             <div className="help-grid">
               {group.offers.map((offer) => (
                 <div key={offer.id} className="help-reveal">
-                  <OfferCard offer={offer} />
+                  <OfferCard offer={offer} flip={flip} />
                 </div>
               ))}
             </div>
@@ -135,38 +165,91 @@ export default function HowICanHelp() {
 
 // One offer card: a single link to the offer's section on /services.
 // Named by its title, with the card copy as its description, so screen
-// readers do not read the whole card as the link text.
-function OfferCard({ offer, tag }: { offer: Offer; tag?: string }) {
+// readers read it once as title plus description. Both faces stay in
+// the page; the large front name is the real h3, and the back's small
+// name and "See how it works" are decorative. The link holds the
+// perspective and the focus ring and never rotates; the layer inside it
+// flips.
+function OfferCard({
+  offer,
+  tag,
+  flip,
+}: {
+  offer: Offer;
+  tag?: string;
+  flip: boolean;
+}) {
   const titleId = `offer-${offer.id}-title`;
   const bodyId = `offer-${offer.id}-body`;
+
+  // The description types once per page load, starting partway into the
+  // first flip. Leaving before then cancels the start; leaving after lets
+  // it finish out of sight, so the next flip shows the whole back face.
+  const [typing, setTyping] = useState(false);
+  const [typed, setTyped] = useState(false);
+  const startTimer = useRef(0);
+  const startTyping = () => {
+    if (!flip || typing) return;
+    window.clearTimeout(startTimer.current);
+    startTimer.current = window.setTimeout(() => setTyping(true), TYPE_AFTER_MS);
+  };
+  // Only cancel once the card is neither hovered nor keyboard-focused
+  const cancelStart = (event: { currentTarget: HTMLElement }) => {
+    const card = event.currentTarget;
+    if (card.matches(":hover") || card.matches(":focus-visible")) return;
+    window.clearTimeout(startTimer.current);
+  };
+  useEffect(() => () => window.clearTimeout(startTimer.current), []);
+  const onTyped = useCallback(() => setTyped(true), []);
+
   return (
     <Link
       href={offerHref(offer)}
       className="help-card"
+      data-typed={typed ? "" : undefined}
       aria-labelledby={titleId}
       aria-describedby={bodyId}
+      onPointerEnter={startTyping}
+      onPointerLeave={cancelStart}
+      onFocus={startTyping}
+      onBlur={cancelStart}
     >
-      {tag && <span className="help-tag">{tag}</span>}
-      <h3 id={titleId} className="help-card-title">
-        {offer.title}
-      </h3>
-      <p id={bodyId} className="help-card-body">
-        {offer.card}
-      </p>
-      <span aria-hidden="true" className="help-card-more">
-        See how it works
-        <svg
-          className="help-card-arrow"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" />
-        </svg>
-      </span>
+      <div className="help-card-inner">
+        <div className="help-card-face help-card-front">
+          {tag && <span className="help-tag">{tag}</span>}
+          <h3 id={titleId} className="help-card-title">
+            {offer.title}
+          </h3>
+        </div>
+        <div className="help-card-face help-card-back">
+          <span aria-hidden="true" className="help-card-name">
+            {offer.title}
+          </span>
+          <TypedLine
+            id={bodyId}
+            text={offer.card}
+            animate={flip}
+            play={typing}
+            charMs={TYPE_CHAR_MS}
+            onDone={onTyped}
+            className="help-card-body"
+          />
+          <span aria-hidden="true" className="help-card-more">
+            See how it works
+            <svg
+              className="help-card-arrow"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" />
+            </svg>
+          </span>
+        </div>
+      </div>
     </Link>
   );
 }
