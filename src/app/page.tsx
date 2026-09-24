@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import HomeHero from "@/components/HomeHero";
+import HowICanHelp from "@/components/HowICanHelp";
 import SearchBar from "@/components/search/SearchBar";
 
 export default function HomePage() {
@@ -30,6 +31,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
       <HomeHero />
+      <HowICanHelp />
 
      {/* HERO + SEARCH */}
 <section className="relative overflow-hidden border-b border-slate-200 bg-white">
