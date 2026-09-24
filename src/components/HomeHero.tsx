@@ -63,7 +63,6 @@ const NOTES_EDGE_PX = 64; // the stage's 4rem side padding
 const NOTES_CLEAR_PX = 32; // clear space beside the copy
 const NOTES_MARGIN_PX = 24; // clear space above and below the list
 const NOTES_BELOW_PX = 24; // clear space under the headline line above it
-const NOTES_COUNTER_PX = 32; // counter label plus its margin
 const NOTES_ROOMY = { gap: 10, padY: 12 };
 const NOTES_TIGHT = { gap: 6, padY: 8 };
 // If tighter spacing is not enough: the newest 6, then fewer
@@ -139,8 +138,7 @@ export default function HomeHero() {
       setNotesIn(total);
       return;
     }
-    // Older cards that don't fit the stage never show, so the counter
-    // starts past them
+    // Older cards that don't fit the stage never show; start past them
     const first = total - Math.min(notesMaxRef.current, total) + 1;
     for (let n = first; n <= total; n++) {
       noteTimers.current.push(
@@ -276,7 +274,7 @@ export default function HomeHero() {
         floor = Math.max(floor, bottom - stageBox.top + NOTES_BELOW_PX);
       }
       const top = centered ? NOTES_MARGIN_PX : floor;
-      const room = height - NOTES_MARGIN_PX - top - NOTES_COUNTER_PX;
+      const room = height - NOTES_MARGIN_PX - top;
 
       const card = notes.querySelector<HTMLElement>(".hero-note")!;
       const cardHeight = (padY: number) => {
@@ -297,9 +295,8 @@ export default function HomeHero() {
           max -= 1;
         }
       }
-      const block = NOTES_COUNTER_PX + listHeight(max, h, spacing.gap);
-      const listTop =
-        (centered ? (height - block) / 2 : top) + NOTES_COUNTER_PX;
+      const block = listHeight(max, h, spacing.gap);
+      const listTop = centered ? (height - block) / 2 : top;
       notes.style.setProperty("--notes-top", `${listTop}px`);
       notes.style.setProperty("--notes-pitch", `${h + spacing.gap}px`);
       notesMaxRef.current = max;

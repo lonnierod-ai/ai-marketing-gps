@@ -64,17 +64,13 @@ type HeroNotificationStackProps = {
  * newest on top. Every card has a fixed slot; HomeHero lands them in
  * arrival order (the oldest at the bottom first, the newest last at the
  * top), each sliding down into its own slot, so nothing shifts or
- * overlaps. A "N new" counter sits above. HomeHero also sets the
- * position and spacing. Styles and motion live in globals.css
+ * overlaps. HomeHero also sets the position and spacing. Styles and motion live in globals.css
  * ("Home hero").
  */
 export default function HeroNotificationStack({ count, max }: HeroNotificationStackProps) {
   const total = NOTIFICATIONS.length;
   return (
     <div aria-hidden="true" className="hero-notes">
-      <p className="hero-notes-count" data-shown={count > 0 ? "" : undefined}>
-        {count} new
-      </p>
       {NOTIFICATIONS.map((note, index) => {
         // 0 is the top slot, for the newest card
         const slot = total - 1 - index;

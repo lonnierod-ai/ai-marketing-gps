@@ -1055,27 +1055,6 @@ html[data-site-menu="open"] .lonnie-widget {
     pointer-events: none;
   }
 
-  /* Counter, in the spec's small label style, just above the top card */
-  .hero-notes-count {
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    margin-bottom: 0.625rem;
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.4;
-    letter-spacing: 0.05rem;
-    text-transform: uppercase;
-    color: var(--brand-charcoal);
-    opacity: 0;
-    transition: opacity 0.4s var(--ease-brand);
-  }
-
-  /* Fades in with the first card; after that the number just changes */
-  .hero-notes-count[data-shown] {
-    opacity: 1;
-  }
-
   /* Frosted glass card, placed by its slot (0 is the top, the newest) */
   .hero-note {
     position: absolute;
