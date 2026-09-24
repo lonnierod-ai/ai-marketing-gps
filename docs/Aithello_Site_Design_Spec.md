@@ -1,8 +1,10 @@
 # Aithello Site Design Spec
 
-Version 1.4
-Date: 2026-09-21
-Status: Brand layer, color, type, and information architecture resolved.
+Version 1.7
+Date: 2026-09-24
+Status: Brand layer, color, type, information architecture, and site shell
+(header, menu, footer), homepage intro, and the full three-beat hero
+resolved and built on the redesign branch.
 Remaining items open. See section 10.
 
 Derived from source-level analysis of two reference sites, nobl.io and
@@ -61,11 +63,18 @@ alongside the outlined paths; these were removed. All four files were
 stripped of editor metadata and normalized to a shared tight viewBox.
 
 **Tagline:** "AI, sorted." Set in orange beneath the wordmark in the
-lockup.
+lockup. The primary and inverse SVGs both have the tagline drawn in as
+outlined shapes.
 
-Open: whether the tagline travels with the mark as a locked unit, or the
-mark stands alone in nav and the tagline appears only in the hero and
-footer.
+**Lockup behavior:** decided 2026-09-21.
+
+- **Header:** wordmark only. Two wordmark-only copies were cut from the
+  originals, which stay untouched: `logo-primary-wordmark-2026-09-18.svg`
+  and `logo-inverse-wordmark-2026-09-18.svg`.
+- **Footer:** the full inverse lockup, `logo-inverse-2026-09-18.svg`,
+  with alt text "Aithello. AI, sorted."
+- **Menu panel:** "AI, sorted." as live white text, with the final
+  period rendered as a small `--brand-orange` circle (see section 9).
 
 ---
 
@@ -78,10 +87,16 @@ footer.
 | Reveal animation | CSS keyframes | Same. Confirmed by source review. |
 | Animation library | None | GSAP is not required for anything in this spec. |
 | Type sizing | cqw units on a size container | Fluid scaling with no breakpoint jumps. |
+| Easing token | `--ease-brand: cubic-bezier(0.65, 0.05, 0.36, 1)` | Shared by reveals and the menu. Defined in `globals.css` and as `ease-brand` in Tailwind. |
 
-**Explicitly not doing:** GSAP, ScrollTrigger scrub, pinning, multi-layer
-image parallax, Spline, Lottie. These are agency-maintained techniques
-with ongoing cost. This site is maintained by one person.
+**Explicitly not doing:** GSAP, ScrollTrigger scrub, multi-layer image
+parallax, Spline, Lottie. These are agency-maintained techniques with
+ongoing cost. This site is maintained by one person.
+
+**The one exception, decided 2026-09-22:** the homepage hero is pinned
+and scroll-driven (section 8). It is built with `position: sticky`, one
+scroll listener updating on animation frames, and CSS transforms only.
+No animation library. Nothing else on the site pins or scrubs.
 
 ---
 
@@ -102,6 +117,14 @@ orange usage confirmed 2026-09-21.
 | `--brand-ground` | #F7F9FC | Page ground. Near-white, slightly cool. |
 | `--brand-charcoal` | #1F2430 | Body text, secondary marks, text on orange fills. |
 | `--brand-white` | #ffffff | Reserved. Cards, reveal masks. |
+| `--brand-cobalt-hover` | #1E3E94 | Link hover. |
+| `--text-secondary` | #3A4150 | Secondary text, card descriptions, captions. |
+| `--rule` | #D5DAE3 | 1px section dividers and the header's bottom border. |
+| `--card-border` | #DDE2EA | Resting card border. |
+
+The last four were approved 2026-09-21 from the brand guide mockups and
+are defined in the code. In Tailwind, `--text-secondary` is the class
+`text-text-secondary`.
 
 Cobalt confirmed from the SVG as `rgb(42,82,190)`.
 
@@ -145,6 +168,14 @@ light doses. Approved uses:
 - **Decorative marks:** the "th" arc motif in dividers, beside section
   labels, and in the hero line-art (section 8).
 - **Text selection:** `::selection` uses `--brand-orange-soft`.
+- **Decorative cards on orange:** `--brand-white` at reduced opacity with
+  a background blur, charcoal text (the hero's notification cards,
+  section 8). Decorative only.
+- **Menu link hover:** an orange block wipes in behind the word, with
+  charcoal text on it (section 9).
+- **Current-page marker in the menu:** an orange dot with a thin white
+  ring, which keeps it above 3:1 on cobalt.
+- **Tagline period in the menu:** a small orange circle, decorative.
 
 Not orange:
 
@@ -236,7 +267,9 @@ on a high-contrast display serif and does not suit a humanist sans.
 - h2: 700, cobalt, line-height 1.1
 - h3 and below: 700
 - Body: 1.25rem, 400, line-height 1.6
-- Nav: 0.8rem, 400, uppercase, letter-spacing 0.05rem
+- Menu button label ("Menu" / "Close"): 1rem, 400, uppercase,
+  letter-spacing 0.05rem. Revised from 0.8rem so nothing readable falls
+  below 16px.
 - Small labels: 1rem, 700, uppercase, letter-spacing 0.05rem
 - Captions and form hints: 1rem minimum, 400
 - Emphasis: italic 400 for stress, 700 for strong
@@ -294,6 +327,38 @@ does not suit one selling judgment.
 - Adds a class, CSS does the rest
 - Nothing animates out
 
+### Menu motion
+
+Built 2026-09-22. See section 9 for the menu layout.
+
+- **Panel wipe (990px and wider):** clip-path wipe from the right edge,
+  0.8s on `--ease-brand` after a 0.2s delay. Closes by retracting back
+  to the right, the exact reverse. No shrink or dim on close.
+- **Links:** the masked rise from "Text reveal" above, staggered 70ms
+  per link, after the wipe.
+- **Link hover:** orange block wipes in from the left in 0.35s on
+  `--ease-brand`, and exits to the right. A charcoal copy of the word is
+  revealed by the same wipe, so text never sits charcoal on cobalt. Hover
+  applies only on devices that can hover (`@media (hover: hover)`);
+  keyboard focus shows the block on every device.
+- **Resources expand:** the sub-list opens in about 0.4s, sub-links use
+  the masked rise, and the other links dim to 60% opacity (50% fails
+  contrast).
+- **Below 990px and with reduced motion:** plain 0.2s fades. No wipe,
+  rise, or slide.
+
+### Hero motion
+
+The pinned hero has its own timings; see section 8. Two principles came
+out of building it:
+
+- **Scroll position drives geometry, the clock drives content.** The
+  circle, the clip, and the beat 3 word reveal follow scroll. Typing and
+  the notification cascade run on timers once triggered. Content tied
+  directly to scroll position stutters when someone scrolls quickly.
+- **Nothing restarts.** An element already moving is never re-triggered
+  by a later arrival, which was the cause of the overlapping cards.
+
 ### Gating
 
 All motion is a desktop enhancement. Below 990px, elements render in
@@ -305,27 +370,134 @@ Respect `prefers-reduced-motion: reduce`. Final state, no animation.
 
 ## 8. Hero structure
 
-Three stacked full-height beats. Each animates in independently on scroll
-entry. No crossfade, no pinning, no scrub.
+Built 2026-09-22 to 2026-09-24. One pinned stage holds all three beats.
+This is the site's single signature moment and the one exception to the
+no-pinning rule in section 4.
 
-| Beat | Job |
-|---|---|
-| 1 | The situation the visitor is in |
-| 2 | Name the villain. What the alternative gets wrong. |
-| 3 | The promise, then the identity |
+| Beat | Job | Copy |
+|---|---|---|
+| 1 | The situation the visitor is in | "You're using AI like a search bar." |
+| 2 | Name the villain | "Everyone's selling you a tool. Nobody's asked about your business." |
+| 3 | The promise, then the identity | "Your business first. Then the AI." |
+
+Supporting lines, in order:
+
+1. "You already pay for the tools. You ask a question, get an answer,
+   then go back to doing the real work by hand. The board report still
+   takes ten hours."
+2. "More apps, more courses, more demos. All of it starts with the
+   software and hopes it fits your business. That's backwards."
+3. "I learn how your business actually runs, get you fluent on your own
+   work, and build what's missing. That's Aithello."
 
 The brand name does not appear until beat three, after the visitor
 already agrees with the argument.
 
-Beat two is load-bearing. It is where Aithello differentiates against
-every AI tool directory on the internet.
+### Layout
 
-Copy to be drafted separately in a lonnie-voice session.
+- Left-aligned editorial, never centered. Headline left, supporting line
+  in a 32ch column.
+- Hand-set line breaks, one block element per line, so a line never
+  wraps where the meaning does not:
+  "You're using AI / like a search bar."
+  "Everyone's selling you a tool. / Nobody's asked about / your business."
+  "Your business first. / Then the AI."
+- Beat 1 and 3 headlines use 66% of the stage width; beat 2 uses 85% at a
+  slightly smaller size, so its longest line stays unbroken.
+- Beat 3's second line is indented about 2.5em on desktop, which gives
+  the arc room to connect the two lines.
+- No numbered or named labels above the headlines. The headlines carry it.
 
-Each beat carries a looping illustration. On a light ground, line-art in
-charcoal with cobalt and orange accents rather than a glowing or
-atmospheric treatment. The "th" ligature is the motif to extend into this
-system.
+### The three visuals
+
+- **Beat 1, search bar:** a mockup on the right that types "Summarize our
+  Q3 numbers for the board." then returns a deliberately bland answer.
+  Decorative, aria-hidden. An orange underline (a stroke, not text)
+  draws under "search bar".
+- **Beat 2, notification cards:** eight frosted-glass cards in one column
+  on the right, each with a cobalt icon tile, a bold title, and a pitch
+  line ("New AI app / Launched today. Try it free.", and so on). They
+  cascade in once, 80ms apart, each sliding into its own final slot in
+  400ms. Nothing shifts, so nothing overlaps. No counter above them.
+  Fewer cards show on narrow or short screens (6, or 5 at 1100x800).
+- **Beat 3, the arc:** the "th" ligature curve traced from the wordmark,
+  drawn with `stroke-dashoffset` from just past "first." down toward
+  "Then". It overlays the headline and adds no vertical space.
+
+### The pinned sequence
+
+One sticky stage below the header, with a 345vh track. Scroll drives the
+circle and the clip; timers drive typing and the cascade.
+
+| Share of track | What happens |
+|---|---|
+| 0 to 13% | Hold on beat 1. The search bar types. |
+| 13 to 30% | The orange circle rises from below to center. |
+| 30 to 56% | The circle expands. Beat 2 reveals once the circle covers its headline block. |
+| 56 to 59% | Beat 2 completes. Its line types and the cards cascade. |
+| 59 to 77% | Hold on full orange. |
+| 77 to 96% | The circle contracts toward beat 3's Book a call circle, uncovering beat 3 on the ground. |
+| 96 to 100% | Handoff to the real link, then a short hold. |
+
+Within the contraction: beat 2 fades out by 80%, beat 3's headline words
+rise as the circle's edge passes each one (finishing by about 90%), the
+arc draws by 91%, and the line types once the last word lands.
+
+**The ending.** The circle does not fade. Its center and radius
+interpolate to the exact position and size of beat 3's "Book a call"
+circle, then the animated circle hides and the real link takes over in
+the same spot, with its label fading in. The animated circle is
+aria-hidden and never clickable; the real link is the only focusable one,
+and focusing it by keyboard jumps the page to the end of the hero.
+
+This is the argument made visible: the orange that swallowed the screen
+becomes the invitation.
+
+### Scroll cue
+
+Beat 1 shows a small "Scroll" label with a bouncing chevron, centered
+near the bottom, fading in after the search bar finishes and out after
+about 40px of scrolling. It does not return that visit.
+
+### Below 990px and with reduced motion
+
+No pinning, no scroll-driven motion, no cards, no cue animation. The
+three beats stack as ordinary sections with the same copy, line breaks,
+and visuals in their finished state.
+
+### Illustrations
+
+Still open: the looping line-art per beat (charcoal with cobalt and
+orange accents) described in earlier versions is not built. The search
+bar, cards, and arc serve that role for now.
+
+### Homepage intro
+
+Built 2026-09-22. A short word cycle and arc curtain before the homepage,
+adapted from the 21st.dev "Arc Reveal Hero" and rebuilt with no
+animation library.
+
+- **Words:** "Noise." "Hype." "Confusion." "Clarity." "Sorted." in
+  `--brand-cobalt`, weight 700, centered on `--brand-ground`. The period
+  on "Sorted." is a `--brand-orange` circle (0.16em, on the baseline),
+  matching the menu tagline.
+- **Curtain:** `--brand-cobalt`, rising with a curved leading edge that
+  echoes the "th" arc, then the overlay fades out.
+- **Timing:** 450ms per word, "Sorted." held 1s (revised from 500ms so
+  the last word lands), 1.2s curtain on `--ease-brand`, 150ms fade.
+  About 4.15s total.
+- **When it plays:** only when a browser session starts on /, at 990px
+  and wider, without reduced motion, and only once. If the first /
+  visit does not qualify (phone width, reduced motion, blocked storage),
+  it never plays that session.
+- **Skipping:** any click, wheel, touch move, or key press starts the
+  curtain immediately.
+- **Layering and safety:** covers the header, menu, and chat widget. It
+  is aria-hidden and not in the server-rendered HTML. The homepage
+  renders underneath from the start. A CSS fallback hides the overlay
+  after about 4.5 seconds if JavaScript never runs.
+- **Copy note:** hero beat 2 ("what everyone else gets wrong") should
+  build on "Noise. Hype. Confusion." rather than repeat it.
 
 ### Homepage, top to bottom
 
@@ -353,7 +525,12 @@ lonnierodriguez.com.
 7. **Final call to action:** Book a free discovery call.
 
 Primary CTA sitewide: "Book a free discovery call." The orange circle
-carries the short form, "Book a call."
+carries the short form, "Book a call," and links to /contact. There is no
+CTA button in the header.
+
+Every page except /contact ends with a closing band above the footer: the
+orange circle "Book a call" beside the line "Not sure which fits? That's
+what the discovery call is for."
 
 Offer copy comes from the lonnierodriguez.com pages and the two new
 service documents. Replace em dashes when porting it, and edit in a
@@ -363,35 +540,87 @@ lonnie-voice session.
 
 ## 9. Information architecture
 
-Revised 2026-09-21.
+Revised 2026-09-22. No blog.
 
 ```
 /                          Landing. Consulting-buyer homepage (section 8).
 /services                  All five offers in full. "Work with Lonnie."
 /resources                 Hub. Two doors plus resource blocks.
-/tools                     The AI tool directory (business owners).
-/tools/[tool]              Tool profiles.
-/learn                     Student content.
-/blog                      Founder-led content.
+/tools                     The AI tool directory ("For Business").
+/tool/[slug]               Tool profiles (existing URLs kept).
+/goals, /goal/[slug]       Marketing goals (existing URLs kept).
+/learn                     Student content ("For Students").
 /about                     Founder hub. Person schema. Credibility.
+/contact                   Booking calendar and contact details.
 ```
 
 Subdirectories, not subdomains. All link equity stays on one domain.
 
-**Nav:** Services, Resources, Blog, About, plus a "Book a call" button.
-Tools and Learn are not top-level nav items; both are reached through
-Resources.
-
 Services and the free sections share brand, footer, and design tokens but
-use different page templates. The services experience must not surface
-student content.
+use different page templates. Service page content must not surface
+student content. The global menu is exempt: "For Students" appears there
+only behind the Resources expand.
+
+### Header
+
+- Fixed to the top (changed from sticky 2026-09-22 to stop a WebKit
+  repaint bug), with a matching page offset, its own compositing layer
+  while the menu is closed, `--brand-ground` background, and a 1px
+  `--rule` bottom border.
+- Left: the primary wordmark-only SVG, linking to /.
+- Right: the menu button. No nav links and no CTA button in the header at
+  any screen size.
+- Menu button: three 2px charcoal lines on a 44px target. On hover (hover
+  devices only) or keyboard focus, the lines shift and a "Menu" label
+  appears. Opens on click, tap, Enter, or Space; never on hover.
+  `aria-label` "Open menu" / "Close menu" with `aria-expanded`.
+
+### Menu panel
+
+- **Desktop (990px and wider):** a `--brand-cobalt` panel on the right,
+  `width: min(50vw, 760px)`, full height. The page stays visible with no
+  overlay; clicking the page side closes the menu. The header keeps the
+  cobalt wordmark. The menu button moves to the panel's top-right corner
+  as a white Close control.
+- **Below 990px:** full-screen cobalt panel. The header logo switches to
+  the inverse wordmark while open.
+- **Content, one left-aligned column:**
+  - "AI, sorted." at 1.5rem, white, with the period as a
+    `--brand-orange` circle 0.16em across on the baseline. Screen readers
+    read "AI, sorted."
+  - Links: Services, Resources, About, Contact. Large, weight 400,
+    tracking -0.02em, sized to the panel width with a 3.5rem floor.
+  - Resources does not navigate. It expands in place to "For Business"
+    (/tools) and "For Students" (/learn) at half size, with
+    `aria-expanded`. It resets to collapsed when the menu closes.
+  - The orange circle "Book a call," linking to /contact.
+  - The LinkedIn icon, 28px, white, in a 44px target, `aria-label`
+    "LinkedIn."
+- **Current page:** orange dot with a white ring beside the link, plus
+  screen-reader current-page marking. Resources and For Business are
+  marked on /tools, /tool/*, /goals, /goal/*, and /search; For Students
+  on /learn.
+- **Behavior:** focus trap, Escape closes and returns focus to the button
+  (keyboard only, so Safari shows no ring after a mouse click), body
+  scroll lock, and the chat widget is hidden while the menu is open.
+- Motion: section 7, "Menu motion."
+
+### Footer
+
+- `--brand-cobalt` background, white text and links, white focus ring.
+- The full inverse lockup (section 3).
+- Link groups: Services; Resources (Resources, AI tool directory,
+  Marketing goals); About; Contact.
+- Bottom line: "© 2026 L Rod Ventures LLC d/b/a Aithello".
 
 ### Resources hub (/resources)
 
 Modeled on the trnsfrmaitn.com/ai-resources pattern.
 
-- Short intro, then two large doors: **For business owners** (to
-  /tools) and **For students** (to /learn).
+- Short intro, then two large doors: **For Business** (to /tools) and
+  **For Students** (to /learn), matching the menu labels.
+- The hub is reached from the footer and breadcrumbs; the menu goes
+  straight to the two doors through the Resources expand.
 - Below the doors, one repeated resource block: a type label as an
   orange-soft tag, a title, a one-line summary, a short description,
   and one plain-verb button. Launch blocks: Prompt builder, Market
@@ -446,7 +675,8 @@ Replaces the Market Intel chat widget.
    reference's choice and may be too informal for a consulting buyer.
 4. ~~**Charcoal value.**~~ Resolved 2026-09-21: #1F2430. See section 5.
 5. ~~**Ground value.**~~ Resolved 2026-09-21: #F7F9FC. See section 5.
-6. **Lockup behavior.** Whether the tagline travels with the wordmark.
+6. ~~**Lockup behavior.**~~ Resolved 2026-09-21: wordmark only in the
+   header; full lockup in the footer. See section 3.
 7. **Credibility slot.** Reference sites use client logo walls. Aithello
    does not have that roster. Substitute: named client outcomes, the
    Market Intel podcast, specific builds, the WBLA mentorship. The
@@ -457,19 +687,24 @@ Replaces the Market Intel chat widget.
 10. ~~**Text orange.**~~ Resolved 2026-09-21: no text orange. Cobalt
     handles all text accents. Orange expanded as a visual element with
     hover, soft, and tint tokens. See section 5.
-11. **Arc motif artwork.** Trace the "th" ligature curve from the logo
-    SVG into a reusable divider and accent shape.
+11. ~~**Arc motif artwork.**~~ Resolved 2026-09-24: traced from the
+    wordmark as `ThArc`, used in the hero's beat 3. Reusable elsewhere.
 12. **Prompt builder mechanism.** Template-based on the page (no API
     route, no cost) or Claude-assisted (keeps an API route). Decide
     before building it.
 13. **Prompt builder artwork.** The construction-themed image for the
     floating button.
-14. **Booking link.** Which scheduling tool "Book a free discovery
-    call" points to.
+14. **Booking tool.** Every "Book a call" links to /contact. Still open:
+    which scheduling tool is embedded on that page.
 15. **Services copy.** Port the Audit, Coaching, and Advisory copy
     from lonnierodriguez.com, plus the Custom Tool Building and
     Workflow Architecture documents. Remove em dashes and finalize in a
     lonnie-voice session.
+16. **LinkedIn URL.** The menu's LinkedIn link is a placeholder ("#").
+17. **Hero illustrations.** The looping line-art per beat is not built.
+18. **Tool and goal URLs.** The spec previously listed /tools/[tool];
+    the existing /tool/[slug] and /goal/[slug] URLs are kept to avoid
+    redirects. Confirm before launch.
 
 ---
 
