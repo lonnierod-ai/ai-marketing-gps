@@ -1340,12 +1340,21 @@ html[data-site-menu="open"] .lonnie-widget {
   display: flex;
 }
 
-/* One card, one link. By default the two faces stack in one solid
-   cobalt card, with the back's small repeated name hidden. */
+/* One card, one link. Each card's wall (data-wall) sets the back face's
+   color and ink: cobalt with white, or orange with charcoal (white on
+   orange fails contrast). By default the two faces stack in one solid
+   card of the wall color, with the back's small repeated name hidden. */
 .help-card {
+  --wall: var(--brand-cobalt);
+  --wall-ink: var(--brand-white);
   display: flex;
   flex: 1;
   border-radius: 14px;
+}
+
+.help-card[data-wall="orange"] {
+  --wall: var(--brand-orange);
+  --wall-ink: var(--brand-charcoal);
 }
 
 .help-card-inner {
@@ -1353,10 +1362,10 @@ html[data-site-menu="open"] .lonnie-widget {
   flex: 1;
   flex-direction: column;
   padding: 1.75rem;
-  border: 1px solid var(--brand-cobalt);
+  border: 1px solid var(--wall);
   border-radius: 14px;
-  background-color: var(--brand-cobalt);
-  color: var(--brand-white);
+  background-color: var(--wall);
+  color: var(--wall-ink);
 }
 
 .help-card-back {
@@ -1384,7 +1393,7 @@ html[data-site-menu="open"] .lonnie-widget {
   font-size: 1.75rem;
   font-weight: 700;
   line-height: 1.2;
-  color: var(--brand-white);
+  color: var(--wall-ink);
 }
 
 .help-card-name {
@@ -1395,7 +1404,7 @@ html[data-site-menu="open"] .lonnie-widget {
   margin-top: 0.75rem;
   font-size: 1.125rem;
   line-height: 1.6;
-  color: var(--brand-white);
+  color: var(--wall-ink);
 }
 
 /* Pinned to the card's bottom so cards in a row line up */
@@ -1408,7 +1417,7 @@ html[data-site-menu="open"] .lonnie-widget {
   font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.4;
-  color: var(--brand-white);
+  color: var(--wall-ink);
 }
 
 .help-card-arrow {
@@ -1517,10 +1526,15 @@ html[data-site-menu="open"] .lonnie-widget {
     min-height: 300px;
   }
 
-  /* Front: the name only, on the ground, vertically centered */
+  /* Front: the name only, on the ground, vertically centered, with a
+     faint pane edge (light top left, cobalt bottom right) so the resting
+     frame already reads as glass */
   .help-card-front {
     justify-content: center;
     background-color: transparent;
+    box-shadow: inset 1px 1px 0
+        color-mix(in srgb, var(--brand-white) 13%, transparent),
+      inset -1px -1px 0 color-mix(in srgb, var(--brand-cobalt) 22%, transparent);
   }
 
   .help-card-title {
@@ -1533,10 +1547,42 @@ html[data-site-menu="open"] .lonnie-widget {
     font-size: 3rem;
   }
 
-  /* Back: cobalt, white text, the name small at the top */
+  /* Back: a pane of glass in front of the wall, built bottom to top:
+     the wall (solid, the color the contrast is measured against), the
+     sheen and specular edge (::before, under the text), the frosted
+     ring (the border), then the text. No backdrop-filter: the card is
+     opaque. The sheen's top-left stop is 0.16 on cobalt, where white
+     text needs the headroom, and 0.20 on orange, where lightening only
+     helps charcoal. */
   .help-card-back {
-    background-color: var(--brand-cobalt);
-    color: var(--brand-white);
+    --sheen-start: 16%;
+    position: relative;
+    isolation: isolate;
+    border-color: color-mix(in srgb, var(--brand-white) 30%, transparent);
+    background-color: var(--wall);
+    color: var(--wall-ink);
+  }
+
+  .help-card[data-wall="orange"] .help-card-back {
+    --sheen-start: 20%;
+  }
+
+  .help-card-back::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 13px;
+    background-image: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--brand-white) var(--sheen-start), transparent) 0%,
+      color-mix(in srgb, var(--brand-white) 4%, transparent) 50%,
+      color-mix(in srgb, var(--brand-white) 12%, transparent) 100%
+    );
+    box-shadow: inset 1px 1px 0
+        color-mix(in srgb, var(--brand-white) 40%, transparent),
+      inset -1px -1px 0 color-mix(in srgb, var(--brand-white) 12%, transparent);
+    pointer-events: none;
   }
 
   .help-card-name {
@@ -1546,7 +1592,7 @@ html[data-site-menu="open"] .lonnie-widget {
     line-height: 1.4;
     letter-spacing: 0.05rem;
     text-transform: uppercase;
-    color: var(--brand-white);
+    color: var(--wall-ink);
   }
 }
 

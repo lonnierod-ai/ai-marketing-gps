@@ -32,6 +32,14 @@ const TYPE_CHAR_MS = 10;
 
 const HEADING = "How I can help.";
 
+// The wall behind each card's back face: cobalt with white text, or
+// orange with charcoal text (white on orange fails contrast)
+type Wall = "cobalt" | "orange";
+const GROUP_WALLS: Record<string, Wall> = {
+  "Done for you": "cobalt",
+  "Done with you": "orange",
+};
+
 /**
  * Homepage "How I can help" (spec section 8): the Audit as the starting
  * point, then the four offers in two groups, each card linking to its
@@ -133,7 +141,7 @@ export default function HowICanHelp() {
 
         <div className="help-audit" data-reveal-block="">
           <div className="help-reveal">
-            <OfferCard offer={AUDIT} tag="Start here" flip={flip} />
+            <OfferCard offer={AUDIT} tag="Start here" wall="cobalt" flip={flip} />
           </div>
         </div>
 
@@ -143,7 +151,11 @@ export default function HowICanHelp() {
             <div className="help-grid">
               {group.offers.map((offer) => (
                 <div key={offer.id} className="help-reveal">
-                  <OfferCard offer={offer} flip={flip} />
+                  <OfferCard
+                    offer={offer}
+                    wall={GROUP_WALLS[group.label] ?? "cobalt"}
+                    flip={flip}
+                  />
                 </div>
               ))}
             </div>
@@ -173,10 +185,12 @@ export default function HowICanHelp() {
 function OfferCard({
   offer,
   tag,
+  wall,
   flip,
 }: {
   offer: Offer;
   tag?: string;
+  wall: Wall;
   flip: boolean;
 }) {
   const titleId = `offer-${offer.id}-title`;
@@ -206,6 +220,7 @@ function OfferCard({
     <Link
       href={offerHref(offer)}
       className="help-card"
+      data-wall={wall}
       data-typed={typed ? "" : undefined}
       aria-labelledby={titleId}
       aria-describedby={bodyId}
