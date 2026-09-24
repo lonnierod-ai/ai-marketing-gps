@@ -937,7 +937,7 @@ html[data-site-menu="open"] .lonnie-widget {
      scroll */
   .home-hero-track {
     position: relative;
-    height: 300vh;
+    height: 345vh;
   }
 
   .home-hero-stage {
@@ -947,14 +947,10 @@ html[data-site-menu="open"] .lonnie-widget {
     height: calc(100vh - 72px);
     overflow: hidden;
     background-color: var(--brand-ground);
-    /* Keeps the circle's and beat 2's z-index inside the stage, so beat 3
-       can sit above it at the hand-off */
-    isolation: isolate;
   }
 
   /* Editorial layout: copy on the left, an aside on the right */
-  .home-hero-stage .home-hero-beat,
-  .home-hero-beat-3 {
+  .home-hero-stage .home-hero-beat {
     display: flex;
     align-items: center;
     gap: 3rem;
@@ -985,8 +981,7 @@ html[data-site-menu="open"] .lonnie-widget {
 
   /* Optical centering: the text block sits about 3% of the stage height
      above true center (a bottom margin shifts it up by half its size) */
-  .home-hero-stage .home-hero-copy,
-  .home-hero-beat-3 .home-hero-copy {
+  .home-hero-stage .home-hero-copy {
     margin-bottom: calc((100vh - 72px) * 0.06);
   }
 
@@ -1002,20 +997,6 @@ html[data-site-menu="open"] .lonnie-widget {
 
   .home-hero-beat-2 .home-hero-headline {
     font-size: clamp(2.75rem, 5.5cqw, 5.5rem);
-  }
-
-  /* Beat 3 is its own container with 4rem side padding; measure it
-     against the full width, like the pinned stage */
-  .home-hero-beat-3 .home-hero-copy {
-    max-width: calc((100cqw + 8rem) * 0.66);
-  }
-
-  .home-hero-beat-3 .home-hero-headline {
-    font-size: clamp(3rem, calc((100cqw + 8rem) * 0.065), 6.5rem);
-  }
-
-  .home-hero-beat-3 .home-hero-line {
-    font-size: clamp(1.25rem, calc((100cqw + 8rem) * 0.016), 1.625rem);
   }
 
   /* The supporting line: a 32ch column under the headline, right edges
@@ -1152,11 +1133,13 @@ html[data-site-menu="open"] .lonnie-widget {
     will-change: transform;
   }
 
-  /* Beat 2 shows only inside the circle */
+  /* Beat 2 shows only inside the circle; it has nothing to click, so
+     clicks pass through to beat 3's link */
   .home-hero-stage .home-hero-beat-2 {
     z-index: 3;
     clip-path: circle(0 at 50% 150%);
     will-change: clip-path;
+    pointer-events: none;
   }
 
   /* Beat 1: the underline draws in 0.4s after the intro lifts */
@@ -1185,32 +1168,22 @@ html[data-site-menu="open"] .lonnie-widget {
     transform: translateY(6px);
   }
 
-  /* Beat 3 continues the orange, then turns to the ground */
-  .home-hero-beat-3 {
-    /* Overlap the stage by 1px so no sub-pixel seam shows */
-    position: relative;
+  /* Beat 3: on the ground, under the circle. HomeHero shows it once the
+     circle covers the whole stage (replacing beat 1), then uncovers it
+     as the circle contracts. */
+  .home-hero-stage .home-hero-beat-3 {
     z-index: 1;
-    margin-top: -1px;
-    min-height: calc(100vh - 72px);
-    padding-block: 6rem;
-    background-color: var(--brand-orange);
-    transition: background-color 0.6s var(--ease-brand);
-  }
-
-  .home-hero-beat-3[data-revealed] {
     background-color: var(--brand-ground);
+    opacity: 0;
   }
 
-  /* Spec section 7 masked rise. The mask takes the section's color, so it
-     changes with it: orange before the reveal, ground after. */
+  /* Spec section 7 masked rise; HomeHero moves each word by scroll */
   .home-hero-mask {
     display: inline-block;
     overflow: hidden;
     padding-block: 0.15em;
     margin-block: -0.15em;
     vertical-align: bottom;
-    background-color: var(--brand-orange);
-    transition: background-color 0.6s var(--ease-brand);
   }
 
   .home-hero-word {
@@ -1218,6 +1191,7 @@ html[data-site-menu="open"] .lonnie-widget {
     transform: translateY(calc(100% + 0.15em));
   }
 
+  /* HomeHero draws the arc by scroll */
   .home-hero-arc {
     stroke-dashoffset: 1.02;
   }
@@ -1226,42 +1200,18 @@ html[data-site-menu="open"] .lonnie-widget {
     stroke-dashoffset: inherit;
   }
 
-  .home-hero-lede,
-  .home-hero-beat-3 .home-hero-cta {
-    opacity: 0;
+  /* The real Book a call link sits under the circle, which lands on it
+     exactly. Until then it takes no clicks and its label is hidden; at
+     the hand-off (data-live) the label fades in. */
+  .home-hero-stage .home-hero-beat-3 .home-hero-cta a {
+    color: transparent;
+    pointer-events: none;
   }
 
-  .home-hero-beat-3 .home-hero-cta {
-    transform: scale(0.8);
-  }
-
-  .home-hero-beat-3[data-revealed] .home-hero-mask {
-    background-color: var(--brand-ground);
-  }
-
-  /* After the ground change: words rise 35ms apart */
-  .home-hero-beat-3[data-revealed] .home-hero-word {
-    transform: none;
-    transition: transform 0.8s var(--ease-brand)
-      calc(0.6s + var(--w, 0) * 35ms);
-  }
-
-  /* The line shows at reveal as an empty reserved block; HomeHero
-     starts typing it 1.1s in. Then the arc and the circle. */
-  .home-hero-beat-3[data-revealed] .home-hero-lede {
-    opacity: 1;
-  }
-
-  .home-hero-beat-3[data-revealed] .home-hero-arc {
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 0.8s var(--ease-brand) 1.4s;
-  }
-
-  .home-hero-beat-3[data-revealed] .home-hero-cta {
-    opacity: 1;
-    transform: none;
-    transition: opacity 0.6s ease-out 1.8s,
-      transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 1.8s;
+  .home-hero-stage .home-hero-beat-3[data-live] .home-hero-cta a {
+    color: var(--brand-charcoal);
+    pointer-events: auto;
+    transition: color 0.3s ease-out, background-color 0.15s ease-out;
   }
 }
 

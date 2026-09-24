@@ -5,7 +5,6 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
   type ReactNode,
 } from "react";
 import BookCallCircle from "@/components/BookCallCircle";
@@ -28,17 +27,32 @@ const HEADER_PX = 72;
 const BALL_PX = 380;
 
 // The pinned sequence, as shares of the pinned scroll:
-//   0.00-0.16  hold on beat 1 (the search bar types, on a timer)
-//   0.16-0.36  the circle rises
-//   0.36-0.68  the circle expands; beat 2 starts revealing once the
+//   0.00-0.13  hold on beat 1 (the search bar types, on a timer)
+//   0.13-0.30  the circle rises
+//   0.30-0.56  the circle expands; beat 2 starts revealing once the
 //              circle covers its headline block
-//   0.68-0.72  beat 2 finishes its reveal; its line then types and its
+//   0.56-0.59  beat 2 finishes its reveal; its line then types and its
 //              notifications cascade in (both on a timer)
-//   0.72-1.00  hold on beat 2
-const RISE_START = 0.16;
-const RISE_END = 0.36;
-const EXPAND_END = 0.68;
-const BEAT_2_REVEALED = 0.72;
+//   0.59-0.77  hold on beat 2
+//   0.77-0.96  the circle contracts onto beat 3's Book a call circle,
+//              uncovering beat 3 on the ground; beat 2 fades out
+//   0.96-1.00  the real link takes over; hold on beat 3
+const RISE_START = 0.13;
+const RISE_END = 0.3;
+const EXPAND_END = 0.56;
+const BEAT_2_REVEALED = 0.59;
+const CONTRACT_START = 0.77;
+const CONTRACT_END = 0.96;
+
+// Within the contraction (0 to 1): beat 2 fades out over the first
+// share; each beat 3 headline word rises over WORD_RISE once the
+// circle's edge has passed it, all landed by WORDS_LAND_BY; the arc
+// draws after "first." lands, done by ARC_DRAWN_BY
+const BEAT_2_FADE = 0.15;
+const WORD_RISE = 0.15;
+const WORDS_LAND_BY = 0.8;
+const ARC_DRAW = 0.2;
+const ARC_DRAWN_BY = 0.9;
 
 // If the intro never reports back, start beat 1 anyway
 const INTRO_FALLBACK_MS = 6000;
@@ -72,10 +86,6 @@ const NOTES_FEWEST = 3;
 // Beat 2 rises into place by this much as it fades in
 const BEAT_2_RISE_PX = 24;
 
-// Beat 3's line starts typing at this point in its reveal (where the
-// fade-up used to start)
-const BEAT_3_LINE_DELAY_MS = 1100;
-
 // Scroll cue: appears this long after the search bar's answer (or after
 // load where the search bar is already finished), and leaves for good
 // after this much scrolling
@@ -90,10 +100,11 @@ const BEAT_3_LINE =
 
 /**
  * Homepage hero, three beats in an editorial layout. From 990px without
- * reduced motion, beat 1 is pinned while an orange circle rises and
- * expands to reveal beat 2, whose line types while outside-marketing
- * notifications arrive beside it as the visitor scrolls; beat 3 reveals
- * when it reaches the header.
+ * reduced motion, all three share one pinned stage: an orange circle
+ * rises and expands to reveal beat 2, whose line types while
+ * outside-marketing notifications cascade in beside it; then the circle
+ * contracts onto beat 3's Book a call circle, uncovering beat 3 on the
+ * ground, and hands off to the real link.
  * Otherwise the beats stack in one column in their finished state.
  * Beat 1's headline is the page's single h1.
  */
@@ -242,6 +253,79 @@ export default function HomeHero() {
     let beat2Typed = false;
     let frame = 0;
 
+    // Beat 3: the real Book a call link the circle lands on, the headline
+    // words, and the arc
+    const cta = beat3.querySelector<HTMLElement>(".home-hero-cta a")!;
+    const words = Array.from(
+      beat3.querySelectorAll<HTMLElement>(".home-hero-word")
+    );
+    const arc = beat3.querySelector<SVGElement>(".home-hero-arc")!;
+    // The circle's end point (the link's center and radius), where in the
+    // contraction each word and the arc start, and where the last word
+    // lands
+    let target = { x: 0, y: 0, r: 0 };
+    let wordFrom: number[] = [];
+    let arcFrom = 0;
+    let wordsLanded = 1;
+    let beat3Typed = false;
+    let live = false;
+
+    // The circle at a point in the contraction (0 to 1). The mirror of the
+    // expansion's ease-in squared: fast at first, settling as it lands.
+    // Center and radius move together, so the circle always contains the
+    // link's circle until the two match.
+    const contracted = (q: number) => {
+      const e = 1 - (1 - q) ** 2;
+      return {
+        x: width / 2 + (target.x - width / 2) * e,
+        y: height / 2 + (target.y - height / 2) * e,
+        r: cover / 2 + (target.r - cover / 2) * e,
+      };
+    };
+
+    type Box = { left: number; top: number; right: number; bottom: number };
+    // The first point in the contraction where the circle no longer
+    // covers any part of a box
+    const uncoveredAt = (box: Box) => {
+      for (let q = 0; q < 1; q += 0.002) {
+        const c = contracted(q);
+        const nx = Math.max(box.left, Math.min(c.x, box.right));
+        const ny = Math.max(box.top, Math.min(c.y, box.bottom));
+        if (Math.hypot(nx - c.x, ny - c.y) >= c.r) return q;
+      }
+      return 1;
+    };
+
+    const measureBeat3 = (stageBox: DOMRect) => {
+      const rel = (r: DOMRect): Box => ({
+        left: r.left - stageBox.left,
+        top: r.top - stageBox.top,
+        right: r.right - stageBox.left,
+        bottom: r.bottom - stageBox.top,
+      });
+      const link = rel(cta.getBoundingClientRect());
+      target = {
+        x: (link.left + link.right) / 2,
+        y: (link.top + link.bottom) / 2,
+        r: (link.right - link.left) / 2,
+      };
+      // Each word's mask box stays put while the word rises inside it
+      wordFrom = words.map((word) =>
+        Math.min(
+          uncoveredAt(rel(word.parentElement!.getBoundingClientRect())),
+          WORDS_LAND_BY - WORD_RISE
+        )
+      );
+      wordsLanded = Math.max(...wordFrom) + WORD_RISE;
+      // The arc leaves from the end of line 1, so it draws once "first."
+      // has landed
+      const lineOneLanded = Math.max(...wordFrom.slice(0, 3)) + WORD_RISE;
+      arcFrom = Math.min(
+        Math.max(uncoveredAt(rel(arc.getBoundingClientRect())), lineOneLanded),
+        ARC_DRAWN_BY - ARC_DRAW
+      );
+    };
+
     // Places beat 2's notification list and decides how many cards fit.
     // Where the column clears the copy beside it, the list is centered
     // on the stage; otherwise it starts under the headline's second line,
@@ -321,6 +405,7 @@ export default function HomeHero() {
         .getBoundingClientRect();
       fitNotes(stageBox);
       beat2Copy.style.transform = previous;
+      measureBeat3(stageBox);
       const cx = stageBox.left + width / 2;
       const cy = stageBox.top + height / 2;
       const needed =
@@ -351,13 +436,22 @@ export default function HomeHero() {
 
       if (rect.bottom < 0 || rect.top > window.innerHeight) return;
 
-      // Circle and beat 2's clip
-      const rise = power4InOut(clamp((p - RISE_START) / (RISE_END - RISE_START)));
-      const grow = easeInSquared(clamp((p - RISE_END) / (EXPAND_END - RISE_END)));
-      const yOffset = (1 - rise) * (height / 2 + BALL_PX / 2);
-      const diameter = BALL_PX + grow * (cover - BALL_PX);
-      circle.style.transform = `translateY(${yOffset}px) scale(${diameter / cover})`;
-      beat2.style.clipPath = `circle(${diameter / 2}px at ${width / 2}px ${height / 2 + yOffset}px)`;
+      // The circle (and beat 2's clip, which matches it): rising, then
+      // expanding from the stage's center, then contracting onto the link
+      const q = clamp((p - CONTRACT_START) / (CONTRACT_END - CONTRACT_START));
+      let cx = width / 2;
+      let cy = height / 2;
+      let r: number;
+      if (q > 0) {
+        ({ x: cx, y: cy, r } = contracted(q));
+      } else {
+        const rise = power4InOut(clamp((p - RISE_START) / (RISE_END - RISE_START)));
+        const grow = easeInSquared(clamp((p - RISE_END) / (EXPAND_END - RISE_END)));
+        cy += (1 - rise) * (height / 2 + BALL_PX / 2);
+        r = (BALL_PX + grow * (cover - BALL_PX)) / 2;
+      }
+      circle.style.transform = `translate(${cx - width / 2}px, ${cy - height / 2}px) scale(${(2 * r) / cover})`;
+      beat2.style.clipPath = `circle(${r}px at ${cx}px ${cy}px)`;
 
       // Beat 2's text: hidden until the circle covers its headline block
       const reveal = clamp((p - beat2From) / (BEAT_2_REVEALED - beat2From));
@@ -368,49 +462,58 @@ export default function HomeHero() {
         beat2Typed = true;
         setBeat2Typing(true);
       }
+      // All of beat 2 (text and notifications) fades early in the
+      // contraction
+      beat2.style.opacity = String(1 - clamp(q / BEAT_2_FADE));
+
+      // Beat 3 sits under the circle from the moment the circle covers
+      // the whole stage, replacing beat 1
+      beat3.style.opacity = p >= EXPAND_END ? "1" : "0";
+      // Its headline words rise as the circle's edge passes them, then
+      // the arc draws; the line types (on a timer) once the words land
+      words.forEach((word, i) => {
+        const t = easeOutCubic(clamp((q - wordFrom[i]) / WORD_RISE));
+        word.style.transform = `translateY(calc(${1 - t} * (100% + 0.15em)))`;
+      });
+      const drawn = easeOutCubic(clamp((q - arcFrom) / ARC_DRAW));
+      arc.style.strokeDashoffset = String(1.02 * (1 - drawn));
+      if (!beat3Typed && q >= wordsLanded) {
+        beat3Typed = true;
+        setBeat3Typing(true);
+      }
+
+      // Hand-off: once the circle has landed, it hides and the real link
+      // (same place, size, and color) takes over
+      const landed = q >= 1;
+      circle.style.visibility = landed ? "hidden" : "";
+      if (landed !== live) {
+        live = landed;
+        beat3.toggleAttribute("data-live", live);
+      }
     };
 
     const schedule = () => {
       if (!frame) frame = requestAnimationFrame(update);
     };
-    // Beat 3 reveals when its top reaches the header, i.e. once the
-    // orange stage has scrolled fully behind the header. Until then beat 3
-    // stays orange, continuous with the stage, so no orange band is left
-    // above it. The observer watches a 2px line just under the header.
-    let observer: IntersectionObserver | null = null;
-    let lineTimer = 0;
-    const watchBeat3 = () => {
-      observer?.disconnect();
-      if (beat3.hasAttribute("data-revealed")) return;
-      observer = new IntersectionObserver(
-        ([entry]) => {
-          if (!entry.isIntersecting) return;
-          beat3.setAttribute("data-revealed", "");
-          observer?.disconnect();
-          lineTimer = window.setTimeout(
-            () => setBeat3Typing(true),
-            BEAT_3_LINE_DELAY_MS
-          );
-        },
-        {
-          rootMargin: `-${HEADER_PX}px 0px -${Math.max(
-            0,
-            window.innerHeight - HEADER_PX - 2
-          )}px 0px`,
-        }
-      );
-      observer.observe(beat3);
+    // Keyboard users can reach the link before the circle has landed on
+    // it; jump to the end of the hero so the finished beat 3 is on screen
+    const onCtaFocus = () => {
+      if (live) return;
+      const trackTop = track.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: trackTop - HEADER_PX + track.offsetHeight - height,
+        behavior: "instant",
+      });
     };
 
     const onResize = () => {
       measure();
       schedule();
-      watchBeat3();
     };
 
     measure();
     update();
-    watchBeat3();
+    cta.addEventListener("focus", onCtaFocus);
     window.addEventListener("scroll", schedule, { passive: true });
     window.addEventListener("resize", onResize);
     // Web font swaps change text boxes; remeasure once they settle
@@ -423,10 +526,15 @@ export default function HomeHero() {
       cancelAnimationFrame(frame);
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", onResize);
-      observer?.disconnect();
-      window.clearTimeout(lineTimer);
+      cta.removeEventListener("focus", onCtaFocus);
       circle.style.removeProperty("transform");
+      circle.style.removeProperty("visibility");
       beat2.style.removeProperty("clip-path");
+      beat2.style.removeProperty("opacity");
+      beat3.style.removeProperty("opacity");
+      beat3.removeAttribute("data-live");
+      words.forEach((word) => word.style.removeProperty("transform"));
+      arc.style.removeProperty("stroke-dashoffset");
       beat2Copy.style.removeProperty("opacity");
       beat2Copy.style.removeProperty("transform");
       stage.style.removeProperty("--hero-cover");
@@ -507,28 +615,28 @@ export default function HomeHero() {
             </div>
             <HeroNotificationStack count={notesIn} max={notesMax} />
           </section>
+
+          <section ref={beat3Ref} className="home-hero-beat home-hero-beat-3">
+            <div className="home-hero-copy">
+              <h2 className="home-hero-headline">
+                <RisingLine text="Your business first." trailingSpace>
+                  <BeatThreeArc />
+                </RisingLine>
+                <RisingLine text="Then the AI." />
+              </h2>
+              <TypedLine
+                text={BEAT_3_LINE}
+                animate={motion}
+                play={beat3Typing}
+                className="home-hero-line"
+              />
+            </div>
+            <div className="home-hero-aside home-hero-cta">
+              <BookCallCircle />
+            </div>
+          </section>
         </div>
       </div>
-
-      <section ref={beat3Ref} className="home-hero-beat home-hero-beat-3">
-        <div className="home-hero-copy">
-          <h2 className="home-hero-headline">
-            <RisingLine text="Your business first." start={0} trailingSpace>
-              <BeatThreeArc />
-            </RisingLine>
-            <RisingLine text="Then the AI." start={3} />
-          </h2>
-          <TypedLine
-            text={BEAT_3_LINE}
-            animate={motion}
-            play={beat3Typing}
-            className="home-hero-line home-hero-lede"
-          />
-        </div>
-        <div className="home-hero-aside home-hero-cta">
-          <BookCallCircle />
-        </div>
-      </section>
     </div>
   );
 }
@@ -571,16 +679,14 @@ function BeatThreeArc() {
   );
 }
 
-// One hand-set headline line, split into words for the masked rise.
-// `start` continues the 35ms stagger across lines.
+// One hand-set headline line, split into words for the masked rise
+// (HomeHero moves each word as the circle uncovers it)
 function RisingLine({
   text,
-  start,
   trailingSpace = false,
   children,
 }: {
   text: string;
-  start: number;
   trailingSpace?: boolean;
   children?: ReactNode;
 }) {
@@ -590,12 +696,7 @@ function RisingLine({
       {words.map((word, index) => (
         <span key={index}>
           <span className="home-hero-mask">
-            <span
-              className="home-hero-word"
-              style={{ "--w": start + index } as CSSProperties}
-            >
-              {word}
-            </span>
+            <span className="home-hero-word">{word}</span>
           </span>
           {index < words.length - 1 || trailingSpace ? " " : null}
         </span>
