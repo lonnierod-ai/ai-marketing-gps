@@ -10,7 +10,9 @@
 /coverage
 
 # next.js
-/.next/
+# .next may be a link to .next.nosync, which iCloud Drive does not sync
+/.next
+/.next.nosync/
 /out/
 
 # production
