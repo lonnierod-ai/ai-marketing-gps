@@ -32,16 +32,13 @@ const BALL_PX = 380;
 //   0.16-0.36  the circle rises
 //   0.36-0.68  the circle expands; beat 2 starts revealing once the
 //              circle covers its headline block
-//   0.68-0.72  beat 2 finishes its reveal; its line then types (on a
-//              timer)
-//   0.72-0.92  beat 2's 8 notifications arrive, one every 2.5%
-//   0.92-1.00  hold on the full list
+//   0.68-0.72  beat 2 finishes its reveal; its line then types and its
+//              notifications cascade in (both on a timer)
+//   0.72-1.00  hold on beat 2
 const RISE_START = 0.16;
 const RISE_END = 0.36;
 const EXPAND_END = 0.68;
 const BEAT_2_REVEALED = 0.72;
-const NOTES_START = 0.72;
-const NOTES_STEP = 0.025;
 
 // If the intro never reports back, start beat 1 anyway
 const INTRO_FALLBACK_MS = 6000;
@@ -56,6 +53,9 @@ const power4InOut = (p: number) =>
 const easeInSquared = (p: number) => p * p;
 
 const easeOutCubic = (p: number) => 1 - (1 - p) ** 3;
+
+// Beat 2's notifications cascade in this far apart, oldest first
+const NOTE_STAGGER_MS = 80;
 
 // Beat 2's notification list, fitted to the stage (see fitNotes)
 const NOTE_WIDTH_PX = 320;
@@ -123,10 +123,35 @@ export default function HomeHero() {
 
   const onSearchDone = useCallback(() => setSearchDone(true), []);
 
-  // Beat 2's notifications: how many have arrived (driven by scroll), and
-  // how many fit on the stage
+  // Beat 2's notifications: how many have landed, and how many fit on the
+  // stage. They play once per page load, as a timed cascade when beat 2's
+  // reveal completes, and stay when scrolling back up.
   const [notesIn, setNotesIn] = useState(0);
   const [notesMax, setNotesMax] = useState(NOTIFICATIONS.length);
+  const notesMaxRef = useRef(NOTIFICATIONS.length);
+  const notesPlayed = useRef(false);
+  const noteTimers = useRef<number[]>([]);
+  const playNotes = useCallback((animate: boolean) => {
+    if (notesPlayed.current) return;
+    notesPlayed.current = true;
+    const total = NOTIFICATIONS.length;
+    if (!animate) {
+      setNotesIn(total);
+      return;
+    }
+    // Older cards that don't fit the stage never show, so the counter
+    // starts past them
+    const first = total - Math.min(notesMaxRef.current, total) + 1;
+    for (let n = first; n <= total; n++) {
+      noteTimers.current.push(
+        window.setTimeout(() => setNotesIn(n), (n - first) * NOTE_STAGGER_MS)
+      );
+    }
+  }, []);
+  useEffect(() => {
+    const timers = noteTimers.current;
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
+  }, []);
 
   // Scroll cue in: after the search bar's answer, or after load where the
   // search bar is already finished (phones, reduced motion)
@@ -217,7 +242,6 @@ export default function HomeHero() {
     let cover = 0;
     let beat2From = EXPAND_END;
     let beat2Typed = false;
-    let notesCount = -1;
     let frame = 0;
 
     // Places beat 2's notification list and decides how many cards fit.
@@ -278,6 +302,7 @@ export default function HomeHero() {
         (centered ? (height - block) / 2 : top) + NOTES_COUNTER_PX;
       notes.style.setProperty("--notes-top", `${listTop}px`);
       notes.style.setProperty("--notes-pitch", `${h + spacing.gap}px`);
+      notesMaxRef.current = max;
       setNotesMax(max);
     };
 
@@ -319,10 +344,15 @@ export default function HomeHero() {
     const update = () => {
       frame = 0;
       const rect = track.getBoundingClientRect();
-      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-
       const distance = track.offsetHeight - height;
       const p = clamp((HEADER_PX - rect.top) / distance);
+
+      // Beat 2's notifications cascade in once its reveal completes. If
+      // the page loads with the hero already scrolled past, they are
+      // simply there.
+      if (p >= BEAT_2_REVEALED) playNotes(rect.bottom > HEADER_PX);
+
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
 
       // Circle and beat 2's clip
       const rise = power4InOut(clamp((p - RISE_START) / (RISE_END - RISE_START)));
@@ -340,17 +370,6 @@ export default function HomeHero() {
       if (!beat2Typed && p >= BEAT_2_REVEALED) {
         beat2Typed = true;
         setBeat2Typing(true);
-      }
-
-      // Beat 2's notifications: one more every NOTES_STEP of scroll, and
-      // back off in reverse when scrolling up
-      const count = Math.min(
-        NOTIFICATIONS.length,
-        Math.max(0, Math.floor((p - NOTES_START) / NOTES_STEP + 1e-6))
-      );
-      if (count !== notesCount) {
-        notesCount = count;
-        setNotesIn(count);
       }
     };
 
@@ -418,7 +437,7 @@ export default function HomeHero() {
         notes.style.removeProperty(name);
       }
     };
-  }, [motion]);
+  }, [motion, playNotes]);
 
   return (
     <div

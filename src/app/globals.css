@@ -1068,9 +1068,10 @@ html[data-site-menu="open"] .lonnie-widget {
     text-transform: uppercase;
     color: var(--brand-charcoal);
     opacity: 0;
-    transition: opacity 0.3s ease-out;
+    transition: opacity 0.4s var(--ease-brand);
   }
 
+  /* Fades in with the first card; after that the number just changes */
   .hero-notes-count[data-shown] {
     opacity: 1;
   }
@@ -1092,27 +1093,24 @@ html[data-site-menu="open"] .lonnie-widget {
     backdrop-filter: blur(16px);
     box-shadow: 0 8px 24px rgb(31 36 48 / 0.12);
     transform: translateY(calc(var(--slot, 0) * var(--notes-pitch, 77px)));
-    transition: transform 0.3s var(--ease-brand), opacity 0.3s ease-out,
+    transition: transform 0.4s var(--ease-brand), opacity 0.4s var(--ease-brand),
       visibility 0s;
   }
 
-  /* Not arrived (or taken back by scrolling up): 24px above the top slot,
-     faded out. Arriving slides it down into place; leaving slides it back
-     up. */
+  /* Not landed yet: 24px above its own slot, faded out. Landing slides it
+     down into place. */
   .hero-note[data-state="waiting"] {
     visibility: hidden;
     opacity: 0;
-    transform: translateY(-24px);
-    transition: transform 0.3s var(--ease-brand), opacity 0.3s ease-out,
-      visibility 0s linear 0.3s;
+    transform: translateY(
+      calc(var(--slot, 0) * var(--notes-pitch, 77px) - 24px)
+    );
   }
 
-  /* Past the slots that fit the stage: fades out as it moves down */
+  /* Older cards past the slots that fit the stage never show */
   .hero-note[data-state="out"] {
     visibility: hidden;
     opacity: 0;
-    transition: transform 0.3s var(--ease-brand), opacity 0.3s ease-out,
-      visibility 0s linear 0.3s;
   }
 
   .hero-note-icon {

@@ -53,36 +53,38 @@ export const NOTIFICATIONS = [
 ];
 
 type HeroNotificationStackProps = {
-  // How many notifications have arrived, in order
+  // How many notifications have landed, in order
   count: number;
-  // How many fit on screen; older ones beyond this fade out
+  // How many fit on the stage; older ones beyond this never show
   max: number;
 };
 
 /**
  * Beat 2's decorative notification list: frosted cards in one column,
- * newest on top. Each arrival slides into the top slot and pushes the
- * others down; a "N new" counter sits above. HomeHero drives the count
- * from scroll and sets the position and spacing. Styles and motion live
- * in globals.css ("Home hero").
+ * newest on top. Every card has a fixed slot; HomeHero lands them in
+ * arrival order (the oldest at the bottom first, the newest last at the
+ * top), each sliding down into its own slot, so nothing shifts or
+ * overlaps. A "N new" counter sits above. HomeHero also sets the
+ * position and spacing. Styles and motion live in globals.css
+ * ("Home hero").
  */
 export default function HeroNotificationStack({ count, max }: HeroNotificationStackProps) {
+  const total = NOTIFICATIONS.length;
   return (
     <div aria-hidden="true" className="hero-notes">
       <p className="hero-notes-count" data-shown={count > 0 ? "" : undefined}>
         {count} new
       </p>
       {NOTIFICATIONS.map((note, index) => {
-        const arrived = index < count;
-        // 0 is the top slot, the newest card
-        const slot = count - 1 - index;
-        const state = !arrived ? "waiting" : slot >= max ? "out" : "in";
+        // 0 is the top slot, for the newest card
+        const slot = total - 1 - index;
+        const state = slot >= max ? "out" : index < count ? "in" : "waiting";
         return (
           <div
             key={note.title}
             className="hero-note"
             data-state={state}
-            style={{ "--slot": arrived ? slot : 0 } as CSSProperties}
+            style={{ "--slot": slot } as CSSProperties}
           >
             <span className="hero-note-icon">
               <svg
